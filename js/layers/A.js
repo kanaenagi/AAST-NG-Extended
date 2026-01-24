@@ -62,7 +62,7 @@ addLayer('A', {
     if (hu('E', 26) && inChallenge('A', 41))
       player.A.challenges[41] = getPointGen().div('8e11').max(1).log(tmp.A.Ac7Req).root(2).add(10).max(player.A.challenges[41]).min(1e308).toNumber()
     if (hu('E', 74)) player.A.challenges[41] = getPointGen().div('8e11').max(1).log(tmp.A.Ac7Req).root(2).add(10).max(player.A.challenges[41]).min(1e308).toNumber()
-    if (player.A.am.gte(Number.MAX_VALUE)) player.A.am = n(Number.MAX_VALUE)
+    if (player.A.am.gte(1e150)) player.A.am = n(1e150)
     if (inChallenge('E', 51)) player.A.points = player.A.points.min(player.a.points)
     if (inChallenge('C', 22)) player.A.points = player.A.points.min(player.E.points)
   },
