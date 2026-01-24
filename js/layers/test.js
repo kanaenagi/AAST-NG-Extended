@@ -25,7 +25,7 @@ addLayer('te', {
     return true
   },
   devSpeedCal() {
-    let dev = 10
+    let dev = 1
     if (gcs('te', 11)) dev = 0
     if (isEndgame()) dev = 0
     return dev
