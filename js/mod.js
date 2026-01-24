@@ -191,8 +191,8 @@ var shitDown = false
 // Display extra things at the top of the page
 var displayThings = [
   function () {
-    let a = 'Current endgame: 1.79e308 Antimatter'
-    if (isEndgame()) a = a + '<br>You are past endgame! Antimatter is capped at 1.79e308.'
+    let a = 'Current endgame: 1e150 Antimatter'
+    if (isEndgame()) a = a + '<br>You are past endgame! Antimatter is capped at 1e150.'
     if (gcs('te', 12)) a = a + '<br>You have played the game for ' + formatTime(player.timePlayed) + '.'
     if (gcs('te', 13)) a = a + '<br>Current FPS: ' + format(1000 / (Date.now() - player.time)) + '.'
     if (gcs('te', 14)) a = a + '<br>Raw Points: ' + format(getRawPointsGen()) + '.'
