@@ -56,6 +56,7 @@ addLayer('C', {
     mult = mult.mul(buyableEffect('B', 21))
     mult = mult.mul(hu('a', 15) ? ue('a', 15) : 1)
     if (mu("B", 16)) mult = mult.mul(ue("B", 16))
+    if (mu("A", 11) && mu("A", 25)) mult = mult.mul(ue("A", 11))
 
     mult = mult.pow(hu('A', 45) ? 1.5 : 1)
     mult = mult.pow(hu('A', 46) ? 1.5 : 1)
@@ -91,6 +92,7 @@ addLayer('C', {
       let kept = ['unlocked', 'auto']
       if (hm('F', 1)) kept.push('challenges')
       if (hm('F', 4)) kept.push('milestones')
+      player.ma.mastered.C = []
       layerDataReset(this.layer, kept)
     }
   },
@@ -199,6 +201,7 @@ addLayer('C', {
       effect() {
         let effp = 5
         if (hu('C', 23)) effp = effp * 5
+        if (mu('C', 13)) effp = effp * 1000
         if (inChallenge('C', 11)) effp = 0
         eff = player[this.layer].points.max(1).pow(effp)
         if (hu('sc', 15)) eff = eff.pow(ue('sc', 15))
@@ -210,6 +213,11 @@ addLayer('C', {
       effectDisplay() {
         return format(this.effect()) + 'x'
       },
+      canMaster: true,
+      masterCost: n(1e205),
+      masteredDesc: function () {
+        return 'C^5000 boosts points. Antimatter affects after Ac3, 4, 5 and Cc1, 2.'
+      },
     },
     14: {
       title: 'C4',
@@ -218,14 +226,22 @@ addLayer('C', {
       unlocked() {
         return hu(this.layer, 13)
       },
+      canMaster: true,
+      masterCost: n(2.53e253),
+      masteredDesc: function () {
+        return 'B7 ^300.<br>unlock a C chal.'
+      },
     },
     15: {
       title: 'C5',
-      description: '200x points.<br>unlock a new chal.',
+      description: '200x points.<br>unlock a A chal.',
       cost: n(50),
       unlocked() {
         return hu(this.layer, 14)
       },
+      canMaster: true,
+      masterCost: n(1e259),
+      masteredDesc:'^2 points.<br>unlock a A chal.',
     },
     16: {
       title: 'C6',
@@ -234,6 +250,9 @@ addLayer('C', {
       unlocked() {
         return hu(this.layer, 15)
       },
+      canMaster: true,
+      masterCost: n(2e273),
+      masteredDesc:'Softcap Points ^2 and ScU11 ^2.',
     },
     21: {
       title: 'C7',
@@ -286,7 +305,7 @@ addLayer('C', {
     31: {
       title: 'C13',
       description: 'E6 and E8 ^2.',
-      cost: n('1e235'),
+      cost: n('1e236'),
       unlocked() {
         return hu('E', 31)
       },
@@ -296,10 +315,10 @@ addLayer('C', {
       description: 'Boost E based on C upgrade amount.',
       cost: n('1e240'),
       effect() {
-        let bas = 1.5
-        let a = n(player.C.upgrades.length).sqrt(0.5)
+        let bas = 1.12
+        let a = n(player.C.upgrades.length)
         let eff = Decimal.pow(bas, a)
-        if (eff.gte(2)) eff = eff.div(2).pow(0.5).mul(2) //Sc112
+        if (eff.gte(5)) eff = eff.div(5).pow(0.5).mul(5) //Sc112
         return eff
       },
       unlocked() {
@@ -311,11 +330,11 @@ addLayer('C', {
     },
     33: {
       title: 'C15',
-      description: 'E3 and E4 boosts each other.<br>(beffore exponents)',
-      cost: n('1e245'),
+      description: 'E3 and E4 boosts each other.<br>(before exponents)',
+      cost: n('1e246'),
       effect() {
-        let eff0 = ue('E', 14).pow(0.6)
-        let eff1 = ue('E', 13).pow(0.6)
+        let eff0 = ue('E', 14).pow(0.6).max(1)
+        let eff1 = ue('E', 13).pow(0.6).max(1)
         if (eff0.gte(2)) eff0 = eff0.div(2).pow(0.5).mul(2) //Sc115
         if (eff1.gte(2)) eff1 = eff1.div(2).pow(0.5).mul(2) //Sc116
         return [eff0, eff1]
@@ -329,16 +348,16 @@ addLayer('C', {
     },
     34: {
       title: 'C16',
-      description: 'Unlock Eb4. B gainMult^1.1',
-      cost: n('1e248'),
+      description: 'Unlock Eb4.',
+      cost: n('1e247'),
       unlocked() {
-        return hc('E', 12)
+        return hu(this.layer, 33)
       },
     },
     35: {
       title: 'C17',
       description: 'E3 and E4 ^1.2. Eb3 and Eb4 base +0.5.',
-      cost: n('1e250'),
+      cost: n('1e248'),
       unlocked() {
         return hu(this.layer, 34)
       },
@@ -346,7 +365,7 @@ addLayer('C', {
     36: {
       title: 'C18',
       description: 'E6, E8 and E13 ^1.5',
-      cost: n('5.25e252'),
+      cost: n('1e250'),
       unlocked() {
         return hu(this.layer, 35)
       },
@@ -387,7 +406,46 @@ addLayer('C', {
       canComplete() {
         return player.points.gte(1e85)
       },
-      rewardDescription: 'x1e800 points(ignore most challenge effects), A ^1.025.',
+      rewardDescription: 'x8000 points(ignore most challenge effects), A ^1.025.',
+    },
+    21: {
+      name: 'Cc3',
+      completionLimit: 1,
+      challengeDescription() {
+        return 'Reset your points and points exponent^0.1.'
+      },
+      unlocked() {
+        return mu('C', 14)
+      },
+      onEnter() {
+        player.points = n(0)
+      },
+      goalDescription: '1e13 points.',
+      canComplete() {
+        return player.points.gte(1e13)
+      },
+      rewardDescription: 'Mastered B9 affect E.',
+    },
+    22: {
+      name: 'Cc4',
+      completionLimit: 1,
+      challengeDescription() {
+        return 'Reset your points, A and B. points exponent^0.25. Your A and B is limited at your E.'
+      },
+      unlocked() {
+        return mu('C', 14)
+      },
+      onEnter() {
+        player.points = n(0)
+        player.A.points = n(0)
+        player.B.points = n(0)
+        updateTemp()
+      },
+      goalDescription: 'get 1e10000000 Raw points.',
+      canComplete() {
+        return getRawPointsGen().gte("ee7") 
+      },
+      rewardDescription: 'Ec3 effect ^2.5. Mastered B9 effect ^4.',
     },
   }
 }) //C

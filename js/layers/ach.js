@@ -254,14 +254,17 @@ addLayer('ac', {
       done() {
         return player.points.gte('1.80e308')
       },
+      onComplete(){
+        player.ma.unlocked=true
+      },
       tooltip: 'Get 1.80e308 points. <br>Reward: Unlock Mastery.'
     },
     61: {
-      name: '36. Year in B',
+      name: '36. infinity B',
       done() {
-        return hm('B', 6)
+        return player.B.points.gte("1.79e308")
       },
-      tooltip: 'get 3.65e365 B.',
+      tooltip: 'get 1.79e308 B.',
     },
     62: {
       name: '37. Year in Points',
@@ -285,7 +288,7 @@ addLayer('ac', {
       tooltip: 'complete Ac7 for 10 times.',
     },
     65: {
-      name: "40. 'E'asy Game",
+      name: "40.isn't 'E'asy Game",
       done() {
         return player.E.total.gte('1')
       },
@@ -357,9 +360,9 @@ addLayer('ac', {
     81: {
       name: "50. Here's the Guy",
       done() {
-        return player.B.points.gte('6.16e616')
+        return player.A.points.gte('6.16e616')
       },
-      tooltip: 'get 6.16e616 B',
+      tooltip: 'get 6.16e616 A',
     },
     82: {
       name: '51. ABout Challenging DEstruction…',
@@ -369,25 +372,25 @@ addLayer('ac', {
       tooltip: 'complete Ec4x1',
     },
     83: {
-      name: '52. Maelstrom Silenced',
+      name: '52. Powerful 700',
       done() {
-        return gba('E', 24).gte(40)
+        return player.A.points.gte('1e700')
       },
-      tooltip: 'Reach the cap of All E buyables.',
+      tooltip: 'get 1e700 A',
     },
     84: {
-      name: '53. Powerful 700',
-      done() {
-        return player.B.points.gte('1e700')
-      },
-      tooltip: 'get 1e700 B',
-    },
-    85: {
-      name: '54. No more Walls?',
+      name: '53. No more Walls?',
       done() {
         return player.softcap.gte(150)
       },
       tooltip: 'get 150 softcaps',
+    },
+    85: {
+      name: '54. Antimatter apocalypse',
+      done() {
+        return player.A.am.gte(1e150)
+      },
+      tooltip: 'Reach 1e150 Antimatter.',
     },
     86: {
       name: '55. The EMpire',

@@ -159,7 +159,7 @@ addLayer('F', {
         return player[this.layer].total.gte(64)
       },
       effectDescription() {
-        let a = '???.'
+        let a = randomString(3)
         if (false) a = 'F challenges.'
         return 'Keep Best Points in Ac1. (you might have forgotten this, see B12)<br>Keep E challenges, except in ' + a
       },

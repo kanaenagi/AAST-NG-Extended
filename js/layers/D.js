@@ -43,7 +43,7 @@ addLayer('D', {
   gainMult() {
     mult = n(1)
     mult = mult.mul(hu('sc', 21) ? ue('sc', 21) : 1)
-    mult = mult.mul(hu(this.layer, 12) ? 2 : 1)
+    mult = mult.mul(hu(this.layer, 12) ? mu('D', 12)? 1e100 : 2 : 1)
     mult = mult.mul(hu(this.layer, 13) ? 2 : 1)
     mult = mult.mul(hu('A', 61) ? ue('A', 61) : 1)
     mult = mult.mul(hu('D', 32) ? ue('D', 32) : 1)
@@ -51,6 +51,7 @@ addLayer('D', {
     mult = mult.mul(hu('E', 93) ? ue('E', 93) : 1)
     mult = mult.mul(hu('a', 16) ? ue('a', 16) : 1)
     if (mu("B", 16)) mult = mult.mul(ue("B", 16))
+    if (mu("A", 11) && mu("A", 25)) mult = mult.mul(ue("A", 11))
 
     mult = mult.pow(hu('A', 52) ? 1.5 : 1)
     mult = mult.pow(hc('A', 32) ? 1.5 : 1)
@@ -86,6 +87,7 @@ addLayer('D', {
       let kept = ['unlocked', 'auto']
       if (hm('F', 1)) kept.push('challenges')
       if (hm('F', 4)) kept.push('milestones')
+      player.ma.mastered.D = []
       layerDataReset(this.layer, kept)
     }
   },
@@ -164,15 +166,18 @@ addLayer('D', {
         if (inChallenge('C', 12)) eff = 1
         if (hu('sc', 22)) eff = n(eff).pow(ue('sc', 22))
         if (hu('D', 25)) eff = n(eff).pow(ue('D', 25))
+        if (mu("D", 11)) eff = eff.pow(1e10)
         eff = n(eff)
         if (eff.gte(1e6)) eff = eff.div(1e6).pow(0.5).mul(1e6) //Sc45
         if (eff.gte(1e20)) eff = eff.div(1e20).pow(0.25).mul(1e20) //Sc52
         if (eff.log10().gte(100)) eff = n(10).pow(eff.log10().sub(100).pow(0.1).add(100)) //Sc58
-        if (eff.log10().gte(1e7)) eff = n(10).pow(eff.log10().sub(1e7).pow(0.1).add(1e7)) //Sc124
-        if (hu('sc', 32)) eff = eff.pow(ue('sc', 32))
+        if (eff.log10().gte(1e6)) eff = n(10).pow(eff.log10().div(1e6).pow(0.1).mul(1e6)) //Sc124
         return eff
       },
       cost: n(10),
+      canMaster: true,
+      masterCost: n(1e108),
+      masteredDesc() {return  '1000x points, D1^1e10.<br>layer D total:<br>' + format(this.effect()) + 'x'},
     },
     12: {
       title: 'D2',
@@ -181,6 +186,9 @@ addLayer('D', {
       unlocked() {
         return hu(this.layer, 11)
       },
+      canMaster: true,
+      masterCost: n(5e129),
+      masteredDesc:"1e100x D",
     },
     13: {
       title: 'D3',
@@ -189,6 +197,12 @@ addLayer('D', {
       unlocked() {
         return hu(this.layer, 12)
       },
+      effect() {
+        return n(player.ma.mastered.D.length + 1).pow(2).softcap(30,0.1)
+      },
+      canMaster: true,
+      masterCost: n(1e131),
+      masteredDesc() {return "2x D. Mastered D upg boost B1.<br>Currenly: ^" + format(this.effect())},
     },
     14: {
       title: 'D4',
@@ -197,6 +211,9 @@ addLayer('D', {
       unlocked() {
         return hu(this.layer, 13)
       },
+      canMaster: true,
+      masterCost: n(1e187),
+      masteredDesc:() => `10000x points and ${player.E.unlocked ? "E" : randomString(1)}.`,
     },
     15: {
       title: 'D5',
@@ -206,33 +223,39 @@ addLayer('D', {
         return hu(this.layer, 14)
       },
       effect() {
-        let effpow = 0.8
+        let effpow = mu("D", 15)? 1:0.8
         if (inChallenge('C', 12)) effpow = 0
         let eff = n(player[this.layer].points.max(1).pow(effpow))
         if (hu('D', 23)) eff = eff.pow(2)
         if (eff.gte(1e3)) eff = eff.div(1e3).pow(0.5).mul(1e3) //Sc46
         if (eff.gte(1e5)) eff = eff.div(1e5).pow(0.5).mul(1e5) //Sc51
-        return eff
+        return eff.overflow(1e100, 0.5) //ssc21
       },
       effectDisplay() {
         return format(this.effect()) + 'x'
       },
+      canMaster: true,
+      masterCost: n(1e199),
+      masteredDesc:"D boosts points, A and B.<br>unlock a C chal.",
     },
     16: {
       title: 'D6',
-      description: 'D^0.1 boosts Softcap points. (beffore exp and softcaps).<br>unlock more Softcap Upgrades.',
+      description: 'D^0.1 boosts Softcap points. (before exp and softcaps).<br>unlock more Softcap Upgrades.',
       cost: n(4000),
       unlocked() {
         return hu(this.layer, 15)
       },
       effect() {
-        let effpow = 0.1
+        let effpow = mu("D" ,16)? 0.125 : 0.1
         let eff = n(player[this.layer].points.max(1).pow(effpow))
-        return eff
+        return eff.overflow(1e25,0.5)//ssc??
       },
       effectDisplay() {
         return format(this.effect()) + 'x'
       },
+      canMaster: true,
+      masterCost: n(5e219),
+      masteredDesc:"D^0.125 boosts Softcap points. (before exp and softcaps). Base Softcap points formula is stronger.<br>unlock more Softcap Upgrades.",
     },
     21: {
       title: 'D7',

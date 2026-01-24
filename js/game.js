@@ -80,7 +80,7 @@ function softcap(value, cap, power = 0.5) {
 function shouldNotify(layer) {
   for (id in tmp[layer].upgrades) {
     if (isPlainObject(layers[layer].upgrades[id])) {
-      if (canAffordUpgrade(layer, id) && !hasUpgrade(layer, id) && tmp[layer].upgrades[id].unlocked) {
+      if ((canAffordUpgrade(layer, id) && !hasUpgrade(layer, id) && tmp[layer].upgrades[id].unlocked ) || (player.ma.clickables[11] && canMasterUpgrade(layer, id) && !masteredUpgrade(layer, id))) {
         return true
       }
     }

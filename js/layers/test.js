@@ -25,7 +25,7 @@ addLayer('te', {
     return true
   },
   devSpeedCal() {
-    let dev = 1
+    let dev = 10
     if (gcs('te', 11)) dev = 0
     if (isEndgame()) dev = 0
     return dev
@@ -230,6 +230,26 @@ addLayer('te', {
       },
       unlocked() {
         return hasAchievement('ac', 71)
+      },
+    },
+    31: {
+      title() {
+        return 'Super Softcap Amount'
+      },
+      display() {
+        let a = " isn't "
+        if (gcs('te', 31) == 1) a = ' is'
+        return 'Super Softcap Amount ' + a + ' displayed! '
+      },
+      onClick() {
+        if (gcs('te', 31) == 1) setClickableState('te', 31, 0)
+        else setClickableState('te', 31, 1)
+      },
+      canClick() {
+        return true
+      },
+      unlocked() {
+        return true
       },
     },
   },

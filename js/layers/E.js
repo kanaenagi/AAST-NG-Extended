@@ -21,7 +21,7 @@ addLayer('E', {
     return a
   },
   color: '#789A89',
-  requires: n('1e538'),
+  requires: n("1e375"),
   resource: 'E',
   baseResource: 'B',
   baseAmount() {
@@ -52,7 +52,7 @@ addLayer('E', {
     },
   ],
   layerShown() {
-    return player.E.unlocked || hm('B', 7)
+    return hm('B', 7)
   },
   gainMult() {
     mult = n(1)
@@ -68,10 +68,13 @@ addLayer('E', {
     mult = mult.mul(hu('E', 51) ? ue('E', 51) : 1)
     mult = mult.mul(hu('C', 32) ? ue('C', 32) : 1)
     mult = mult.mul(hu('D', 42) ? ue('D', 42) : 1)
-    mult = mult.mul(hu('sc', 31) ? ue('sc', 31) : 1)
+    mult = mult.mul(hu('sc', 32) ? ue('sc', 32) : 1)
     mult = mult.mul(hu('E', 71) ? ue('E', 71) : 1)
     mult = mult.mul(hu('E', 101) ? ue('E', 101) : 1)
     mult = mult.mul(hu('a', 23) ? ue('a', 23) : 1)
+    
+    if (mu('D', 14)) mult = mult.mul(10000)
+    if (hc("C", 21) && mu("B", 23)) mult = mult.mul(ue("B",23))
 
     mult = mult.mul(tmp.F.effect)
     if (hc('E', 11)) mult = mult.mul(challengeEffect('E', 11))
@@ -85,7 +88,7 @@ addLayer('E', {
   directMult() {
     let mult = n(1)
     mult = mult.mul(buyableEffect('E', 21))
-    if (hu('sc', 31) && hm('E', 6)) mult = mult.mul(ue('sc', 31))
+    if (hu('sc', 32) && hm('E', 6)) mult = mult.mul(ue('sc', 32))
     if (hu('E', 61)) mult = mult.mul(ue('E', 61))
     if (hu('E', 63)) mult = mult.mul(ue('E', 63))
     if (hu('B', 84)) mult = mult.mul(ue('B', 84))
@@ -118,6 +121,7 @@ addLayer('E', {
       let kept = ['unlocked', 'auto']
       if (hm('F', 5)) kept.push('milestones')
       if (hm('F', 6)) kept.push('challenges')
+      player.ma.mastered.E = []
       layerDataReset(this.layer, kept)
     }
   },
@@ -168,7 +172,7 @@ addLayer('E', {
       done() {
         return player[this.layer].total.gte('1e10')
       },
-      effectDescription: 'E14 and E17 ^1.5,unlock Ec2.',
+      effectDescription: 'unlock Ec2.',
     },
     4: {
       requirementDescription: 'Em5: 1e15 total E',
@@ -179,46 +183,46 @@ addLayer('E', {
       toggles: [['E', 'auto']],
     },
     5: {
-      requirementDescription: 'Em6: 1e31 total E',
+      requirementDescription: 'Em6: 1e19 total E',
       done() {
-        return player[this.layer].total.gte('1e31')
+        return player[this.layer].total.gte('1e19')
       },
       effectDescription: 'Eb3 base +1 and unlock Eb12.',
     },
     6: {
-      requirementDescription: 'Em7: 1e34 total E',
+      requirementDescription: 'Em7: 1e22 total E',
       done() {
-        return player[this.layer].total.gte('1e34')
+        return player[this.layer].total.gte('1e22')
       },
-      effectDescription: 'autobuy Eb3.5 and Eb4.<br>ScU2,6,7,13 also boosts them directly, and boosts ScU13.',
+      effectDescription: 'autobuy Eb3.5 and Eb4.<br>ScU2,6,7,14 also boosts them directly.',
       toggles: [['E', 'auto2']],
     },
     7: {
-      requirementDescription: 'Em8: 1e40 total E',
+      requirementDescription: 'Em8: 1e25 total E',
       done() {
-        return player[this.layer].total.gte('1e40')
+        return player[this.layer].total.gte('1e25')
       },
       effectDescription: 'auto buy Eb10,11,12.<br>unlock 2 new E chal.',
       toggles: [['E', 'auto3']],
     },
     8: {
-      requirementDescription: 'Em9: 1e49 total E',
+      requirementDescription: 'Em9: 5e30 total E',
       done() {
-        return player[this.layer].total.gte('1e49')
+        return player[this.layer].total.gte('5e30')
       },
-      effectDescription: 'unlock new E upg, Ec3 effect ^1.25.',
+      effectDescription: 'Ec3 effect ^1.25.',
     },
     9: {
-      requirementDescription: 'Em10: 1e60 total E',
+      requirementDescription: 'Em10: 1e33 total E',
       done() {
-        return player[this.layer].total.gte('1e60')
+        return player[this.layer].total.gte('1e33')
       },
       effectDescription: 'Ec4 effect ^1.25.',
     },
     10: {
-      requirementDescription: 'Em11: 1e63 total E',
+      requirementDescription: 'Em11: 5e33 total E',
       done() {
-        return player[this.layer].total.gte('1e63')
+        return player[this.layer].total.gte('5e33')
       },
       effectDescription: '10x B and 2x E passive but disable hotkeys and mobile Qol for E.',
     },
@@ -297,8 +301,7 @@ addLayer('E', {
     },
   },
   canReset() {
-    return false
-    return !hm('E', 10) && player.B.points.gte('1e538')
+    return !hm('E', 10) && player.B.points.gte('1e375')
   },
   microtabs: {
     stuff: {
@@ -392,43 +395,50 @@ addLayer('E', {
     11: {
       title: 'E1',
       description: function () {
-        return '1e20000x points <br>' + 'layer E total: <br>' + format(this.effect()) + 'x'
+        return '1e100000x points<br>' + 'layer E total: <br>' + format(this.effect()) + 'x'
       },
       effect() {
-        let eff = n('1e20000')
-        if (hu('E', 55)) eff = eff.mul('1e80001')
+        let eff = mu("E", 11) ? n("ee6") : n('1e100000')
+        if (mu("E", 12)) eff = eff.mul("e2e6")
         if (hu('E', 56)) eff = eff.mul('1e800000')
+        eff = eff
         if (eff.gte('1e100000')) eff = eff.div('1e100000').pow(0.5).mul('1e100000') //Sc136
-        if (eff.gte('1e500000')) eff = eff.div('1e500000').pow(0.5).mul('1e500000') //Sc138
-        return eff
+        return eff.overflow("ee6", 0.5) //Ssc19
       },
       cost: n(1500),
+      canMaster: true,
+      masterCost: n(1e13),
+      masteredDesc: function () { return "1e1000000x points<br>" + 'layer E total: <br>' + format(this.effect()) + 'x' },
     },
     12: {
       title: 'E2',
       description: 'E boosts itself.',
       effect() {
-        let base = n(0.1)
+        let base = mu("E", 12) ? n(0.25) : n(0.1)
         if (hu('E', 15)) base = base.mul(ue('E', 15))
         if (hu('E', 44)) base = base.mul(1.5)
         let eff = player.E.points.max(1).pow(base)
         if (eff.gte(10)) eff = eff.div(10).pow(0.5).mul(10) //Sc102
         if (eff.gte(1000)) eff = eff.div(1000).pow(0.5).mul(1000) //Sc127
-        return eff
+        return eff.overflow(1e5, 0.5)
       },
-      cost: n(2500),
+      cost: n(10000),
       effectDisplay() {
         return format(this.effect()) + 'x'
       },
       unlocked() {
         return hu(this.layer, 11)
       },
+      canMaster: true,
+      masterCost: n(2.5e13),
+      masteredDesc: 'E boosts itself. 1e2000000x points.',
     },
     13: {
       title: 'E3',
       description: 'boosts to E based on D.',
       effect() {
         let eff = player.D.points.add(10).log(2).div(300).max(1)
+        if (mu("E", 13)) eff = eff.mul(player.A.points.add(10).log(2).mul(300).max(1))
         if (hu('C', 33)) eff = eff.mul(ue('C', 33)[0])
         if (hu('E', 24)) eff = Decimal.pow(eff, 1.5)
         if (hu('C', 35)) eff = Decimal.pow(eff, 1.5)
@@ -437,19 +447,23 @@ addLayer('E', {
         if (eff.gte(10)) eff = eff.div(10).pow(0.5).mul(10) //Sc163
         return eff
       },
-      cost: n(4000),
+      cost: n(25000),
       unlocked() {
         return hu(this.layer, 12)
       },
       effectDisplay() {
         return format(this.effect(), 3) + 'x'
       },
+      canMaster: true,
+      masterCost: n(5e25),
+      masteredDesc: 'boosts to E based on A and D.',
     },
     14: {
       title: 'E4',
       description: 'boosts to E based on C.',
       effect() {
         let eff = player.C.points.add(10).log(2).div(500).max(1)
+        if (mu("E", 14)) eff = eff.mul(player.B.points.add(10).log(2).mul(500).max(1))
         if (hu('C', 33)) eff = eff.mul(ue('C', 33)[1])
         if (hu('E', 24)) eff = Decimal.pow(eff, 1.7)
         if (hu('C', 35)) eff = Decimal.pow(eff, 1.5)
@@ -458,20 +472,25 @@ addLayer('E', {
         if (eff.gte(10)) eff = eff.div(10).pow(0.5).mul(10) //Sc164
         return eff
       },
-      cost: n(6000),
+      cost: n(40000),
       effectDisplay() {
         return format(this.effect(), 3) + 'x'
       },
       unlocked() {
         return hu(this.layer, 13)
       },
+      canMaster: true,
+      masterCost: n(5e28),
+      masteredDesc: 'boosts to E based on B and C.',
     },
     15: {
       title: 'E5',
-      description: 'E2 ^(total E upgrades^0.3).',
-      cost: n('10000'),
+      description: 'E2 ^(total E upgrades^0.5).',
+      cost: n('100000'),
       effect() {
-        let eff = n(player.E.upgrades.length).pow(0.3)
+        let upg = player.E.upgrades.length ** 0.5
+        if (mu("E", 15)) upg += player.ma.mastered.E.length
+        let eff = n(upg)
         if (eff.gte(2)) eff = eff.div(2).pow(0.5).mul(2) //Sc103
         return eff
       },
@@ -481,14 +500,17 @@ addLayer('E', {
       unlocked() {
         return hu(this.layer, 14)
       },
+      canMaster: true,
+      masterCost: n(2.5e29),
+      masteredDesc: 'E2 ^((total E upgrades^0.5) + total Mastered E upgrades).',
     },
     16: {
       title: 'E6',
-      description: 'lg(Bb1) boosts A directly, same as Bb2.',
-      cost: n('30000'),
+      description: 'lg(Bb1)^0.5 boosts A directly, same as Bb2.',
+      cost: n('5000000'),
       effect() {
-        let eff1 = buyableEffect('B', 11).max(10).log10()
-        let eff2 = buyableEffect('B', 12).max(10).log10()
+        let eff1 = buyableEffect('B', 11).max(10).log10().pow(0.5)
+        let eff2 = buyableEffect('B', 12).max(10).log10().pow(0.5)
         if (hu('C', 31)) {
           eff1 = eff1.pow(2)
           eff2 = eff2.pow(2)
@@ -497,8 +519,8 @@ addLayer('E', {
           eff1 = eff1.pow(1.5)
           eff2 = eff2.pow(1.5)
         }
-        if (eff1.gte(1e4)) eff1 = eff1.div(1e4).pow(0.5).mul(1e4) //Sc107
-        if (eff2.gte(1e4)) eff2 = eff2.div(1e4).pow(0.5).mul(1e4) //Sc108
+        if (eff1.gte(1e3)) eff1 = eff1.div(1e3).pow(0.5).mul(1e3) //Sc107
+        if (eff2.gte(1e3)) eff2 = eff2.div(1e3).pow(0.5).mul(1e3) //Sc108
         return [eff1, eff2]
       },
       effectDisplay() {
@@ -511,18 +533,18 @@ addLayer('E', {
     21: {
       title: 'E7',
       description: 'Eb1-2 base +1,x2 E.<br>Unlock Eb3.',
-      cost: n('40000'),
+      cost: n(1e7),
       unlocked() {
         return hu(this.layer, 16)
       },
     },
     22: {
       title: 'E8',
-      description: 'lg(Bb4) boosts C directly, same as Bb5.',
-      cost: n('1e5'),
+      description: 'lg(Bb4)^0.5 boosts C directly, same as Bb5.',
+      cost: n(5e7),
       effect() {
-        let eff1 = buyableEffect('B', 21).max(10).log10()
-        let eff2 = buyableEffect('B', 22).max(10).log10()
+        let eff1 = buyableEffect('B', 21).max(10).log10().pow(.5)
+        let eff2 = buyableEffect('B', 22).max(10).log10().pow(.5)
         if (hu('C', 31)) {
           eff1 = eff1.pow(2)
           eff2 = eff2.pow(2)
@@ -545,7 +567,7 @@ addLayer('E', {
     23: {
       title: 'E9',
       description: 'log2(log2(Bb3)) boosts E.',
-      cost: n('1.2e5'),
+      cost: n('1e8'),
       effect() {
         let eff = buyableEffect('B', 13).max(4).log(2).log(2)
         if (hu('E', 25)) eff = Decimal.pow(eff, 1.5)
@@ -562,15 +584,15 @@ addLayer('E', {
     24: {
       title: 'E10',
       description: 'E3 ^1.6 and E4 ^1.7.',
-      cost: n('2e6'),
+      cost: n('5e8'),
       unlocked() {
-        return hc('E', 11)
+        return hu(this.layer, 23)
       },
     },
     25: {
       title: 'E11',
       description: 'E9 ^1.5.',
-      cost: n('3.2e6'),
+      cost: n('1e9'),
       unlocked() {
         return hu(this.layer, 24)
       },
@@ -578,12 +600,12 @@ addLayer('E', {
     26: {
       title: 'E12',
       description: 'You can complete Ac7 for decimal times more than 10.<br>Boost E based on Ac7 completions.',
-      cost: n('1e7'),
+      cost: n('2.5e9'),
       effect() {
         let eff = n(challengeCompletions('A', 41))
           .sub(9)
           .max(1)
-          .pow(n(challengeCompletions('A', 41)).max(1).sqrt())
+          .pow(n(challengeCompletions('A', 41) - 5).max(1))
         if (eff.gte(5)) eff = eff.div(5).pow(0.5).mul(5) //Sc118
         if (eff.gte(10)) eff = eff.div(10).pow(0.75).mul(10) //Sc132
         return eff
@@ -598,27 +620,26 @@ addLayer('E', {
     31: {
       title: 'E13',
       description: 'E boosts C directly and unlock more C upgrades.',
-      cost: n('5e7'),
+      cost: n('2.5e10'),
       effect() {
-        let eff = player.E.points.max(1)
+        let eff = player.E.points.max(1).pow(0.25)
         if (hu('C', 36)) eff = eff.pow(1.5)
-        if (eff.gte(1e9)) eff = eff.div(1e9).pow(0.5).mul(1e9) //Sc114
+        if (eff.gte(1e3)) eff = eff.div(1e3).pow(0.5).mul(1e3) //Sc114
         return eff
       },
       effectDisplay() {
         return format(this.effect()) + 'x'
       },
       unlocked() {
-        return challengeCompletions('E', 11) >= 2
+        return hu(this.layer, 26)
       },
     },
     32: {
       title: 'E14',
       description: 'boosts to E based on points.',
-      cost: n('1.5e8'),
+      cost: n('5e10'),
       effect() {
         let eff = player.points.add(10).log(10).sqrt().div(10).max(1)
-        if (hm('E', 3)) eff = Decimal.pow(eff, 1.5)
         if (hu('D', 45)) eff = Decimal.pow(eff, 1.2)
         if (eff.gte(2)) eff = eff.div(2).pow(0.5).mul(2) //Sc111
         return eff
@@ -633,17 +654,17 @@ addLayer('E', {
     33: {
       title: 'E15',
       description: 'Reduce Ac7 requirement beyond 10.',
-      cost: n('1e9'),
+      cost: n('2e12'),
       unlocked() {
         return hu(this.layer, 32)
       },
     },
     34: {
-      title: 'E14',
-      description: 'Ac7 boosts Ab1 effect.<br>(ignore any softcaps)',
-      cost: n('1.2e9'),
+      title: 'E16',
+      description: 'Boost Ab1 based on Ac7 completions beyond 10.4 .<br>(ignore any softcaps)',
+      cost: n('1e13'),
       effect() {
-        let eff = n(challengeCompletions('A', 41)).sub(8).max(1).log(2).sqrt().max(1)
+        let eff = n(challengeCompletions('A', 41)).sub(8.4).max(2).log(2).max(1)
         return eff
       },
       effectDisplay() {
@@ -656,10 +677,9 @@ addLayer('E', {
     35: {
       title: 'E17',
       description: 'boosts to E based on A.',
-      cost: n('4e9'),
+      cost: n('1.5e13'),
       effect() {
         let eff = player.A.points.add(10).log(10).cbrt().div(5).max(1)
-        if (hm('E', 3)) eff = Decimal.pow(eff, 1.5)
         if (hu('E', 41)) eff = Decimal.pow(eff, 2)
         if (hu('D', 45)) eff = Decimal.pow(eff, 1.2)
         if (eff.gte(2)) eff = eff.div(2).pow(0.5).mul(2) //Sc119
@@ -675,7 +695,7 @@ addLayer('E', {
     36: {
       title: 'E18',
       description: 'boosts to E based on E upgrades amount.',
-      cost: n('1e10'),
+      cost: n('2e13'),
       effect() {
         let eff = n(player.E.upgrades.length).pow(0.5).max(1)
         if (hu('E', 84)) eff = eff.pow(15.5)
@@ -694,7 +714,7 @@ addLayer('E', {
     41: {
       title: 'E19',
       description: 'E17 ^2, D11 ^1.1.',
-      cost: n('1e14'),
+      cost: n('1e15'),
       unlocked() {
         return challengeCompletions('E', 12) >= 3
       },
@@ -702,7 +722,7 @@ addLayer('E', {
     42: {
       title: 'E20',
       description: 'Eb1-2 base +1, Eb3 base +1.5, Eb4 base +0.5.',
-      cost: n('1.5e15'),
+      cost: n('5e15'),
       unlocked() {
         return hu(this.layer, 41)
       },
@@ -710,7 +730,7 @@ addLayer('E', {
     43: {
       title: 'E21',
       description: 'Unlock more Softcap Point upgrades.',
-      cost: n('1e19'),
+      cost: n('1e16'),
       unlocked() {
         return hu(this.layer, 42)
       },
@@ -718,7 +738,7 @@ addLayer('E', {
     44: {
       title: 'E22',
       description: 'E2 ^1.5',
-      cost: n('1e20'),
+      cost: n('5e16'),
       unlocked() {
         return hu(this.layer, 43)
       },
@@ -727,7 +747,7 @@ addLayer('E', {
       title: 'E23',
       description: 'Unlock Eb10.',
       tooltip: 'Eb5-9 will be unlocked later.',
-      cost: n('1e23'),
+      cost: n('2e17'),
       unlocked() {
         return hu(this.layer, 44)
       },
@@ -735,7 +755,7 @@ addLayer('E', {
     46: {
       title: 'E24',
       description: 'Eb10 affects Eb4.<br>Unlock Eb11.',
-      cost: n('1e24'),
+      cost: n('1e18'),
       unlocked() {
         return hu(this.layer, 45)
       },
@@ -743,7 +763,7 @@ addLayer('E', {
     51: {
       title: 'E25',
       description: 'Boost E based on Bb6.',
-      cost: n('1e31'),
+      cost: n('1e19'),
       effect() {
         let eff = buyableEffect('B', 23).div('1e1000').max(1).pow(0.015)
         if (hu('B', 86)) eff = eff.pow(1.5)
@@ -763,11 +783,11 @@ addLayer('E', {
     52: {
       title: 'E26',
       description: 'Reduce Ac7 requirement based on E.',
-      cost: n('2e32'),
+      cost: n('2e24'),
       effect() {
         let eff = n(1).div(player.E.points.max(10).log(10).max(10).log(10)).min(1)
         if (hu('E', 76)) eff = eff.pow(1.1)
-        return eff
+        return eff.max(0.5)
       },
       effectDisplay() {
         return '^' + format(this.effect(), 4)
@@ -779,11 +799,11 @@ addLayer('E', {
     53: {
       title: 'E27',
       description: "Boost Eb10 and Eb11's bases based on E.",
-      cost: n('4e32'),
+      cost: n('5e26'),
       effect() {
-        let eff = player.E.points.div(1e30).max(10).log(10).pow(0.5)
+        let eff = player.E.points.div(1e19).max(10).log(10).pow(0.2)
         if (hu('E', 76)) eff = eff.pow(1.1)
-        if (eff.gte(10)) eff = eff.div(10).pow(0.5).mul(10) //Sc161
+        eff.softcap(2, 0.5)
         return eff
       },
       effectDisplay() {
@@ -796,9 +816,9 @@ addLayer('E', {
     54: {
       title: 'E28',
       description: "Reduce Ebs' costs based on Eb12.",
-      cost: n('1e39'),
+      cost: n('2e28'),
       effect() {
-        let eff = buyableEffect('E', 24).pow(0.01).div(10).pow(2).mul(10).max(1)
+        let eff = buyableEffect('E', 24).pow(0.01).max(1).mul(5)
         if (hu('E', 56)) eff = eff.pow(ue('E', 56))
         if (hu('E', 76)) eff = eff.pow(1.1)
         if (eff.gte(1e10)) eff = eff.div(1e10).pow(0.5).mul(1e10) //Sc140
@@ -814,8 +834,8 @@ addLayer('E', {
     },
     55: {
       title: 'E29',
-      description: 'x1e80001 points, add to Eb1-4 base based on E.',
-      cost: n('2e42'),
+      description: '^3 points, add to Eb1-4 base based on E.',
+      cost: n('2e31'),
       effect() {
         let eff = Decimal.add(player.E.points, 10).log(10).pow(0.25).sub(1)
         if (hu('E', 76) && eff.gt(1)) eff = eff.pow(1.1)
@@ -831,11 +851,11 @@ addLayer('E', {
     56: {
       title: 'E30',
       description: 'x1e800000 points, boosts to E28 based on E.',
-      cost: n('4.3e43'),
+      cost: n('1e32'),
       effect() {
-        let eff = player.E.points.div(1e33).max(10).log(10).sub(9)
+        let eff = player.E.points.div(1e13).max(10).log(10).sub(2).max(1)
         if (eff.gte(2)) eff = eff.div(2).pow(0.5).mul(2) //Sc139
-        if (eff.gte(10)) eff = eff.div(10).pow(0.5).mul(10) //Sc160
+        if (eff.gte(4)) eff = eff.div(4).pow(0.5).mul(4) //Sc160
         return eff.max(1)
       },
       effectDisplay() {
@@ -847,43 +867,42 @@ addLayer('E', {
     },
     61: {
       title: 'E31',
-      description: 'Boost E directly based on Ac7 completions beyond 12.',
-      cost: n('1e50'),
+      description: 'Boost E directly based on Ac7 completions beyond 11.',
+      cost: n('1e37'),
       effect() {
         let eff = n(challengeCompletions('A', 41))
-          .sub(11)
+          .sub(10)
           .max(1)
-          .pow(n(challengeCompletions('A', 41)).max(1).pow(0.8))
+          .pow(n(challengeCompletions('A', 41)-7).max(1))
         if (hu('B', 86)) eff = eff.pow(1.5)
         if (hu('E', 72)) eff = eff.pow(1.1)
-        if (eff.gte(5)) eff = eff.div(5).pow(0.5).mul(5) //Sc141
-        if (eff.gte(15)) eff = eff.div(15).pow(0.8).mul(15) //Sc147
+        if (eff.gte(5)) eff = eff.div(5).pow(0.4).mul(5) //Sc141
         return eff.max(1)
       },
       effectDisplay() {
         return format(this.effect(), 3) + 'x'
       },
       unlocked() {
-        return hm(this.layer, 8)
+        return hu(this.layer, 56)
       },
     },
     62: {
       title: 'E32',
       description: 'Eb12 is more effective. (effect ^1.2)',
-      cost: n('3e56'),
+      cost: n('2.5e37'),
       unlocked() {
         return hu(this.layer, 61)
       },
     },
     63: {
       title: 'E33',
-      description: 'boosts E directly based on E3/4/12/15 ^0.2.',
-      cost: n('2e57'),
+      description: 'boosts E directly based on E3/4/14/17 ^0.2.',
+      cost: n('5e39'),
       effect() {
-        let eff = n(ue('E', 13).mul(ue('E', 14)).mul(ue('E', 32)).mul(ue('E', 35))).pow(0.2)
+        let eff = n(ue('E', 13).mul(ue('E', 14)).mul(ue('E', 32)).mul(ue('E', 35))).pow(0.1)
         if (hu('B', 86)) eff = eff.pow(1.5)
         if (hu('E', 72)) eff = eff.pow(1.1)
-        if (eff.gte(7.5)) eff = eff.div(7.5).pow(0.8).mul(7.5) //Sc148
+        eff = eff.softcap(4, 0.5) //Sc148
         return eff.max(1)
       },
       effectDisplay() {
@@ -896,17 +915,17 @@ addLayer('E', {
     64: {
       title: 'E34',
       description: 'Unlock new B upgrades.',
-      cost: n('6e60'),
+      cost: n('1e40'),
       unlocked() {
         return hu(this.layer, 63)
       },
     },
     65: {
       title: 'E35',
-      description: 'Boost B directly based on B beyond 1e700.',
-      cost: n('1e63'),
+      description: 'Boost B directly based on B beyond 1e525.',
+      cost: n('5e42'),
       effect() {
-        let eff = player.B.points.max(10).log(10).sub(699).pow(2)
+        let eff = player.B.points.max(10).log(10).sub(524).max(1).pow(2)
         if (hu('B', 86)) eff = eff.pow(1.5)
         if (hu('E', 72)) eff = eff.pow(1.1)
         if (eff.gte(100)) eff = eff.div(100).pow(0.8).mul(100) //Sc149
@@ -922,8 +941,8 @@ addLayer('E', {
     },
     66: {
       title: 'E36',
-      description: "Reduce Ab2's cost based on A.",
-      cost: n('2e63'),
+      description: "Reduce Ab3's cost based on A.",
+      cost: n('1e43'),
       effect() {
         let eff = player.A.points.max(10).div('100')
         if (hu('E', 72)) eff = eff.pow(1.1)
@@ -1301,7 +1320,7 @@ addLayer('E', {
     11: {
       title: 'Eb1',
       baseCost() {
-        let base = n(1)
+        let base = n(1e4)
         if (hu('E', 54)) base = base.div(ue('E', 54))
         return base
       },
@@ -1364,7 +1383,7 @@ addLayer('E', {
     12: {
       title: 'Eb2',
       baseCost() {
-        let base = n(1)
+        let base = n(1e4)
         if (hu('E', 54)) base = base.div(ue('E', 54))
         return base
       },
@@ -1427,13 +1446,13 @@ addLayer('E', {
     13: {
       title: 'Eb3',
       baseCost() {
-        let base = n(50000)
+        let base = n(1e7)
         if (hu('E', 54)) base = base.div(ue('E', 54))
         return base
       },
       cost(x) {
         if (x.gte(40)) x = x.div(40).pow(player.E.Ebpow).mul(40)
-        let cost = Decimal.pow(6, x.pow(1.14)).mul(this.baseCost())
+        let cost = Decimal.pow(10, x.pow(1.14)).mul(this.baseCost())
         return cost
       },
       canAfford() {
@@ -1445,7 +1464,7 @@ addLayer('E', {
       },
       buyMax() {
         if (!this.canAfford()) return
-        let tempBuy = player.E.points.div(this.baseCost()).max(1).log(6).root(1.14)
+        let tempBuy = player.E.points.div(this.baseCost()).max(1).log(10).root(1.14)
         if (tempBuy.gte(40)) tempBuy = tempBuy.div(40).root(player.E.Ebpow).mul(40)
         let target = tempBuy
         player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].max(target).min(player.E.Eblim)
@@ -1461,7 +1480,7 @@ addLayer('E', {
       },
       effect(x) {
         let eff = Decimal.pow(this.base(), x)
-        if (eff.gte(1e40)) eff = eff.div(1e40).pow(0.5).mul(1e40) //Sc219 It should be Sc136
+        if (eff.gte(1e40)) eff = eff.div(1e40).pow(0.5).mul(1e40) //Sc138
         return eff
       },
       display() {
@@ -1496,7 +1515,7 @@ addLayer('E', {
       },
       cost(x) {
         if (x.gte(40)) x = x.div(40).pow(player.E.Ebpow).mul(40)
-        let cost = Decimal.pow(2, x.pow(1.2)).mul(this.baseCost())
+        let cost = Decimal.pow(10, x.pow(1.2)).mul(this.baseCost())
         return cost
       },
       canAfford() {
@@ -1508,7 +1527,7 @@ addLayer('E', {
       },
       buyMax() {
         if (!this.canAfford()) return
-        let tempBuy = player.E.points.div(this.baseCost()).max(1).log(2).root(1.2)
+        let tempBuy = player.E.points.div(this.baseCost()).max(1).log(10).root(1.2)
         if (tempBuy.gte(40)) tempBuy = tempBuy.div(40).root(player.E.Ebpow).mul(40)
         let target = tempBuy
         player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].max(target).min(player.E.Eblim)
@@ -1520,7 +1539,7 @@ addLayer('E', {
       },
       effect(x) {
         let eff = Decimal.mul(this.base(), x)
-        if (eff.gte(0.03)) eff = eff.sub(0.03).div(10).add(0.03) //Sc129
+        if (eff.gte(0.01)) eff = eff.sub(0.01).div(10).add(0.01) //Sc129
         return eff
       },
       display() {
@@ -1549,13 +1568,13 @@ addLayer('E', {
     21: {
       title: 'Eb4',
       baseCost() {
-        let base = n(1e10)
+        let base = n(1e15)
         if (hu('E', 54)) base = base.div(ue('E', 54))
         return base
       },
       cost(x) {
         if (x.gte(40)) x = x.div(40).pow(player.E.Ebpow).mul(40)
-        let cost = Decimal.pow(3, x.pow(1.1)).mul(this.baseCost())
+        let cost = Decimal.pow(10, x.pow(1.1)).mul(this.baseCost())
         return cost
       },
       canAfford() {
@@ -1567,7 +1586,7 @@ addLayer('E', {
       },
       buyMax() {
         if (!this.canAfford()) return
-        let tempBuy = player.E.points.div(this.baseCost()).max(1).log(3).root(1.1)
+        let tempBuy = player.E.points.div(this.baseCost()).max(1).log(10).root(1.1)
         if (tempBuy.gte(40)) tempBuy = tempBuy.div(40).root(player.E.Ebpow).mul(40)
         let target = tempBuy
         player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].max(target).min(player.E.Eblim)
@@ -1582,7 +1601,7 @@ addLayer('E', {
       },
       effect() {
         let eff = this.base().pow(gba('E', 21))
-        if (eff.gte(1e15)) eff = eff.div(1e15).pow(0.2).mul(1e15) //Sc128
+        if (eff.gte(1e5)) eff = eff.div(1e5).pow(0.2).mul(1e5) //Sc128
         return eff.max(1)
       },
       display() {
@@ -1610,13 +1629,13 @@ addLayer('E', {
     22: {
       title: 'Eb10',
       baseCost() {
-        let base = n(1e23)
+        let base = n(1e16)
         if (hu('E', 54)) base = base.div(ue('E', 54))
         return base
       },
       cost(x) {
         if (x.gte(40)) x = x.div(40).pow(player.E.Ebpow).mul(40)
-        let cost = Decimal.pow(3, x.pow(1.25)).mul(this.baseCost())
+        let cost = Decimal.pow(10, x.pow(1.25)).mul(this.baseCost())
         return cost
       },
       canAfford() {
@@ -1628,7 +1647,7 @@ addLayer('E', {
       },
       buyMax() {
         if (!this.canAfford()) return
-        let tempBuy = player.E.points.div(this.baseCost()).max(1).log(3).root(1.25)
+        let tempBuy = player.E.points.div(this.baseCost()).max(1).log(10).root(1.25)
         if (tempBuy.gte(40)) tempBuy = tempBuy.div(40).root(player.E.Ebpow).mul(40)
         let target = tempBuy
         player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].max(target).min(player.E.Eblim)
@@ -1670,13 +1689,13 @@ addLayer('E', {
     23: {
       title: 'Eb11',
       baseCost() {
-        let base = n(1e25)
+        let base = n(1e18)
         if (hu('E', 54)) base = base.div(ue('E', 54))
         return base
       },
       cost(x) {
         if (x.gte(40)) x = x.div(40).pow(player.E.Ebpow).mul(40)
-        let cost = Decimal.pow(3, x.pow(1.25)).mul(this.baseCost())
+        let cost = Decimal.pow(10, x.pow(1.25)).mul(this.baseCost())
         return cost
       },
       canAfford() {
@@ -1688,7 +1707,7 @@ addLayer('E', {
       },
       buyMax() {
         if (!this.canAfford()) return
-        let tempBuy = player.E.points.div(this.baseCost()).max(1).log(3).root(1.25)
+        let tempBuy = player.E.points.div(this.baseCost()).max(1).log(40).root(1.25)
         if (tempBuy.gte(40)) tempBuy = tempBuy.div(40).root(player.E.Ebpow).mul(40)
         let target = tempBuy
         player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].max(target).min(player.E.Eblim)
@@ -1726,13 +1745,13 @@ addLayer('E', {
     24: {
       title: 'Eb12',
       baseCost() {
-        let base = n(1e31)
+        let base = n(1e19)
         if (hu('E', 54)) base = base.div(ue('E', 54))
         return base
       },
       cost(x) {
         if (x.gte(40)) x = x.div(40).pow(player.E.Ebpow).mul(40)
-        let cost = Decimal.pow(2.5, x.pow(1.35)).mul(this.baseCost())
+        let cost = Decimal.pow(3, x.pow(1.35)).mul(this.baseCost())
         return cost
       },
       canAfford() {
@@ -1744,13 +1763,14 @@ addLayer('E', {
       },
       buyMax() {
         if (!this.canAfford()) return
-        let tempBuy = player.E.points.div(this.baseCost()).max(1).log(2.5).root(1.35)
+        let tempBuy = player.E.points.div(this.baseCost()).max(1).log(3).root(1.35)
         if (tempBuy.gte(40)) tempBuy = tempBuy.div(40).root(player.E.Ebpow).mul(40)
         let target = tempBuy
         player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].max(target).min(player.E.Eblim)
       },
       base() {
         let base = n(1e10)
+        if (mu("sc", 11)) base = base.mul(ue("sc", 11))
         if (hu('E', 62)) base = base.pow(1.2)
         if (hu('E', 72)) base = base.pow(1.1)
         if (hu('E', 91)) base = base.pow(1.35)
@@ -1839,7 +1859,7 @@ addLayer('E', {
         return cost
       },
       cost(x) {
-        let cost = Decimal.pow(5, x.pow(1.03)).times(this.baseCost())
+        let cost = Decimal.pow(10, x.pow(1.03)).times(this.baseCost())
         return cost
       },
       canAfford() {
@@ -2013,20 +2033,22 @@ addLayer('E', {
       name: 'Ec1',
       completionLimit: 3,
       challengeDescription: function () {
-        return 'Reset A and B points and buyables and they are dilated.<br> Completion: ' + challengeCompletions('E', 11) + '/3'
+        return 'Reset point, A and B points and buyables and they are dilated. points slog -0.8. <br> Completion: ' + challengeCompletions('E', 11) + '/3'
       },
       unlocked() {
         return hm('E', 2)
       },
       goal() {
-        let goal = [n(1e145), n(1e155), n(1e166)]
+        let goal = [n(5e109), n(1e115), n(1e120)]
         return goal[challengeCompletions('E', 11)]
       },
       onEnter() {
         player.A.points = n(0)
         player.B.points = n(0)
-        player.A.buyables = { 11: n(0), 12: n(0) }
+        player.points = n(0)
+        player.A.buyables = { 11: n(0), 12: n(0), 13: n(0), 100: n(0), 101: n(0), 102: n(0), 103: n(0), 104: n(0), 105: n(0), 106: n(0), 107: n(0), 111: n(0) }
         player.B.buyables = { 11: n(0), 12: n(0), 13: n(0), 21: n(0), 22: n(0), 23: n(0) }
+        updateTemp()
       },
       goalDescription: function () {
         return format(this.goal()) + ' B'
@@ -2034,12 +2056,12 @@ addLayer('E', {
       canComplete() {
         return player.B.points.gte(this.goal())
       },
-      rewardDescription: 'boosts to E based on B.',
+      rewardDescription: 'boosts to E based on Softcap points.',
       rewardEffect() {
-        let base = n(challengeCompletions('E', 11)).pow(n(challengeCompletions).sqrt().max(1)).div(10)
-        let eff = player.B.points.max(10).log(10).tetrate(base).max(1)
+        let base = n(challengeCompletions('E', 11) * 0.2)
+        let eff = player.sc.points.pow(base).max(1)
         if (hu('B', 85)) eff = eff.pow(1.2)
-        if (eff.gte(10)) eff = eff.div(10).pow(0.5).mul(10) //Sc220 It should be Sc147
+        if (eff.gte(10)) eff = eff.div(10).pow(0.5).mul(10) //Sc147 
         return eff
       },
       rewardDisplay() {
@@ -2056,7 +2078,7 @@ addLayer('E', {
         return hm('E', 3)
       },
       goal() {
-        let goal = [n('1e315'), n('1e333'), n('1e355')]
+        let goal = [n('1e235'), n('2.6e260'), n('2.7e270')]
         return goal[challengeCompletions('E', 12)]
       },
       goalDescription: function () {
@@ -2065,19 +2087,20 @@ addLayer('E', {
       onEnter() {
         player.A.points = n(0)
         player.B.points = n(0)
-        player.A.buyables = { 11: n(0), 12: n(0) }
+        player.A.buyables = { 11: n(0), 12: n(0), 13: n(0), 100: n(0), 101: n(0), 102: n(0), 103: n(0), 104: n(0), 105: n(0), 106: n(0), 107: n(0), 111: n(0) }
         player.B.buyables = { 11: n(0), 12: n(0), 13: n(0), 21: n(0), 22: n(0), 23: n(0) }
+        updateTemp()
       },
       canComplete() {
         return player.B.points.gte(this.goal())
       },
-      rewardDescription: 'boosts to E based on Softcap Points (start at 20000).',
+      rewardDescription: 'boosts to E based on Raw Points.',
       rewardEffect() {
-        let bas = Decimal.pow(challengeCompletions('E', 12), 1.35)
-        let eff = player.sc.points.max(20000).sub(19990).log(10).pow(bas)
+        let bas = Decimal.pow(challengeCompletions('E', 12), 1.35).mul(2)
+        let eff = getRawPointsGen().max(1e10).log10().log10().pow(bas)
         if (hu('B', 85)) eff = eff.pow(1.2)
         if (eff.gte(2)) eff = eff.div(2).pow(0.5).mul(2) //Sc120
-        if (eff.gte(10)) eff = eff.div(10).pow(0.5).mul(10) //Sc123
+        if (eff.gte(1000)) eff = eff.div(1000).pow(0.25).mul(1000) //Sc123
         if (challengeCompletions('E', 12) >= 1) return eff
         else return n(1)
       },
@@ -2099,7 +2122,7 @@ addLayer('E', {
         return hm('E', 7)
       },
       goal() {
-        let goal = [n('4.35e435'), n('4.53e453'), n('4.71e471')]
+        let goal = [n('1e270'), n('1e275'), n('1e286')]
         return goal[challengeCompletions('E', 21)]
       },
       goalDescription: function () {
@@ -2109,26 +2132,31 @@ addLayer('E', {
         player.A.points = n(0)
         player.B.points = n(0)
         player.points = n(0)
-        player.A.buyables = { 11: n(0), 12: n(0) }
+        player.A.buyables = { 11: n(0), 12: n(0), 13: n(0), 100: n(0), 101: n(0), 102: n(0), 103: n(0), 104: n(0), 105: n(0), 106: n(0), 107: n(0), 111: n(0) }
         player.B.buyables = { 11: n(0), 12: n(0), 13: n(0), 21: n(0), 22: n(0), 23: n(0) }
+        updateTemp()
       },
       canComplete() {
         return player.B.points.gte(this.goal())
       },
       rewardDescription: 'boosts to A and B directly based on themselves.',
       rewardEffect() {
-        let eff0 = player.A.points.pow(challengeCompletions('E', 21)).pow(0.01).max(1)
-        let eff1 = player.B.points.pow(challengeCompletions('E', 21)).pow(0.01).max(1)
+        let eff0 = player.A.points.pow(challengeCompletions('E', 21)).pow(0.002).max(1)
+        let eff1 = player.B.points.pow(challengeCompletions('E', 21)).pow(0.002).max(1)
         if (hm('E', 8)) {
           eff0 = eff0.pow(1.25)
           eff1 = eff1.pow(1.25)
+        }
+        if (hc('C', 22)) {
+          eff0 = eff0.pow(2.5)
+          eff1 = eff1.pow(2.5)
         }
         if (hu('B', 85)) {
           eff0 = eff0.pow(1.2)
           eff1 = eff1.pow(1.2)
         }
-        if (eff0.gte(1e25)) eff0 = eff0.div(1e25).pow(0.5).mul(1e25) //Sc142
-        if (eff1.gte(1e25)) eff1 = eff1.div(1e25).pow(0.5).mul(1e25) //Sc143
+        if (eff0.gte(1e5)) eff0 = eff0.div(1e5).pow(0.5).mul(1e5) //Sc142
+        if (eff1.gte(1e5)) eff1 = eff1.div(1e5).pow(0.5).mul(1e5) //Sc143
         if (challengeCompletions('E', 21) >= 1) return [eff0, eff1]
         else return [n(1), n(1)]
       },
@@ -2151,7 +2179,7 @@ addLayer('E', {
         return hm('E', 7)
       },
       goal() {
-        let goal = [n('3.65e365'), n('3.75e375'), n('3.91e391')]
+        let goal = [n('2.53e253'), n('2.63e263'), n('3.03e303')]
         return goal[challengeCompletions('E', 22)]
       },
       nerf() {
@@ -2164,16 +2192,17 @@ addLayer('E', {
         player.A.points = n(0)
         player.B.points = n(0)
         player.points = n(10)
-        player.A.buyables = { 11: n(0), 12: n(0) }
+        player.A.buyables = { 11: n(0), 12: n(0), 13: n(0), 100: n(0), 101: n(0), 102: n(0), 103: n(0), 104: n(0), 105: n(0), 106: n(0), 107: n(0), 111: n(0) }
         player.B.buyables = { 11: n(0), 12: n(0), 13: n(0), 21: n(0), 22: n(0), 23: n(0) }
+        updateTemp()
       },
       canComplete() {
         return player.B.points.gte(this.goal())
       },
       rewardDescription: 'boosts to C and D directly based on themselves.',
       rewardEffect() {
-        let eff0 = player.C.points.pow(challengeCompletions('E', 22)).pow(0.01).max(1)
-        let eff1 = player.D.points.pow(challengeCompletions('E', 22)).pow(0.01).max(1)
+        let eff0 = player.C.points.pow(challengeCompletions('E', 22)).pow(0.005).max(1)
+        let eff1 = player.D.points.pow(challengeCompletions('E', 22)).pow(0.005).max(1)
         if (hm('E', 9)) {
           eff0 = eff0.pow(1.25)
           eff1 = eff1.pow(1.25)
@@ -2182,8 +2211,8 @@ addLayer('E', {
           eff0 = eff0.pow(1.2)
           eff1 = eff1.pow(1.2)
         }
-        if (eff0.gte(1e15)) eff0 = eff0.div(1e15).pow(0.5).mul(1e15) //Sc144
-        if (eff1.gte(1e10)) eff1 = eff1.div(1e10).pow(0.5).mul(1e10) //Sc145
+        if (eff0.gte(1e5)) eff0 = eff0.div(1e5).pow(0.5).mul(1e5) //Sc144
+        if (eff1.gte(1e3)) eff1 = eff1.div(1e3).pow(0.5).mul(1e3) //Sc145
         if (challengeCompletions('E', 22) >= 1) return [eff0, eff1]
         else return [n(1), n(1)]
       },
@@ -2216,6 +2245,7 @@ addLayer('E', {
       },
       onEnter() {
         player.points = n(10)
+        updateTemp()
       },
       nerf() {
         let nerf = [n('e1.56e7'), n('e1.58e7'), n('e1.59e7'), n('e1.64e7'), n('e1.64e7'), n(1)]
@@ -2256,6 +2286,7 @@ addLayer('E', {
       },
       onEnter() {
         player.points = n(10)
+        updateTemp()
       },
       nerf() {
         return n(challengeCompletions('E', 32)).add(1).pow(0.5).mul(10).pow(-4)
@@ -2295,6 +2326,7 @@ addLayer('E', {
         player.A.points = n(0)
         player.B.points = n(0)
         setClickableState('te', 11, 0)
+        updateTemp()
       },
       goal() {
         let goal = [n(1.66e166), n(1.94e194), n(2.14e214), n(2.25e225), n(2.36e236), n(0)]

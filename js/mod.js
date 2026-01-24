@@ -1,13 +1,13 @@
 let modInfo = {
-  name: 'Anti-Anti-Softcap tree NG-',
+  name: 'AAST NG- Extended',
   id: 'AASTNGsub',
-  author: 'Original<sup>2</sup>ed by 4294967296, Originaled by QqQe308, Modded by 0100000a7',
+  author: 'Original<sup>3</sup>ed by 4294967296, Original<sup>2</sup>ed by QqQe308, Originaled by 0100000a7, Modded by kanaenagi',
   pointsName: 'points',
   modFiles: [
+    'layers/alpha.js',
+    'layers/beta.js',
     'layers/A.js',
     'layers/B.js',
-    'layers/a.js',
-    'layers/b.js',
     'layers/C.js',
     'layers/D.js',
     'layers/E.js',
@@ -20,8 +20,7 @@ let modInfo = {
     'tree.js',
   ],
 
-  discordName: 'BiliBili link',
-  discordLink: 'https://b23.tv/ALvJ9Im',
+  
   initialStartPoints: new Decimal(0), // Used for hard resets and new players
   offlineLimit: 1000, // In hours
 }
@@ -30,16 +29,21 @@ var qqq //used for testing effects, finding limits, etc.
 
 // Set your version in num and name
 let VERSION = {
-  num: '0.3',
-  name: 'E finish',
+  num: '0.16',
+  name: '',
 }
 
 let changelog = `
 <h1>Changelog:</h1><br>
-h2>v0.14 2025/7/11 21:10-2025/7/12 22:30</h2><br>
+<h2>v0.16 2026/1/17 13:50-2026/1/24 16:30 </h2><br>
+<h3>- Rebalanced Pre-Em.</h3><br>
+<h3>- Added Tickspeed.</h3><br>
+<h3>Endgame: 1e150 Antimatter (156 + <span style="color: rgb(255, 197, 215)">25</span> softcaps)</h3><br>
+
+<h2>v0.14 2025/7/11 21:10-2025/7/12 22:30</h2><br>
 <h3>- Added Mastery Layer.</h3><br>
 <h3>- Rebalanced Layer C and D.</h3><br>
-<h3>Endgame: 1e437 A (87 + <span style="color: rgb(255, 197, 215)">13</span> softcaps)</h3><br>
+<h3>Endgame: 1e437 A (91 + <span style="color: rgb(255, 197, 215)">14</span> softcaps)</h3><br>
 
 <h2>v0.1 2025/7/11 14:30-2025/7/11 21:10</h2><br>
 <h3>- Added Super Softcap Layer.</h3><br>
@@ -133,6 +137,7 @@ function getRawPointsGen() {
   if (hc('D', 21)) gain = gain.pow(1.1)
   if (inChallenge('E', 32)) gain = gain.pow(layers.E.challenges[32].nerf())
   if (inChallenge('E', 42)) gain = gain.pow(player.points.add(10).log(10).pow(-0.12))
+  
 
   if (hc('A', 21)) gain = gain.mul(50)
   if (hc('A', 22)) gain = gain.mul(100)
@@ -142,19 +147,23 @@ function getRawPointsGen() {
 
   if (hu('C', 13) && hu('A', 12) && gain.gte(1)) gain = gain.pow(layers.A.antimatterEffect())
   if (mu("C", 12)) gain = gain.pow(3)
+  if (mu("C", 15)) gain = gain.pow(2)
+  if (hu("E", 55)) gain = gain.pow(3)
   if (hasAchievement("ac", 35)) gain = gain.pow(layers.ma.effect())
   
+  if (inChallenge('C', 21)) gain = expPow(gain, 0.1)
+  if (inChallenge('C', 22)) gain = expPow(gain, 0.25)
   if (inChallenge('A', 32)) gain = gain.max(1).log10()
   if (inChallenge('A', 41)) gain = gain.max(1).log10().pow(30)
   if (inChallenge('D', 21)) gain = gain.max(1).slog()
   if (inChallenge('D', 22)) gain = n(0)
+  if (inChallenge('E', 11)) gain = gain.addTP(-0.8)
   return gain
 }
 function getPointGen() {
   if (!canGenPoints()) return n(0)
 
   let gain = getRawPointsGen().overflow(100, 0.5)
-
   if (gain.gte(1e4)) gain = gain.div(1e4).pow(0.5).mul(1e4) //Sc9
   if (gain.gte(1e6)) gain = gain.div(1e6).pow(0.6).mul(1e6) //Sc14
   if (gain.gte(1e8)) gain = gain.div(1e8).pow(0.7).mul(1e8) //Sc21
@@ -164,7 +173,7 @@ function getPointGen() {
   if (gain.max(1).log10().gte(300)) gain = n(10).pow(gain.log10().sub(299).pow(0.75).add(299)) //Sc91
     .overflow(Number.MAX_VALUE, 0.5)
   if (gain.max(1).log10().gte(500)) gain = n(10).pow(gain.log10().sub(499).pow(0.5).add(499)) //Sc98
-    .overflow("1e500", 0.75, 2)
+    .overflow("1e500", 0.75, 2).overflow("1e600",0.25)
   if (inChallenge('D', 11)) gain = n(10).pow(gain.max(1).log10().pow(0.1)) //Sc72boosted
 
   return gain
@@ -182,19 +191,20 @@ var shitDown = false
 // Display extra things at the top of the page
 var displayThings = [
   function () {
-    let a = 'Current endgame: 1e437 A'
-    if (isEndgame()) a = a + '<br>You are past endgame! A is capped at 1e437.'
+    let a = 'Current endgame: 1.79e308 Antimatter'
+    if (isEndgame()) a = a + '<br>You are past endgame! Antimatter is capped at 1.79e308.'
     if (gcs('te', 12)) a = a + '<br>You have played the game for ' + formatTime(player.timePlayed) + '.'
     if (gcs('te', 13)) a = a + '<br>Current FPS: ' + format(1000 / (Date.now() - player.time)) + '.'
     if (gcs('te', 14)) a = a + '<br>Raw Points: ' + format(getRawPointsGen()) + '.'
-    if (gcs('te', 21)) a = a + '<br>There are ' + format(player.softcap) + ' softcaps in all now.'
+    if (gcs('te', 21)) a = a + '<br>There are ' + format(player.softcap,0) + ' softcaps in all now.'
+    if (gcs('te', 31)) a = a + '<br>There are ' + format(player.ssc.points,0) + ' super softcaps in all now.'
     if (gcs('te', 23)) a = a + '<br>Softcap Point: ' + format(player.sc.points)
     return a
   },
 ]
 // Determines when the game "ends"
 function isEndgame() {
-  return masteredUpgrade("A", 21)
+  return ha("ac", 85)
 }
 
 // Less important things beyond this point!
@@ -221,6 +231,10 @@ function gcs(a, b) {
 
 function ue(layer, id) {
   return upgradeEffect(layer, id)
+}
+
+function ha(layer, id) {
+  return hasAchievement(layer, id)
 }
 
 function hu(layer, id) {
@@ -356,10 +370,39 @@ function revExpPow(a, b) {
   return Decimal.pow(10, Decimal.max(a, 1).log10().add(1).root(b).sub(1))
 } // return expPow(a,Decimal.invert(b))
 
+function addTP(num, add) {
+    if (isNaN(num.mag)) return new Decimal(0)
+    return Decimal.tetrate(10, num.slog(10).add(add))
+}
+
+Decimal.prototype.addTP = function (power) {
+    return addTP(this, power)
+}
+
+function mulTP(num, mul) {
+    if (isNaN(num.mag)) return new Decimal(0)
+    return Decimal.tetrate(10, num.slog(10).mul(mul))
+}
+
+Decimal.prototype.mulTP = function (power) {
+    return mulTP(this, power)
+}
+
 function listItems(arr) {
   if (!arr.length) return '';
   if (arr.length === 1) return arr[0];
   
   const last = arr.pop();
   return arr.join(', ') + ' and ' + last;
+}
+
+const randomString_chars = `ABCDEFGHJKLMNOPQRSTUWXYZabcdefghijklmnopqrstuwxyz1234567890?!;=+-/@#$%^&*~|"'()[]{},.`;
+function randomString(length) {
+    let result = '';
+
+    for (let i = 0; i < length; i++) {
+        result += randomString_chars[Math.floor(Math.random() * randomString_chars.length)];
+    }
+
+    return result;
 }

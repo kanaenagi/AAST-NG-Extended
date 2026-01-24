@@ -7,6 +7,11 @@ addLayer("ma", {
       },
     },
   },
+  tooltip:() => {
+    if (player.ma.unlocked) return formatWhole(player.ma.points) + " Mastered Upgrades"
+  },
+  tooltipLocked:() => {return "Reach 1.80e308 points to unlock (You have "+ format(player.points,2) +" points)"
+  },
   name: "Mastery",
   symbol: 'Ma',
   startData() {
@@ -18,6 +23,7 @@ addLayer("ma", {
         "B": [],
         "C": [],
         "D": [],
+        "E": [],
         "sc": [],
       }
     }
@@ -36,7 +42,9 @@ addLayer("ma", {
     }
   },
   effect() {
-    return player.ma.points.add(1).pow(0.6)
+    let eff = player.ma.points.add(1).pow(0.6)
+    if (mu("A",23)) eff = eff.pow(player.ma.points.mul(0.04).add(1))
+    return eff.overflow(1000, .5)
   },
   effectDescription() {
     return `which raises point generation to ${format(this.effect())}.`
@@ -64,7 +72,7 @@ addLayer("ma", {
     player.ma.points = n(sumArrayLengths(player.ma.mastered))
   },
   unlocked() {
-    return hasAchievement("ac", 35)
+    return hasAchievement("ac", 57)
   }
 })
 

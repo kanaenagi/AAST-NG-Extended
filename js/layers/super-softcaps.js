@@ -28,8 +28,9 @@ addLayer('ssc', {
   },
   resource: 'Super Softcap Points',
   update(diff) {
-    // player.ssc.points = tmp.ssc.spCal
+    player.ssc.points = tmp.ssc.spCal
   },
+  spCal(){return n(superSoftcapCal()[2])},
   tabFormat: {
     Softcaps: {
       content: [
@@ -76,6 +77,11 @@ const superSoftcapDatas = [
     effects: "antimatter's effect is power-softcapped to 0.5",
   },
   {
+    unlocked: () => ue('A', 15).gte(10),
+    requirement: '10x A5 mult',
+    effects: 'A5 mult is overflowed to 0.75',
+  },
+  {
     unlocked: () => ue('B', 11).gte(50),
     requirement: '50x B1 mult',
     effects: 'points generation is overflowed to 0.5',
@@ -111,7 +117,7 @@ const superSoftcapDatas = [
     effects: 'Dc1 Effect is power-softcapped to 0.1',
   },
   {
-    unlocked: () => layers.D.challenges[11].effect().gte(1.5),
+    unlocked: () => layers.A.antimatterGain().gte(1e10),
     requirement: '1e10 antimatter generation',
     effects: 'Antimatter generation is overflowed to 0.5',
   },
@@ -126,9 +132,59 @@ const superSoftcapDatas = [
     effects: 'points generation is double-overflowed to 0.75',
   },
   {
-    unlocked: () => getPointGen().gte("1e500"),
-    requirement: '^1.00 mastered A7 effect',
-    effects: 'mastered A7 effect is power-softcapped to 0.1',
+    unlocked: () => layers.A.upgrades[21].effect().gte(1.1),
+    requirement: '^1.1 Mastered A7 effect',
+    effects: 'Mastered A7 effect is power-softcapped to 0.1',
+  },
+  {
+    unlocked: () => layers.A.buyables[111].effect().gte(1.2),
+    requirement: '^1.2 Tickspeed effect',
+    effects: 'Tickspeed effect is power-softcapped to 0.5',
+  },
+  {
+    unlocked: () => getPointGen().gte("1e600"),
+    requirement: '1e600 points/s',
+    effects: 'points generation is overflowed to 0.25',
+  },
+  {
+    unlocked: () => layers.A.antimatterGain().gte(1e100),
+    requirement: '1e100 antimatter generation',
+    effects: 'Antimatter generation is overflowed to 0.5',
+  },
+  {
+    unlocked: () => ue('E', 11).gte("ee6"),
+    requirement: '1e1000000x E1 mult',
+    effects: 'E1 mult is overflowed to 0.5',
+  },
+  {
+    unlocked: () => ue('E', 12).gte(1e5),
+    requirement: '1e5x E2 mult',
+    effects: 'E2 mult is overflowed to 0.5',
+  },
+  {
+    unlocked: () => ue('D', 15).gte(1e100),
+    requirement: '1e100x D5 mult',
+    effects: 'D5 mult is overflowed to 0.5',
+  },
+  {
+    unlocked: () => ue('D', 16).gte(1e25),
+    requirement: '1e25x D6 mult',
+    effects: 'D6 mult is overflowed to 0.5',
+  },
+  {
+    unlocked: () => ue('A', 35).gte("1e500"),
+    requirement: '1e500x A17 mult',
+    effects: 'A17 mult is overflowed to 0.5',
+  },
+  {
+    unlocked: () => layers.A.buyables[100].effect().gte("1e10000"),
+    requirement: '1e10000x AD mult',
+    effects: 'AD mult is overflowed to 0.5',
+  },
+  {
+    unlocked: () => layers.A.buyables[13].effect().gte(4),
+    requirement: '^4 Ab3 effect',
+    effects: 'Ab3 effect is pow-softcapped to 0.5',
   },
 ].map((item, index) => ({
   ...item,
@@ -140,5 +196,5 @@ function superSoftcapCal() {
   const requirements = unlockedData.map((item) => `SSc${item.id}: ${item.requirement}`)
   const effects = unlockedData.map((item) => `SSc${item.id}: ${item.effects}`)
 
-  return [requirements.join('<br>'), effects.join('<br>')]
+  return [requirements.join('<br>'), effects.join('<br>'),requirements.length]
 }
