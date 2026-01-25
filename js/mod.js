@@ -209,7 +209,7 @@ var displayThings = [
 ]
 // Determines when the game "ends"
 function isEndgame() {
-  return false
+  return ha("ac", 85)
 }
 
 // Less important things beyond this point!
