@@ -380,6 +380,7 @@ function hardReset(resetOptions) {
 }
 
 var ticking = false
+var lastTenTicks = []
 
 var interval = setInterval(function () {
   if (player === undefined || tmp === undefined) return
@@ -413,6 +414,8 @@ var interval = setInterval(function () {
   fixNaNs()
   adjustPopupTime(trueDiff)
   updateParticles(trueDiff)
+  lastTenTicks.push(Date.now()-now)
+	if (lastTenTicks.length > 10) lastTenTicks = lastTenTicks.slice(1,)
   ticking = false
 }, 50)
 

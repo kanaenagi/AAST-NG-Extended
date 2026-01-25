@@ -20,7 +20,7 @@ let modInfo = {
     'tree.js',
   ],
 
-  
+
   initialStartPoints: new Decimal(0), // Used for hard resets and new players
   offlineLimit: 1000, // In hours
 }
@@ -130,14 +130,12 @@ function getRawPointsGen() {
   gain = gain.mul(hu('a', 11) ? ue('a', 11) : 1)
 
   if (!hu('C', 13) && hu('A', 12) && gain.gte(1)) gain = gain.pow(layers.A.antimatterEffect())
-  if (inChallenge('E', 31)) gain = gain.div(layers.E.challenges[31].nerf())
+
   if (inChallenge('A', 21)) gain = gain.pow(0.5)
   if (inChallenge('A', 31)) gain = gain.pow(0.15)
   if (inChallenge('C', 11)) gain = gain.pow(0.45)
   if (hc('D', 21)) gain = gain.pow(1.1)
-  if (inChallenge('E', 32)) gain = gain.pow(layers.E.challenges[32].nerf())
   if (inChallenge('E', 42)) gain = gain.pow(player.points.add(10).log(10).pow(-0.12))
-  
 
   if (hc('A', 21)) gain = gain.mul(50)
   if (hc('A', 22)) gain = gain.mul(100)
@@ -148,16 +146,19 @@ function getRawPointsGen() {
   if (hu('C', 13) && hu('A', 12) && gain.gte(1)) gain = gain.pow(layers.A.antimatterEffect())
   if (mu("C", 12)) gain = gain.pow(3)
   if (mu("C", 15)) gain = gain.pow(2)
+  // if (mu("A", 41)) gain = gain.pow(2)
   if (hu("E", 55)) gain = gain.pow(3)
   if (hasAchievement("ac", 35)) gain = gain.pow(layers.ma.effect())
-  
+
   if (inChallenge('C', 21)) gain = expPow(gain, 0.1)
   if (inChallenge('C', 22)) gain = expPow(gain, 0.25)
+  if (inChallenge('E', 32)) gain = expPow(gain, layers.E.challenges[32].nerf())
   if (inChallenge('A', 32)) gain = gain.max(1).log10()
   if (inChallenge('A', 41)) gain = gain.max(1).log10().pow(30)
   if (inChallenge('D', 21)) gain = gain.max(1).slog()
   if (inChallenge('D', 22)) gain = n(0)
   if (inChallenge('E', 11)) gain = gain.addTP(-0.8)
+  if (inChallenge('E', 31)) gain = gain.div(layers.E.challenges[31].nerf())
   return gain
 }
 function getPointGen() {
@@ -173,7 +174,7 @@ function getPointGen() {
   if (gain.max(1).log10().gte(300)) gain = n(10).pow(gain.log10().sub(299).pow(0.75).add(299)) //Sc91
     .overflow(Number.MAX_VALUE, 0.5)
   if (gain.max(1).log10().gte(500)) gain = n(10).pow(gain.log10().sub(499).pow(0.5).add(499)) //Sc98
-    .overflow("1e500", 0.75, 2).overflow("1e600",0.25)
+    .overflow("1e500", 0.75, 2).overflow("1e600", 0.25)
   if (inChallenge('D', 11)) gain = n(10).pow(gain.max(1).log10().pow(0.1)) //Sc72boosted
 
   return gain
@@ -192,19 +193,23 @@ var shitDown = false
 var displayThings = [
   function () {
     let a = 'Current endgame: 1e150 Antimatter'
+    let tick = 0
+    for (i = 0; i<lastTenTicks.length; i++){
+			tick += lastTenTicks[i] / 10
+		}
     if (isEndgame()) a = a + '<br>You are past endgame! Antimatter is capped at 1e150.'
     if (gcs('te', 12)) a = a + '<br>You have played the game for ' + formatTime(player.timePlayed) + '.'
-    if (gcs('te', 13)) a = a + '<br>Current FPS: ' + format(1000 / (Date.now() - player.time)) + '.'
+    if (gcs('te', 13)) a = a + `<br>Current FPS:  ${tick == 0 ? "0" : format((tick/1000) ** -1)}.`
     if (gcs('te', 14)) a = a + '<br>Raw Points: ' + format(getRawPointsGen()) + '.'
-    if (gcs('te', 21)) a = a + '<br>There are ' + format(player.softcap,0) + ' softcaps in all now.'
-    if (gcs('te', 31)) a = a + '<br>There are ' + format(player.ssc.points,0) + ' super softcaps in all now.'
+    if (gcs('te', 21)) a = a + '<br>There are ' + format(player.softcap, 0) + ' softcaps in all now.'
+    if (gcs('te', 31)) a = a + '<br>There are ' + format(player.ssc.points, 0) + ' super softcaps in all now.'
     if (gcs('te', 23)) a = a + '<br>Softcap Point: ' + format(player.sc.points)
     return a
   },
 ]
 // Determines when the game "ends"
 function isEndgame() {
-  return ha("ac", 85)
+  return false
 }
 
 // Less important things beyond this point!
@@ -219,7 +224,7 @@ function maxTickLength() {
 
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,
 // you can cap their current resources with this.
-function fixOldSave(oldVersion) {}
+function fixOldSave(oldVersion) { }
 
 function gba(a, b) {
   return getBuyableAmount(a, b)
@@ -276,6 +281,17 @@ Decimal.prototype.softcap = function (start, power, mode = 0, dis = false) {
     if ([1, 'mul'].includes(mode)) x = x.sub(start).div(power).add(start)
     if ([2, 'exp'].includes(mode)) x = expPow(x.div(start), power).mul(start)
     if ([3, 'log'].includes(mode)) x = x.div(start).log(power).add(1).mul(start)
+  }
+  return x
+}
+
+Decimal.prototype.anti_softcap = function (start, power, mode = 0, dis) {
+  let x = this
+  if (x.gte(start) && !dis) {
+    if ([0, "pow"].includes(mode)) x = x.div(start).max(1).root(power).mul(start)
+    if ([1, "mul"].includes(mode)) x = x.sub(start).div(power).add(start)
+    if ([2, "exp"].includes(mode)) x = expRoot(x.div(start), power).mul(start)
+    if ([3, "log"].includes(mode)) x = Decimal.pow(power, x.div(start).sub(1)).mul(start)
   }
   return x
 }
@@ -371,38 +387,38 @@ function revExpPow(a, b) {
 } // return expPow(a,Decimal.invert(b))
 
 function addTP(num, add) {
-    if (isNaN(num.mag)) return new Decimal(0)
-    return Decimal.tetrate(10, num.slog(10).add(add))
+  if (isNaN(num.mag)) return new Decimal(0)
+  return Decimal.tetrate(10, num.slog(10).add(add))
 }
 
 Decimal.prototype.addTP = function (power) {
-    return addTP(this, power)
+  return addTP(this, power)
 }
 
 function mulTP(num, mul) {
-    if (isNaN(num.mag)) return new Decimal(0)
-    return Decimal.tetrate(10, num.slog(10).mul(mul))
+  if (isNaN(num.mag)) return new Decimal(0)
+  return Decimal.tetrate(10, num.slog(10).mul(mul))
 }
 
 Decimal.prototype.mulTP = function (power) {
-    return mulTP(this, power)
+  return mulTP(this, power)
 }
 
 function listItems(arr) {
   if (!arr.length) return '';
   if (arr.length === 1) return arr[0];
-  
+
   const last = arr.pop();
   return arr.join(', ') + ' and ' + last;
 }
 
 const randomString_chars = `ABCDEFGHJKLMNOPQRSTUWXYZabcdefghijklmnopqrstuwxyz1234567890?!;=+-/@#$%^&*~|"'()[]{},.`;
 function randomString(length) {
-    let result = '';
+  let result = '';
 
-    for (let i = 0; i < length; i++) {
-        result += randomString_chars[Math.floor(Math.random() * randomString_chars.length)];
-    }
+  for (let i = 0; i < length; i++) {
+    result += randomString_chars[Math.floor(Math.random() * randomString_chars.length)];
+  }
 
-    return result;
+  return result;
 }
