@@ -84,7 +84,7 @@ const superSoftcapDatas = [
   {
     unlocked: () => ue('B', 11).gte(50),
     requirement: '50x B1 mult',
-    effects: 'points generation is overflowed to 0.5',
+    effects: 'B1 mult is overflowed to 0.5',
   },
   {
     unlocked: () => ue('A', 24).gte(50),
@@ -186,6 +186,23 @@ const superSoftcapDatas = [
     requirement: '^4 Ab3 effect',
     effects: 'Ab3 effect is pow-softcapped to 0.5',
   },
+  /*
+  {
+    unlocked: () => layers.ma.effect().gte(1000),
+    requirement: '^1000 Mastered Upgrades effect',
+    effects: 'Mastered Upgrades effect is overflowed to 0.5',
+  },
+  {
+    unlocked: () => challengeCompletions('A', 41) >= 12,
+    requirement: '12 Ac7 completions',
+    effects: 'Ac7 completions is log-softcapped to 100',
+  },
+  {
+    unlocked: () => layers.E.buyables[14].effect().gte(0.042),
+    requirement: '+0.042 Eb3.5 effect',
+    effects: 'Eb3.5 effect is pow-softcapped to 0.25',
+  },
+  */
 ].map((item, index) => ({
   ...item,
   id: index + 1,
