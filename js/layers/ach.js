@@ -154,9 +154,9 @@ addLayer('ac', {
     37: {
       name: '21. Hyper Reduce',
       done() {
-        return ue('A', 11).gte(1e30)
+        return ue('D', 11).gte(1e100)
       },
-      tooltip: 'get the <del>first</del> exponential normal softcap (Sc37)',
+      tooltip: 'get the first exponential normal softcap (Sc54)',
     },
     41: {
       name: '22. Hidden Upgrades^2',
@@ -260,7 +260,7 @@ addLayer('ac', {
       tooltip: 'Get 1.80e308 points. <br>Reward: Unlock Mastery.'
     },
     61: {
-      name: '36. infinity B',
+      name: '36. infinity again^2',
       done() {
         return player.B.points.gte("1.79e308")
       },
@@ -332,9 +332,9 @@ addLayer('ac', {
     74: {
       name: '46. A bigger Timewall',
       done() {
-        return challengeCompletions('E', 12) >= 2
+        return challengeCompletions('E', 12) >= 3
       },
-      tooltip: 'complete Ec2x2',
+      tooltip: 'complete Ec2x3',
     },
     75: {
       name: '47. Shown Upgrades',
@@ -386,7 +386,7 @@ addLayer('ac', {
       tooltip: 'get 150 softcaps',
     },
     85: {
-      name: '54. Antimatter apocalypse',
+      name: '54. Antimatter Apocalypse',
       done() {
         return player.A.am.gte(1e150)
       },
@@ -400,39 +400,39 @@ addLayer('ac', {
       tooltip: 'unlock Em',
     },
     87: {
-      name: '56. Less or Equal than 0.0001',
-      done() {
-        return layers.E.buyables[13].cost().lte(0.0001)
-      },
-      tooltip: 'Make the cost of Eb3 less or equal than 0.0001.',
-    },
-    91: {
-      name: '57. Em Boosted',
+      name: '56. Em Boosted',
       done() {
         return player.E.Em.gte('1e10')
       },
       tooltip: 'get 1e10 Em',
     },
+    91: {
+      name: '57. Vigintillion E',
+      done() {
+        return player.E.points.gte('1e63')
+      },
+      tooltip: 'get 1e63 E',
+    },
     92: {
-      name: '58. Googol E',
-      done() {
-        return player.E.points.gte('1e100')
-      },
-      tooltip: 'get 1e100 E',
-    },
-    93: {
-      name: '59. Massively',
-      done() {
-        return player.A.points.gte('1e1000')
-      },
-      tooltip: 'get 1e1000 A!!',
-    },
-    94: {
-      name: '60. Struggling again',
+      name: '58. Struggling again',
       done() {
         return challengeCompletions('E', 32) >= 1
       },
       tooltip: 'complete Ec6x1',
+    },
+    93: {
+      name: '59. The Big Black',
+      done() {
+        return hm("B", 10)
+      },
+      tooltip: 'unlock Black hole.',
+    },
+    94: {
+      name: '60. Massively',
+      done() {
+        return player.A.points.gte('1e1000')
+      },
+      tooltip: 'get 1e1000 A!!',
     },
     95: {
       name: '61. Ek ruby',

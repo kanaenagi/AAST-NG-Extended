@@ -44,7 +44,7 @@ addLayer("ma", {
   effect() {
     let eff = player.ma.points.add(1).pow(0.6)
     if (mu("A",23)) eff = eff.pow(player.ma.points.mul(0.04).add(1))
-    return eff.overflow(1000, .5)
+    return eff.overflow(1000, .5) // Ssc27
   },
   effectDescription() {
     return `which raises point generation to ${format(this.effect())}.`
@@ -113,4 +113,14 @@ function sumArrayLengths(obj) {
     }
   }
   return total;
+}
+
+function automasterUpgrades(layer) {
+  if (!tmp[layer].upgrades) return
+  for (id in tmp[layer].upgrades)
+    if (
+      isPlainObject(tmp[layer].upgrades[id]) &&
+      (layers[layer].upgrades[id].canMaster === true)
+    )
+      masterUpgrade(layer, id)
 }

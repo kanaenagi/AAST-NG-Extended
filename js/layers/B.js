@@ -43,7 +43,7 @@ addLayer('B', {
     return lim
   },
   update(diff) {
-    if (inChallenge('A', 11)) player.B.pointsAc1 = player.B.pointsAc1.max(player.points).min(mu("B", 26)? 1/0: 1e8)
+    if (inChallenge('A', 11) || hu("E", 74)) player.B.pointsAc1 = player.B.pointsAc1.max(player.points).min(mu("B", 26) ? 1 / 0 : 1e8)
     player.B.Bblim = tmp.B.BblimCal
     if (inChallenge('E', 52)) player.B.points = player.B.points.min(player.b.points)
     if (inChallenge('C', 22)) player.B.points = player.B.points.min(player.E.points)
@@ -66,7 +66,7 @@ addLayer('B', {
     mult = mult.mul(hu(this.layer, 15) ? 1.5 : 1)
     mult = mult.mul(hu(this.layer, 22) ? 2 : 1)
     mult = mult.mul(hu(this.layer, 24) ? 2 : 1)
-    mult = mult.mul(hu(this.layer, 25) ? mu(this.layer, 25)?1e100: 2 : 1)
+    mult = mult.mul(hu(this.layer, 25) ? mu(this.layer, 25) ? 1e100 : 2 : 1)
     mult = mult.mul(hu('sc', 12) ? ue('sc', 12) : 1)
     mult = mult.mul(hu('C', 12) ? 10 : 1)
     mult = mult.mul(hu('C', 25) ? 50 : 1)
@@ -106,13 +106,13 @@ addLayer('B', {
     mult = mult.pow(hu('B', 73) ? ue('B', 73) : 1)
     if (inChallenge('E', 11)) mult = mult.max(10).pow(0.1)
     if (mult.gte(10)) mult = mult.div(10).pow(0.5).mul(10) //Sc15
-    if (mult.gte(1e10)) mult = mult.div(1e10).pow(0.5).mul(1e10) //Sc54
-    if (mult.gte(1e25)) mult = mult.div(1e25).pow(0.5).mul(1e25) //Sc63
-    if (mult.gte(1e40)) mult = mult.div(1e40).pow(0.5).mul(1e40) //Sc69
-      .overflow(1e50, 0.5)
-    if (mult.gte(1e100)) mult = mult.div(1e100).pow(0.5).mul(1e100) //Sc77
-    if (mult.gte(1e250)) mult = mult.div(1e250).pow(0.5).mul(1e250) //Sc92
-    mult = mult.softcap(1e300,0.5) //Sc132
+    if (mult.gte(1e10)) mult = mult.div(1e10).pow(0.5).mul(1e10) //Sc50
+    if (mult.gte(1e25)) mult = mult.div(1e25).pow(0.5).mul(1e25) //Sc59
+    if (mult.gte(1e40)) mult = mult.div(1e40).pow(0.5).mul(1e40) //Sc67
+      .overflow(1e50, 0.5) // Ssc10
+    if (mult.gte(1e100)) mult = mult.div(1e100).pow(0.5).mul(1e100) //Sc83
+    if (mult.gte(1e250)) mult = mult.div(1e250).pow(0.5).mul(1e250) //Sc100
+    mult = mult.softcap(1e300, 0.5) //Sc142
     return mult
   },
   directMult() {
@@ -140,9 +140,14 @@ addLayer('B', {
       },
       Milestones: {
         unlocked() {
-          return hu('B', 53)
+          return hu('B', 46)
         },
         content: ['milestones'],
+      },
+      "black hole": {
+        unlocked() {
+          return hm('B', 10)
+        }
       },
     },
   },
@@ -170,9 +175,9 @@ addLayer('B', {
       effectDescription: 'buyables cost nothing.',
     },
     1: {
-      requirementDescription: 'Bm2: 1e74 total B',
+      requirementDescription: 'Bm2: 1e72 total B',
       done() {
-        return player[this.layer].total.gte('1e74')
+        return player[this.layer].total.gte('1e72')
       },
       effectDescription: "All Bbs' effect ^2.",
     },
@@ -207,9 +212,9 @@ addLayer('B', {
       toggles: [['B', 'auto2']],
     },
     6: {
-      requirementDescription: 'Bm7: 1e333 total B',
+      requirementDescription: 'Bm7: 1e328 total B',
       done() {
-        return player[this.layer].total.gte('1e333')
+        return player[this.layer].total.gte('1e328')
       },
       effectDescription: 'Unlock an A upg.',
     },
@@ -235,6 +240,13 @@ addLayer('B', {
       },
       effectDescription: 'auto buy Ab3.',
       toggles: [['B', 'auto4']],
+    },
+    10: {
+      requirementDescription: 'Bm11: 1e572 total B',
+      done() {
+        return player[this.layer].total.gte('1e572')
+      },
+      effectDescription: 'Unlock Black hole.',
     },
   },
   upgrades: {
@@ -266,10 +278,10 @@ addLayer('B', {
           eff = eff
             .div(5)
             .pow(0.5)
-            .mul(5) //Sc10
-            .overflow(50, 0.5)
+            .mul(5) //Sc12
+            .overflow(50, 0.5) //Ssc4
         if (eff.gte(100)) eff = eff.div(100).pow(0.5).mul(100) //Sc16
-        if (eff.gte(1000)) eff = eff.div(1000).pow(0.5).mul(1000) //Sc25
+        if (eff.gte(1000)) eff = eff.div(1000).pow(0.5).mul(1000) //Sc60
         return eff
       },
       cost: n(10),
@@ -309,7 +321,7 @@ addLayer('B', {
         return hu(this.layer, 13)
       },
       canMaster: true,
-      masterCost: n(2e138),
+      masterCost: n(2e146),
       masteredDesc: "2x B, B^1.25"
     },
     15: {
@@ -335,9 +347,9 @@ addLayer('B', {
         let eff = player[this.layer].points.pow(effb)
         if (mu("B", 16)) eff = eff.pow(10)
         if (hu('A', 44)) eff = eff.pow(15)
-        if (eff.gte(2.5)) eff = eff.div(2.5).pow(0.5).mul(2.5) //Sc12
-        if (eff.gte(1e4)) eff = eff.div(1e4).pow(0.1).mul(1e4) //Sc34
-        if (eff.gte(1e6)) eff = eff.div(1e6).pow(0.01).mul(1e6) //Sc44
+        if (eff.gte(2.5)) eff = eff.div(2.5).pow(0.5).mul(2.5) //Sc13
+        if (eff.gte(1e4)) eff = eff.div(1e4).pow(0.1).mul(1e4) //Sc29
+        if (eff.gte(1e6)) eff = eff.div(1e6).pow(0.01).mul(1e6) //Sc41
         return eff.max(1)
       },
       effectDisplay() {
@@ -363,9 +375,9 @@ addLayer('B', {
         if (mu('B', 21)) effb6 = effb6 * 1000
 
         let eff = player[this.layer].points.pow(effb6)
-        if (eff.gte(4)) eff = eff.div(4).pow(0.5).mul(4) //Sc13
-        if (eff.gte(25)) eff = eff.div(25).pow(0.2).mul(25) //Sc20
-        if (eff.gte(1e6)) eff = eff.div(1e6).pow(0.1).mul(1e6) //Sc27
+        if (eff.gte(4)) eff = eff.div(4).pow(0.5).mul(4) //Sc14
+        if (eff.gte(25)) eff = eff.div(25).pow(0.2).mul(25) //Sc18
+        if (eff.gte(1e6)) eff = eff.div(1e6).pow(0.1).mul(1e6) //Sc25
         return eff.max(1)
       },
       effectDisplay() {
@@ -396,11 +408,11 @@ addLayer('B', {
       },
       effect() {
         let eff = n(2).pow(player.ma.mastered.B.length)
-        if (hc("C", 22)) eff = eff.pow(4) 
+        if (hc("C", 22)) eff = eff.pow(4)
         return eff
       },
       canMaster: true,
-      masterCost: n("1e309"),
+      masterCost: n("1e307"),
       masteredDesc() { return "4x A passive generation. Mastered B upgrades boost AD mult base.<br> Currenly: " + format(this.effect()) + "x" },
     },
     24: {
@@ -436,9 +448,9 @@ addLayer('B', {
         return hu(this.layer, 25)
       },
       effect() {
-        let eff = player.B.pointsAc1.min(mu("B", 26)? 1/0 : 1e8).pow(0.1).max(1)
+        let eff = player.B.pointsAc1.min(mu("B", 26) ? 1 / 0 : 1e8).pow(0.1).max(1)
         if (hu('A', 44)) eff = eff.pow(15)
-        if (eff.gte(5)) eff = eff.div(5).pow(0.5).mul(5) //Sc18
+        if (eff.gte(5)) eff = eff.div(5).pow(0.5).mul(5) //Sc22
         return eff
       },
       tooltip() {
@@ -449,7 +461,7 @@ addLayer('B', {
       },
       canMaster: true,
       masterCost: n("3.87e387"),
-      masteredDesc: "Best points in Ac1 boosts points and B",
+      masteredDesc: "Best points in Ac1 boosts points and B.",
     },
     31: {
       title: 'B13',
@@ -502,7 +514,7 @@ addLayer('B', {
     41: {
       title: 'B19',
       description: 'x1500 B,unlock 2nd buyable.',
-      cost: n('2e31'),
+      cost: n('1e34'),
       unlocked() {
         return hu('D', 35)
       },
@@ -510,7 +522,7 @@ addLayer('B', {
     42: {
       title: 'B20',
       description: 'x1e10 points.<br>D18 is boosted and it affects Bb4.<br>unlock 2 buyables.',
-      cost: n('1e34'),
+      cost: n('1e44'),
       unlocked() {
         return hu(this.layer, 41)
       },
@@ -518,7 +530,7 @@ addLayer('B', {
     43: {
       title: 'B21',
       description: 'Bb2 and Bb3 are stronger.',
-      cost: n('5e46'),
+      cost: n(1e54),
       unlocked() {
         return hu(this.layer, 42)
       },
@@ -526,12 +538,12 @@ addLayer('B', {
     44: {
       title: 'B22',
       description: 'mult to points based on Bb1 eff.',
-      cost: n('1e49'),
+      cost: n(1e59),
       effect() {
         let eff = buyableEffect('B', 11).pow(0.2).times(buyableEffect('B', 11).add(1).log(10).pow(2))
         if (hu('B', 55)) eff = Decimal.pow(eff, 1.5)
-        if (eff.gte(1e10)) eff = eff.div(1e10).pow(0.5).mul(1e10) //Sc65
-        if (eff.gte(1e30)) eff = eff.div(1e30).pow(0.5).mul(1e30) //Sc70
+        if (eff.gte(1e10)) eff = eff.div(1e10).pow(0.5).mul(1e10) //Sc63
+        if (eff.gte(1e30)) eff = eff.div(1e30).pow(0.5).mul(1e30) //Sc69
         return eff
       },
       unlocked() {
@@ -544,15 +556,15 @@ addLayer('B', {
     45: {
       title: 'B23',
       description: '2e4x B,unlock a buyable.',
-      cost: n('1e50'),
+      cost: n('1e60'),
       unlocked() {
         return hu(this.layer, 44)
       },
     },
     46: {
       title: 'B24',
-      description: 'D18 is boosted and it affects Bb5.',
-      cost: n('1e52'),
+      description: 'D18 is boosted and it affects Bb5.<br>Unlock B Milestones.',
+      cost: n('1e63'),
       unlocked() {
         return hu(this.layer, 45)
       },
@@ -560,7 +572,7 @@ addLayer('B', {
     51: {
       title: 'B25',
       description: 'Unlock the last B buyable.',
-      cost: n(1e63),
+      cost: n(1e78),
       unlocked() {
         return hu(this.layer, 46)
       },
@@ -568,11 +580,11 @@ addLayer('B', {
     52: {
       title: 'B26',
       description: 'mult to points and A based on Bb2 eff.',
-      cost: n(1e64),
+      cost: n(1e80),
       effect() {
         let eff = buyableEffect('B', 12).pow(0.2)
         if (hu('B', 55)) eff = Decimal.pow(eff, 1.5)
-        if (eff.gte(1e50)) eff = eff.div(1e50).pow(0.25).mul(1e50) //Sc71
+        if (eff.gte(1e50)) eff = eff.div(1e50).pow(0.25).mul(1e50) //Sc70
         return eff
       },
       unlocked() {
@@ -584,8 +596,8 @@ addLayer('B', {
     },
     53: {
       title: 'B27',
-      description: "A's Gainmult^2.<br>Unlock B Milestones.",
-      cost: n(1e65),
+      description: "A's Gainmult^2.",
+      cost: n(2.5e81),
       unlocked() {
         return hu(this.layer, 52)
       },
@@ -593,7 +605,7 @@ addLayer('B', {
     54: {
       title: 'B28',
       description: 'Boost D18 again.',
-      cost: n(6.66e66),
+      cost: n(1e83),
       unlocked() {
         return hu(this.layer, 53)
       },
@@ -601,7 +613,7 @@ addLayer('B', {
     55: {
       title: 'B29',
       description: 'B22/B26 ^1.5.',
-      cost: n(1e72),
+      cost: n(1e88),
       unlocked() {
         return hu(this.layer, 54)
       },
@@ -609,7 +621,7 @@ addLayer('B', {
     56: {
       title: 'B30',
       description: 'Unlock D Challenges.',
-      cost: n(1e81),
+      cost: n(5e88),
       unlocked() {
         return hu(this.layer, 55)
       },
@@ -617,7 +629,7 @@ addLayer('B', {
     61: {
       title: 'B31',
       description: 'log1.0001 points mult B.',
-      cost: n(1e114),
+      cost: n(1e118),
       effect() {
         let eff = player.points.add(10).log(1.0001)
         if (hu('A', 53)) eff = eff.pow(5)
@@ -625,9 +637,9 @@ addLayer('B', {
         if (hu('B', 64)) eff = Decimal.pow(eff, 10)
         if (hu('E', 31)) eff = Decimal.pow(eff, 1.1)
         if (hm('E', 10)) eff = Decimal.pow(eff, 1.05)
-        if (eff.gte(1e10)) eff = eff.div(1e10).pow(0.5).mul(1e10) //Sc73
-        if (eff.gte(1e20)) eff = eff.div(1e20).pow(0.5).mul(1e20) //Sc74
-        if (eff.gte(1e50)) eff = eff.div(1e50).pow(0.5).mul(1e50) //Sc78
+        if (eff.gte(1e10)) eff = eff.div(1e10).pow(0.5).mul(1e10) //Sc72
+        if (eff.gte(1e20)) eff = eff.div(1e20).pow(0.5).mul(1e20) //Sc73
+        if (eff.gte(1e50)) eff = eff.div(1e50).pow(0.5).mul(1e50) //Sc80
         if (eff.gte(1e80)) eff = eff.div(1e80).pow(0.25).mul(1e80) //Sc81
         if (eff.gte(1e100)) eff = eff.div(1e100).pow(0.25).mul(1e100) //Sc82
         return eff
@@ -642,7 +654,7 @@ addLayer('B', {
     62: {
       title: 'B32',
       description: 'unlock new A upgrades.',
-      cost: n('1e116'),
+      cost: n('1e119'),
       unlocked() {
         return hu(this.layer, 61)
       },
@@ -650,7 +662,7 @@ addLayer('B', {
     63: {
       title: 'B33',
       description: 'B31 ^(total B upgrades^0.5).',
-      cost: n('1e136'),
+      cost: n('1e138'),
       effect() {
         let eff = n(player.B.upgrades.length).pow(0.5)
         return eff
@@ -673,7 +685,7 @@ addLayer('B', {
     65: {
       title: 'B35',
       description: 'Bb4-5 base x2',
-      cost: n('1.5e158'),
+      cost: n('1e161'),
       unlocked() {
         return hu(this.layer, 64)
       },
@@ -681,7 +693,7 @@ addLayer('B', {
     66: {
       title: 'B36',
       description: 'Unlock two D challenges.<br> Unlock A buyables.',
-      cost: n('2e158'),
+      cost: n('1e162'),
       unlocked() {
         return hu(this.layer, 65)
       },
@@ -689,7 +701,7 @@ addLayer('B', {
     71: {
       title: 'B37',
       description: 'Ab1 base x5.',
-      cost: n('1e160'),
+      cost: n('1e177'),
       unlocked() {
         return hu(this.layer, 66)
       },
@@ -708,12 +720,12 @@ addLayer('B', {
       effect() {
         let eff = player.B.points.max(n(2).pow(970)).log(2).add(54).log(2).sub(9).pow(0.8).mul(0.1).add(0.94).max(1)
         if (hu('B', 74)) eff = eff.mul(ue('B', 74))
-        return eff.softcap(1.2, 0.25) //Sc86
+        return eff.softcap(1.2, 0.25) //Sc102
       },
       effectDisplay() {
         return '^' + format(this.effect(), 4)
       },
-      cost: n('1e301'),
+      cost: n('5e300'),
       unlocked() {
         return hu(this.layer, 72)
       },
@@ -767,7 +779,7 @@ addLayer('B', {
     82: {
       title: 'B44',
       description: 'Ab2 effect x1.35.',
-      cost: n('1e367'),
+      cost: n('5e366'),
       unlocked() {
         return hu(this.layer, 81)
       },
@@ -782,8 +794,8 @@ addLayer('B', {
     },
     84: {
       title: 'B46',
-      description: 'Boost E directly based on total Bb amount beyond 6300.<br>(with Ab2 effect)',
-      cost: n('1e525'),
+      description: 'Boost E directly based on total Bb amount beyond 6275.<br>(with Ab2 effect)',
+      cost: n('5e522'),
       effect() {
         let eff = gba('B', 11)
           .add(gba('B', 12))
@@ -792,9 +804,9 @@ addLayer('B', {
           .add(gba('B', 22))
           .add(gba('B', 23))
           .add(buyableEffect('A', 12).mul(6))
-          .sub(6300)
+          .sub(6275)
           .max(1)
-        if (eff.gte(10)) eff = eff.div(10).pow(0.2).mul(10) //Sc146
+        if (eff.gte(10)) eff = eff.div(10).pow(0.2).mul(10) //Sc151
         return eff
       },
       tooltip() {
@@ -815,7 +827,7 @@ addLayer('B', {
     85: {
       title: 'B47',
       description: 'Ec1-4 effect ^1.2.',
-      cost: n('1e526'),
+      cost: n('1e523'),
       unlocked() {
         return hu('B', 84)
       },
@@ -823,7 +835,7 @@ addLayer('B', {
     86: {
       title: 'B48',
       description: 'E25, E31, E33 and E35 ^1.5.',
-      cost: n('1.5e527'),
+      cost: n('1.5e526'),
       unlocked() {
         return hu('B', 85)
       },
@@ -874,7 +886,7 @@ addLayer('B', {
         if (hu('A', 54)) bas = bas.pow(ue('A', 54))
         if (inChallenge('E', 12)) bas = n(1)
         bas = n(bas)
-        if (bas.gte(1e5)) bas = bas.div(1e5).pow(0.2).mul(1e5) //Sc75
+        if (bas.gte(1e5)) bas = bas.div(1e5).pow(0.2).mul(1e5) //Sc74
         return bas
       },
       effect(x = player[this.layer].buyables[this.id]) {
@@ -944,7 +956,7 @@ addLayer('B', {
 
         if (inChallenge('E', 12)) bas = n(1)
 
-        if (bas.gte(1e5)) bas = bas.div(1e5).pow(0.2).mul(1e5) //Sc76
+        if (bas.gte(1e5)) bas = bas.div(1e5).pow(0.2).mul(1e5) //Sc75
         return bas
       },
       effect(x = player[this.layer].buyables[this.id]) {
@@ -1009,7 +1021,7 @@ addLayer('B', {
         if (hc('D', 11)) x = x.mul(2)
         if (hu('B', 43)) x = x.pow(1.25)
         if (hm('B', 1)) x = x.pow(2)
-        if (inChallenge('D', 12)) x = n(-1)
+        if (inChallenge('D', 12)) x = n(0)
         if (inChallenge('E', 31)) eff = n(0)
         return x
       },
@@ -1058,7 +1070,7 @@ addLayer('B', {
         if (hu('B', 65)) base = base.mul(2)
         if (mu("B", 13)) base = base.mul(50)
         if (hu('A', 55)) base = base.pow(ue('A', 55))
-        if (base.gte(1e5)) base = base.div(1e5).pow(0.2).mul(1e5) //Sc83
+        if (base.gte(1e5)) base = base.div(1e5).pow(0.2).mul(1e5) //Sc76
         return base
       },
       effect(x = player[this.layer].buyables[this.id]) {
@@ -1125,7 +1137,7 @@ addLayer('B', {
         if (hc('D', 11)) base = base.mul(2)
         if (hu('B', 65)) base = base.mul(2)
         if (hu('A', 55)) base = base.pow(ue('A', 55))
-        if (base.gte(1e5)) base = base.div(1e5).pow(0.2).mul(1e5) //Sc84
+        if (base.gte(1e5)) base = base.div(1e5).pow(0.2).mul(1e5) //Sc77
         return base
       },
       effect(x = player[this.layer].buyables[this.id]) {
@@ -1191,7 +1203,7 @@ addLayer('B', {
         if (mu("B", 13)) base = base.mul(50)
         if (hu('A', 56)) base = base.pow(ue('A', 56))
         if (hu('B', 65)) base = base.mul(2)
-        if (base.gte(100)) base = base.div(100).pow(0.5).mul(100) //Sc80
+        if (base.gte(100)) base = base.div(100).pow(0.5).mul(100) //Sc78
         return base
       },
       effect(x = player[this.layer].buyables[this.id]) {
@@ -1200,7 +1212,7 @@ addLayer('B', {
         if (hm('B', 1)) eff = eff.pow(1.2)
         if (inChallenge('D', 12)) eff = n('1e-4')
         if (inChallenge('E', 31)) eff = n(1)
-        if (eff.gte('1e1024')) eff = eff.div('1e1024').pow(0.1).mul('1e1024') //Sc96
+        if (eff.gte('1e1024')) eff = eff.div('1e1024').pow(0.1).mul('1e1024') //Sc90
         return eff
       },
       display() {

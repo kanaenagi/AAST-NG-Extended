@@ -22,19 +22,24 @@ let modInfo = {
 
 
   initialStartPoints: new Decimal(0), // Used for hard resets and new players
-  offlineLimit: 1000, // In hours
+  offlineLimit: 12, // In hours
 }
 
 var qqq //used for testing effects, finding limits, etc.
 
 // Set your version in num and name
 let VERSION = {
-  num: '0.16',
+  num: '0.16.1',
   name: '',
 }
 
 let changelog = `
 <h1>Changelog:</h1><br>
+<h2>v0.16.1 2026/1/28 15:00-2026/1/30 19:00 </h2><br>
+<h3>- Rebalanced Pre-Bm11.</h3><br>
+<h3>- Recounted softcap.</h3><br>
+<h3>Endgame: 1e572 B (169 + <span style="color: rgb(255, 197, 215)">30</span> softcaps)</h3><br>
+
 <h2>v0.16 2026/1/17 13:50-2026/1/24 16:30 </h2><br>
 <h3>- Rebalanced Pre-Em.</h3><br>
 <h3>- Added Tickspeed.</h3><br>
@@ -146,9 +151,8 @@ function getRawPointsGen() {
   if (hu('C', 13) && hu('A', 12) && gain.gte(1)) gain = gain.pow(layers.A.antimatterEffect())
   if (mu("C", 12)) gain = gain.pow(3)
   if (mu("C", 15)) gain = gain.pow(2)
-  // if (mu("A", 41)) gain = gain.pow(2)
   if (hu("E", 55)) gain = gain.pow(3)
-  if (hasAchievement("ac", 35)) gain = gain.pow(layers.ma.effect())
+  if (hasAchievement("ac", 57)) gain = gain.pow(layers.ma.effect())
 
   if (inChallenge('C', 21)) gain = expPow(gain, 0.1)
   if (inChallenge('C', 22)) gain = expPow(gain, 0.25)
@@ -157,25 +161,27 @@ function getRawPointsGen() {
   if (inChallenge('A', 41)) gain = gain.max(1).log10().pow(30)
   if (inChallenge('D', 21)) gain = gain.max(1).slog()
   if (inChallenge('D', 22)) gain = n(0)
-  if (inChallenge('E', 11)) gain = gain.addTP(-0.8)
+  if (inChallenge('E', 11)) gain = gain.max(0.7105533743096611).addTP(-0.8)
   if (inChallenge('E', 31)) gain = gain.div(layers.E.challenges[31].nerf())
   return gain
 }
 function getPointGen() {
   if (!canGenPoints()) return n(0)
 
-  let gain = getRawPointsGen().overflow(100, 0.5)
-  if (gain.gte(1e4)) gain = gain.div(1e4).pow(0.5).mul(1e4) //Sc9
-  if (gain.gte(1e6)) gain = gain.div(1e6).pow(0.6).mul(1e6) //Sc14
-  if (gain.gte(1e8)) gain = gain.div(1e8).pow(0.7).mul(1e8) //Sc21
-  if (gain.gte(1e10)) gain = gain.div(1e10).pow(0.8).mul(1e10) //Sc24
-  if (gain.gte(1e35)) gain = gain.div(1e35).pow(0.9).mul(1e35) //Sc43
-  if (gain.max(1).log10().gte(100)) gain = n(10).pow(gain.log10().sub(100).pow(0.8).add(100)) //Sc72
-  if (gain.max(1).log10().gte(300)) gain = n(10).pow(gain.log10().sub(299).pow(0.75).add(299)) //Sc91
-    .overflow(Number.MAX_VALUE, 0.5)
-  if (gain.max(1).log10().gte(500)) gain = n(10).pow(gain.log10().sub(499).pow(0.5).add(499)) //Sc98
-    .overflow("1e500", 0.75, 2).overflow("1e600", 0.25)
-  if (inChallenge('D', 11)) gain = n(10).pow(gain.max(1).log10().pow(0.1)) //Sc72boosted
+  let gain = getRawPointsGen().overflow(100, 0.5) //Ssc2
+  if (gain.gte(1e4)) gain = gain.div(1e4).pow(0.5).mul(1e4) //Sc8
+  if (gain.gte(1e6)) gain = gain.div(1e6).pow(0.6).mul(1e6) //Sc10
+  if (gain.gte(1e8)) gain = gain.div(1e8).pow(0.7).mul(1e8) //Sc20
+  if (gain.gte(1e10)) gain = gain.div(1e10).pow(0.8).mul(1e10) //Sc23
+  if (gain.gte(1e35)) gain = gain.div(1e35).pow(0.9).mul(1e35) //Sc35
+  if (gain.max(1).log10().gte(100)) gain = n(10).pow(gain.log10().sub(100).pow(0.8).add(100)) //Sc58
+  if (gain.max(1).log10().gte(300)) gain = n(10).pow(gain.log10().sub(299).pow(0.75).add(299)) //Sc71
+    .overflow(Number.MAX_VALUE, 0.5) //Ssc13
+  if (gain.max(1).log10().gte(500)) gain = n(10).pow(gain.log10().sub(499).pow(0.5).add(499)) //Sc87
+    .overflow("1e500", 0.75, 2) // Ssc14
+    .overflow("1e600", 0.25) // Ssc17
+    .tetraflow("1e1000", 0.5)
+  if (inChallenge('D', 11)) gain = n(10).pow(gain.max(1).log10().pow(0.1)) //Sc58boosted
 
   return gain
 }
@@ -192,12 +198,12 @@ var shitDown = false
 // Display extra things at the top of the page
 var displayThings = [
   function () {
-    let a = 'Current endgame: 1e150 Antimatter'
+    let a = 'Current endgame: 1e572 B'
     let tick = 0
     for (i = 0; i<lastTenTicks.length; i++){
 			tick += lastTenTicks[i] / 10
 		}
-    if (isEndgame()) a = a + '<br>You are past endgame! Antimatter is capped at 1e150.'
+    if (isEndgame()) a = a + '<br>You are past endgame! Bis capped at 1e572.'
     if (gcs('te', 12)) a = a + '<br>You have played the game for ' + formatTime(player.timePlayed) + '.'
     if (gcs('te', 13)) a = a + `<br>Current FPS:  ${tick == 0 ? "0" : format((tick/1000) ** -1)}.`
     if (gcs('te', 14)) a = a + '<br>Raw Points: ' + format(getRawPointsGen()) + '.'
@@ -209,7 +215,7 @@ var displayThings = [
 ]
 // Determines when the game "ends"
 function isEndgame() {
-  return ha("ac", 85)
+  return hm("B", 10)
 }
 
 // Less important things beyond this point!

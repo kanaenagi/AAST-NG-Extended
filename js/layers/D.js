@@ -56,9 +56,9 @@ addLayer('D', {
     mult = mult.pow(hu('A', 52) ? 1.5 : 1)
     mult = mult.pow(hc('A', 32) ? 1.5 : 1)
 
-    if (mult.gte(1e4)) mult = mult.div(1e4).pow(0.4).mul(1e4) //Sc56
-    if (mult.gte(1e10)) mult = mult.div(1e10).pow(0.4).mul(1e10) //Sc66
-    if (mult.gte(1e20)) mult = mult.div(1e20).pow(0.1).mul(1e20) //Sc68
+    if (mult.gte(1e4)) mult = mult.div(1e4).pow(0.4).mul(1e4) //Sc52
+    if (mult.gte(1e10)) mult = mult.div(1e10).pow(0.4).mul(1e10) //Sc64
+    if (mult.gte(1e20)) mult = mult.div(1e20).pow(0.1).mul(1e20) //Sc66
     if (mult.gte(1e30)) mult = mult.div(1e30).pow(0.5).mul(1e30) //Sc79
     if (mult.gte(1e256)) mult = mult.div(1e256).pow(0.3).mul(1e256) //Sc222
     return mult
@@ -168,10 +168,10 @@ addLayer('D', {
         if (hu('D', 25)) eff = n(eff).pow(ue('D', 25))
         if (mu("D", 11)) eff = eff.pow(1e10)
         eff = n(eff)
-        if (eff.gte(1e6)) eff = eff.div(1e6).pow(0.5).mul(1e6) //Sc45
-        if (eff.gte(1e20)) eff = eff.div(1e20).pow(0.25).mul(1e20) //Sc52
-        if (eff.log10().gte(100)) eff = n(10).pow(eff.log10().sub(100).pow(0.1).add(100)) //Sc58
-        if (eff.log10().gte(1e6)) eff = n(10).pow(eff.log10().div(1e6).pow(0.1).mul(1e6)) //Sc124
+        if (eff.gte(1e6)) eff = eff.div(1e6).pow(0.5).mul(1e6) //Sc42
+        if (eff.gte(1e20)) eff = eff.div(1e20).pow(0.25).mul(1e20) //Sc48
+        if (eff.log10().gte(100)) eff = n(10).pow(eff.log10().sub(100).pow(0.1).add(100)) //Sc54
+        if (eff.log10().gte(1e6)) eff = n(10).pow(eff.log10().div(1e6).pow(0.1).mul(1e6)) //Sc99
         return eff
       },
       cost: n(10),
@@ -198,7 +198,7 @@ addLayer('D', {
         return hu(this.layer, 12)
       },
       effect() {
-        return n(player.ma.mastered.D.length + 1).pow(2).softcap(30,0.1)
+        return n(player.ma.mastered.D.length + 1).pow(2).softcap(30,0.1) // Ssc23
       },
       canMaster: true,
       masterCost: n(1e131),
@@ -227,9 +227,9 @@ addLayer('D', {
         if (inChallenge('C', 12)) effpow = 0
         let eff = n(player[this.layer].points.max(1).pow(effpow))
         if (hu('D', 23)) eff = eff.pow(2)
-        if (eff.gte(1e3)) eff = eff.div(1e3).pow(0.5).mul(1e3) //Sc46
-        if (eff.gte(1e5)) eff = eff.div(1e5).pow(0.5).mul(1e5) //Sc51
-        return eff.overflow(1e100, 0.5) //ssc21
+        if (eff.gte(1e3)) eff = eff.div(1e3).pow(0.5).mul(1e3) //Sc43
+        if (eff.gte(1e5)) eff = eff.div(1e5).pow(0.5).mul(1e5) //Sc47
+        return eff.overflow(1e100, 0.5) //Ssc21
       },
       effectDisplay() {
         return format(this.effect()) + 'x'
@@ -246,16 +246,16 @@ addLayer('D', {
         return hu(this.layer, 15)
       },
       effect() {
-        let effpow = mu("D" ,16)? 0.125 : 0.1
+        let effpow = mu("D" ,16)? 0.5 : 0.1
         let eff = n(player[this.layer].points.max(1).pow(effpow))
-        return eff.overflow(1e25,0.5)//ssc??
+        return eff.overflow(1e25,0.5)//Ssc22
       },
       effectDisplay() {
         return format(this.effect()) + 'x'
       },
       canMaster: true,
       masterCost: n(5e219),
-      masteredDesc:"D^0.125 boosts Softcap points. (before exp and softcaps). Base Softcap points formula is stronger.<br>unlock more Softcap Upgrades.",
+      masteredDesc:"D^0.5 boosts Softcap points. (before exp and softcaps).<br>unlock more Softcap Upgrades.",
     },
     21: {
       title: 'D7',
@@ -265,8 +265,8 @@ addLayer('D', {
         let a = player.D.upgrades.length
         let base = n(2).add(buyableEffect('B', 13))
         let eff = Decimal.pow(base, a)
-        if (eff.gte(1e10)) eff = eff.div(1e10).pow(0.5).mul(1e10) //Sc62
-        if (eff.gte(1e20)) eff = eff.div(1e20).pow(0.5).mul(1e20) //Sc64
+        if (eff.gte(1e10)) eff = eff.div(1e10).pow(0.5).mul(1e10) //Sc61
+        if (eff.gte(1e20)) eff = eff.div(1e20).pow(0.5).mul(1e20) //Sc62
         return eff
       },
       unlocked() {
@@ -279,7 +279,7 @@ addLayer('D', {
     22: {
       title: 'D8',
       description: 'B ^1.2.',
-      cost: n(1.2e6),
+      cost: n(2e6),
       unlocked() {
         return hu(this.layer, 21)
       },
@@ -287,7 +287,7 @@ addLayer('D', {
     23: {
       title: 'D9',
       description: 'D5 ^2.',
-      cost: n(1.5e6),
+      cost: n(3e6),
       unlocked() {
         return hu(this.layer, 22)
       },
@@ -295,7 +295,7 @@ addLayer('D', {
     24: {
       title: 'D10',
       description: 'Softcap Points boosts Softcap Points',
-      cost: n(1.8e6),
+      cost: n(4e6),
       effect() {
         let effd9 = player.sc.points.add(1)
         if (hu('D', 34)) effd9 = effd9.pow(2)
@@ -316,13 +316,13 @@ addLayer('D', {
         let eff = player.D.points.add(1).pow(0.5).div(1e3).add(1)
         if (hu('sc', 23)) eff = eff.pow(ue('sc', 23))
         if (hu('E', 41)) eff = eff.pow(1.1)
-        if (eff.gte(1e5)) eff = eff.div(1e5).pow(0.25).mul(1e5) //Sc60
+        if (eff.gte(1e5)) eff = eff.div(1e5).pow(0.25).mul(1e5) //Sc56
         return eff
       },
       effectDisplay() {
         return '^' + format(ue(this.layer, this.id))
       },
-      cost: n(2e6),
+      cost: n(5e6),
       unlocked() {
         return hu(this.layer, 24)
       },
@@ -333,13 +333,13 @@ addLayer('D', {
       tooltip: 'It will be… incredible',
       effect() {
         let eff = player.D.points.add(1).pow(1.25)
-        if (eff.gte(1e8)) eff = eff.div(1e8).pow(0.5).mul(1e8) //Sc53
+        if (eff.gte(1e8)) eff = eff.div(1e8).pow(0.5).mul(1e8) //Sc49
         return eff
       },
       effectDisplay() {
         return format(ue(this.layer, this.id)) + 'x'
       },
-      cost: n(2.25e6),
+      cost: n(1e7),
       unlocked() {
         return hu(this.layer, 25)
       },
@@ -347,7 +347,7 @@ addLayer('D', {
     31: {
       title: 'D13',
       description: "D12's effect^0.5 boosts A and B",
-      cost: n(6e6),
+      cost: n(2.5e7),
       effect() {
         let eff = ue('D', 26).pow(0.5)
         return eff
@@ -362,12 +362,12 @@ addLayer('D', {
     32: {
       title: 'D14',
       description: 'D^0.3 boosts D.',
-      cost: n(8e6),
+      cost: n(3e7),
       effect() {
         let eff = player.D.points.max(1).pow(0.3)
         if (hu('D', 35)) eff = eff.pow(2)
-        if (eff.gte(10)) eff = eff.div(10).pow(0.5).mul(10) //Sc55
-        if (eff.gte(1e4)) eff = eff.div(1e4).pow(0.5).mul(1e4) //Sc61
+        if (eff.gte(10)) eff = eff.div(10).pow(0.5).mul(10) //Sc51
+        if (eff.gte(1e4)) eff = eff.div(1e4).pow(0.5).mul(1e4) //Sc57
         return eff
       },
       effectDisplay() {
@@ -388,7 +388,7 @@ addLayer('D', {
     34: {
       title: 'D16',
       description: 'D10 ^2.',
-      cost: n('6e10'),
+      cost: n('1e11'),
       unlocked() {
         return hu(this.layer, 33)
       },
@@ -396,7 +396,7 @@ addLayer('D', {
     35: {
       title: 'D17',
       description: 'D14 ^2 and unlock more B upgrades.',
-      cost: n('7.5e10'),
+      cost: n('2e11'),
       unlocked() {
         return hu(this.layer, 34)
       },
@@ -404,14 +404,14 @@ addLayer('D', {
     36: {
       title: 'D18',
       description: "D boosts Bb1-2's base.",
-      cost: n('1e13'),
+      cost: n('1e14'),
       effect() {
         let eff = player.D.points.max(1).log(5).pow(0.5)
         if (hu('B', 42)) eff = eff.pow(2)
         if (hu('B', 46)) eff = eff.pow(1.25)
         if (hu('B', 54)) eff = eff.pow(1.5)
         if (hu('sc', 24)) eff = eff.pow(ue('sc', 24))
-        if (eff.gte(1e3)) eff = eff.div(1e3).pow(0.5).mul(1e3) //Sc218 It should be Sc70
+        if (eff.gte(1e3)) eff = eff.div(1e3).pow(0.5).mul(1e3) //Sc68
         return eff
       },
       effectDisplay() {
@@ -493,7 +493,7 @@ addLayer('D', {
       name: 'Dc1',
       completionLimit: 1,
       challengeDescription() {
-        return "Sc72 starts at 1 point /sec and it's boosted."
+        return "Sc58 starts at 1 point /sec and it's boosted."
       },
       unlocked() {
         return hu('B', 56)
@@ -502,9 +502,9 @@ addLayer('D', {
         player.points = n(0)
       },
       tooltip: 'Reset your points when entering.',
-      goalDescription: '42.42 points /sec',
+      goalDescription: '45.45 points /sec',
       canComplete() {
-        return getPointGen().gte(42.42)
+        return getPointGen().gte(45.45)
       },
       rewardDescription() {
         return "All Bbs' base x2, D^1.25 boosts AD mult base<br>" +
@@ -512,7 +512,7 @@ addLayer('D', {
       },
       effect() {
         return player.D.points.add(1).pow(1.25)
-          .softcap(1.5, 0.1)
+          .softcap(1.5, 0.1) // Ssc11
       },
     },
     12: {
@@ -527,6 +527,8 @@ addLayer('D', {
       goalDescription: '1.75e16 points. /sec',
       onEnter() {
         player.points = n(0)
+        updateTemp()
+        tmp.pointGen = n(0)
       },
       tooltip: 'Reset your points when entering.',
       canComplete() {
@@ -562,13 +564,13 @@ addLayer('D', {
       unlocked() {
         return hu('B', 66)
       },
-      goalDescription: 'get 1e89 A gainMult.',
+      goalDescription: 'get 1e92 A gainMult.',
       onEnter() {
         player.points = n(10)
       },
       tooltip: 'Reset your points to 10 when entering.',
       canComplete() {
-        return tmp.A.gainMult.gte(1e89)
+        return tmp.A.gainMult.gte(1e92)
       },
       rewardDescription: 'A and B x1e15 and A ^1.25.',
     },

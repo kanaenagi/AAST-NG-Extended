@@ -44,7 +44,7 @@ function format(decimal, precision = 3) {
     player.hasNaN = true
     return 'NaN'
   }
-  if (decimal.sign < 0) return '-' + format(decimal.neg(), precision, small)
+  if (decimal.sign < 0) return '-' + format(decimal.neg(), precision)
   if (decimal.mag == Number.POSITIVE_INFINITY) return 'Infinity'
   if (decimal.gte('eeee1000')) {
     var slog = decimal.slog()
@@ -53,9 +53,16 @@ function format(decimal, precision = 3) {
   } else if (decimal.gte(1e9)) return exponentialFormat(decimal, precision)
   else if (decimal.gte(1e3)) return commaFormat(decimal, 0)
   else if (decimal.gte(0.001)) return regularFormat(decimal, precision)
-  else if (decimal.gte('eeee-1000')) return exponentialFormat(decimal, precision)
-  else if (decimal.gt(0)) return '1/' + format(decimal.recip())
   else if (decimal.eq(0)) return (0).toFixed(precision)
+
+  decimal = decimal.pow(-1)
+  let val = ""
+  if (decimal.lt("e1000")) {
+    val = exponentialFormat(decimal, precision)
+    return val.replace(/([^(?:e|F)]*)$/, '-$1')
+  }
+  else
+    return format(decimal, precision) + "⁻¹"
 }
 
 function formatWhole(decimal) {

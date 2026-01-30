@@ -660,7 +660,7 @@ function loadVue() {
 					Dimension {{(data + 1)}}<br/>
 					×{{format(buyableEffect("A", data + 100))}}
 				</div>
-				<div style="width:200px"><b>{{format(player.A.ad[data].add(getBuyableAmount("A", data + 100)))}}({{ formatWhole(getBuyableAmount("A", data + 100)) }})</b></div>
+				<div style="width:300px;font-size:15px"><b>{{format(player.A.ad[data].add(getBuyableAmount("A", data + 100)))}}({{ formatWhole(getBuyableAmount("A", data + 100)) }})</b></div>
 			</div>
 		`
 	})

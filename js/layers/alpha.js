@@ -26,6 +26,9 @@ addLayer('a', {
   baseAmount() {
     return player.points
   },
+  canReset() {
+    return hm('F', 0)
+  },
   type: 'normal',
   exponent() {
     return n(0.1)
