@@ -203,7 +203,7 @@ var displayThings = [
     for (i = 0; i<lastTenTicks.length; i++){
 			tick += lastTenTicks[i] / 10
 		}
-    if (isEndgame()) a = a + '<br>You are past endgame! Bis capped at 1e572.'
+    if (isEndgame()) a = a + '<br>You are past endgame! B is capped at 1e572.'
     if (gcs('te', 12)) a = a + '<br>You have played the game for ' + formatTime(player.timePlayed) + '.'
     if (gcs('te', 13)) a = a + `<br>Current FPS:  ${tick == 0 ? "0" : format((tick/1000) ** -1)}.`
     if (gcs('te', 14)) a = a + '<br>Raw Points: ' + format(getRawPointsGen()) + '.'
