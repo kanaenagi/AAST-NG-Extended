@@ -238,7 +238,7 @@ addLayer('A', {
     11: {
       title: 'A1',
       description: function () {
-        return '2x points. <br>layer A total:<br>' + format(this.effect()) + 'x'
+        return '2x points. <br>layer A total:<br>' + format(ue("A", this.id)) + 'x'
       },
       tooltip: 'All the upgrades that multiples points with a static multiplier in this layer are counted in this upgrade. Same as other layers.',
       effect() {
@@ -284,7 +284,7 @@ addLayer('A', {
       canMaster: true,
       masterCost: n(2.5e218),
       masteredDesc: function () {
-        return '1e20x points. A1 affect antimatter <br>layer A total:<br>' + format(this.effect()) + 'x'
+        return '1e20x points. A1 affect antimatter <br>layer A total:<br>' + format(ue("A", this.id)) + 'x'
       },
     },
     12: {
@@ -354,7 +354,7 @@ addLayer('A', {
         return eff
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("A", this.id)) + 'x'
       },
       canMaster: true,
       masterCost: n(5e234),
@@ -443,7 +443,7 @@ addLayer('A', {
         return eff
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("A", this.id)) + 'x'
       },
       canMaster: true,
       masterCost: n("1e461"),
@@ -535,7 +535,7 @@ addLayer('A', {
         return eff.max(1)
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("A", this.id)) + 'x'
       },
       canMaster: true,
       masterCost: n("1e689"),
@@ -639,7 +639,7 @@ addLayer('A', {
         return eff
       },
       effectDisplay() {
-        return '^' + format(this.effect(), 4)
+        return '^' + format(ue("A", this.id), 4)
       },
       unlocked() {
         return hu(this.layer, 53)
@@ -654,7 +654,7 @@ addLayer('A', {
         return eff
       },
       effectDisplay() {
-        return '^' + format(this.effect(), 4)
+        return '^' + format(ue("A", this.id), 4)
       },
       unlocked() {
         return hu(this.layer, 54)
@@ -669,7 +669,7 @@ addLayer('A', {
         return eff
       },
       effectDisplay() {
-        return '^' + format(this.effect(), 4)
+        return '^' + format(ue("A", this.id), 4)
       },
       unlocked() {
         return hu(this.layer, 55)
@@ -686,7 +686,7 @@ addLayer('A', {
         return eff
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("A", this.id)) + 'x'
       },
       unlocked() {
         return hm('B', 6)
@@ -701,7 +701,7 @@ addLayer('A', {
         return eff
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("A", this.id)) + 'x'
       },
       unlocked() {
         return hu(this.layer, 61)
@@ -724,7 +724,7 @@ addLayer('A', {
         return eff
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("A", this.id)) + 'x'
       },
       tooltip: 'This upgrade is weak, actually.',
       unlocked() {
@@ -877,7 +877,7 @@ addLayer('A', {
         else return n(1)
       },
       rewardDisplay() {
-        return '^' + format(this.rewardEffect())
+        return '^' + format(tmp.A.challenges[this.id].rewardEffect)
       },
     },
     42: {
@@ -891,10 +891,10 @@ addLayer('A', {
         return mu('B', 24)
       },
       goalDescription() {
-        return '463000 points /sec'
+        return '5e7 points'
       },
       canComplete() {
-        return getPointGen().gte(463000)
+        return player.points.gte(5e7)
       },
       rewardDescription: 'Ac7 reward affect antimatter. Ab2 base *1.2',
     },
@@ -949,7 +949,7 @@ addLayer('A', {
           ' A<br>Amount: ' +
           player[this.layer].buyables[this.id] +
           '<br>  Effect: x' +
-          format(this.effect()) +
+          format(tmp.A.buyables[this.id].effect) +
           ' effect'
         )
       },
@@ -1013,7 +1013,7 @@ addLayer('A', {
           ' A<br>Amount: ' +
           player[this.layer].buyables[this.id] +
           '<br>  Effect: +' +
-          format(this.effect()) +
+          format(tmp.A.buyables[this.id].effect) +
           ' Amount'
         )
       },
@@ -1075,7 +1075,7 @@ addLayer('A', {
           ' A<br>Amount: ' +
           player[this.layer].buyables[this.id] +
           '<br>  Effect: ^' +
-          format(this.effect())
+          format(tmp.A.buyables[this.id].effect)
         )
       },
       purchaseLimit() {

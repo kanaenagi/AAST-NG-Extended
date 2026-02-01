@@ -238,14 +238,14 @@ addLayer('a', {
     22: {
       title: 'α8',
       description: function () {
-        return 'Boost Alpha based on raw points.'
+        return 'Boost Alpha based on total A.'
       },
       cost: n(1e52),
       unlocked() {
         return hu('a', 21)
       },
       effect() {
-        let eff = getRawPointsGen().max(10).log(10).div(1e5).pow(10).add(1)
+        let eff = player.A.total.max(10).log(10).div(1e5).pow(10).add(1)
         eff = sc(eff, n(1e10), 0.5) //Sc210
         return eff
       },

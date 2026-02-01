@@ -155,7 +155,7 @@ addLayer('D', {
     11: {
       title: 'D1',
       description: function () {
-        return '1000x points.<br>layer D total:<br>' + format(this.effect()) + 'x'
+        return '1000x points.<br>layer D total:<br>' + format(ue("D", this.id)) + 'x'
       },
       effect() {
         let eff = 1000
@@ -177,7 +177,7 @@ addLayer('D', {
       cost: n(10),
       canMaster: true,
       masterCost: n(1e108),
-      masteredDesc() {return  '1000x points, D1^1e10.<br>layer D total:<br>' + format(this.effect()) + 'x'},
+      masteredDesc() {return  '1000x points, D1^1e10.<br>layer D total:<br>' + format(ue("D", this.id)) + 'x'},
     },
     12: {
       title: 'D2',
@@ -202,7 +202,7 @@ addLayer('D', {
       },
       canMaster: true,
       masterCost: n(1e131),
-      masteredDesc() {return "2x D. Mastered D upg boost B1.<br>Currenly: ^" + format(this.effect())},
+      masteredDesc() {return "2x D. Mastered D upg boost B1.<br>Currenly: ^" + format(ue("D", this.id))},
     },
     14: {
       title: 'D4',
@@ -232,7 +232,7 @@ addLayer('D', {
         return eff.overflow(1e100, 0.5) //Ssc21
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("D", this.id)) + 'x'
       },
       canMaster: true,
       masterCost: n(1e199),
@@ -251,7 +251,7 @@ addLayer('D', {
         return eff.overflow(1e25,0.5)//Ssc22
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("D", this.id)) + 'x'
       },
       canMaster: true,
       masterCost: n(5e219),
@@ -508,7 +508,7 @@ addLayer('D', {
       },
       rewardDescription() {
         return "All Bbs' base x2, D^1.25 boosts AD mult base<br>" +
-        `Currently: ×${format(this.effect())}`
+        `Currently: ×${format(tmp.D.challenges[11].effect)}`
       },
       effect() {
         return player.D.points.add(1).pow(1.25)

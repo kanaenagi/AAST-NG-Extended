@@ -161,10 +161,11 @@ function getRawPointsGen() {
   if (inChallenge('A', 41)) gain = gain.max(1).log10().pow(30)
   if (inChallenge('D', 21)) gain = gain.max(1).slog()
   if (inChallenge('D', 22)) gain = n(0)
-  if (inChallenge('E', 11)) gain = gain.max(0.7105533743096611).addTP(-0.8)
+  if (inChallenge('E', 11)) gain = gain.max(0.7105533743096609).addTP(-0.8)
   if (inChallenge('E', 31)) gain = gain.div(layers.E.challenges[31].nerf())
   return gain
 }
+
 function getPointGen() {
   if (!canGenPoints()) return n(0)
 
@@ -201,11 +202,12 @@ var displayThings = [
     let a = 'Current endgame: 1e572 B'
     let tick = 0
     for (i = 0; i<lastTenTicks.length; i++){
-			tick += lastTenTicks[i] / 10
+			tick += lastTenTicks[i] / lastTenTicks.length
 		}
     if (isEndgame()) a = a + '<br>You are past endgame! B is capped at 1e572.'
     if (gcs('te', 12)) a = a + '<br>You have played the game for ' + formatTime(player.timePlayed) + '.'
-    if (gcs('te', 13)) a = a + `<br>Current FPS:  ${tick == 0 ? "0" : format((tick/1000) ** -1)}.`
+    if (gcs('te', 13)) a = a + `<br>Current FPS:  ${tick === 0 ? "0" : Number((tick/1000) ** -1).toFixed(2)}` 
+    // + `<br>Current TPS : ${Number(tick/1000).toFixed(4)}s/tick.`
     if (gcs('te', 14)) a = a + '<br>Raw Points: ' + format(getRawPointsGen()) + '.'
     if (gcs('te', 21)) a = a + '<br>There are ' + format(player.softcap, 0) + ' softcaps in all now.'
     if (gcs('te', 31)) a = a + '<br>There are ' + format(player.ssc.points, 0) + ' super softcaps in all now.'
@@ -215,7 +217,7 @@ var displayThings = [
 ]
 // Determines when the game "ends"
 function isEndgame() {
-  return hm("B", 10)
+  return false
 }
 
 // Less important things beyond this point!
@@ -230,7 +232,8 @@ function maxTickLength() {
 
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,
 // you can cap their current resources with this.
-function fixOldSave(oldVersion) { }
+function fixOldSave(oldVersion) {
+}
 
 function gba(a, b) {
   return getBuyableAmount(a, b)

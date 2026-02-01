@@ -262,9 +262,9 @@ addLayer('ac', {
     61: {
       name: '36. infinity again^2',
       done() {
-        return player.B.points.gte("1.79e308")
+        return player.B.points.gte("1.80e308")
       },
-      tooltip: 'get 1.79e308 B.',
+      tooltip: 'get 1.80e308 B.',
     },
     62: {
       name: '37. Year in Points',
@@ -332,9 +332,9 @@ addLayer('ac', {
     74: {
       name: '46. A bigger Timewall',
       done() {
-        return challengeCompletions('E', 12) >= 3
+        return challengeCompletions('E', 12) >= 2
       },
-      tooltip: 'complete Ec2x3',
+      tooltip: 'complete Ec2x2',
     },
     75: {
       name: '47. Shown Upgrades',
@@ -421,12 +421,20 @@ addLayer('ac', {
       tooltip: 'complete Ec6x1',
     },
     93: {
-      name: '59. The Big Black',
+      name: '59. Maelstrom Silenced',
+      done() {
+        return gba('E', 23).gte(40)
+      },
+      tooltip: 'Reach the cap of All E buyables.',
+    },
+    94: {
+      name: '60. The Big Black',
       done() {
         return hm("B", 10)
       },
       tooltip: 'unlock Black hole.',
     },
+    /*
     94: {
       name: '60. Massively',
       done() {
@@ -434,6 +442,7 @@ addLayer('ac', {
       },
       tooltip: 'get 1e1000 A!!',
     },
+    */
     95: {
       name: '61. Ek ruby',
       done() {
@@ -560,13 +569,14 @@ addLayer('ac', {
       },
       tooltip: 'get 1e400 E.',
     },
+    
   },
   tabFormat: [
     'blank',
     [
       'display-text',
       function () {
-        return "<h3 style='color: yellow;'>Achievements: " + player.ac.achievements.length + '/77 </h3>'
+        return "<h3 style='color: yellow;'>Achievements: " + player.ac.achievements.length + '/78 </h3>'
       },
     ],
     'blank',

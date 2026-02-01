@@ -97,7 +97,7 @@ addLayer('sc', {
     11: {
       title: 'ScU1',
       description: function () {
-        return 'Softcap Points boosts points.<br>Effect: ' + format(this.effect()) + 'x'
+        return 'Softcap Points boosts points.<br>Effect: ' + format(ue("sc", this.id)) + 'x'
       },
       effect() {
         let eff = mu("sc", 11) ? player.sc.points.max(1).pow(3) : player.sc.points.max(1)
@@ -109,13 +109,13 @@ addLayer('sc', {
       masterCost: n(16960),
       masteredDesc: function () {
         layers.E.buyables[24].unlocked()
-        return `Softcap Points boosts points and ${layers.E.buyables[24].unlocked() || player.F.layerShown ? 'Eb12' : randomString(4)} base.<br>Effect: ` + format(this.effect()) + 'x'
+        return `Softcap Points boosts points and ${layers.E.buyables[24].unlocked() || player.F.layerShown ? 'Eb12' : randomString(4)} base.<br>Effect: ` + format(ue("sc", this.id)) + 'x'
       },
     },
     12: {
       title: 'ScU2',
       description: function () {
-        return 'Softcap Points boosts A and B.<br>Effect: ' + format(this.effect()) + 'x'
+        return 'Softcap Points boosts A and B.<br>Effect: ' + format(ue("sc", this.id)) + 'x'
       },
       effect() {
         let eff = player.sc.points.max(1).pow(0.5)
@@ -130,7 +130,7 @@ addLayer('sc', {
     13: {
       title: 'ScU3',
       description: function () {
-        return 'Softcap Points boosts A10<br>Effect: ^' + format(this.effect())
+        return 'Softcap Points boosts A10<br>Effect: ^' + format(ue("sc", this.id))
       },
       effect() {
         let eff = player.sc.points.max(1).pow(0.3).log(2).max(1)
@@ -144,7 +144,7 @@ addLayer('sc', {
     14: {
       title: 'ScU4',
       description: function () {
-        return 'Softcap Points boosts A5<br>Effect: ^' + format(this.effect())
+        return 'Softcap Points boosts A5<br>Effect: ^' + format(ue("sc", this.id))
       },
       effect() {
         let eff = player.sc.points.max(1).pow(0.5).log(4).max(1)
@@ -158,7 +158,7 @@ addLayer('sc', {
     15: {
       title: 'ScU5',
       description: function () {
-        return 'Softcap Points boosts C3<br>Effect: ^' + format(this.effect())
+        return 'Softcap Points boosts C3<br>Effect: ^' + format(ue("sc", this.id))
       },
       effect() {
         let eff = player.sc.points.max(1).pow(0.8).log(8).max(1)
@@ -172,7 +172,7 @@ addLayer('sc', {
     16: {
       title: 'ScU6',
       description: function () {
-        return 'Softcap Points boosts C.<br>Effect: ' + format(this.effect()) + 'x'
+        return 'Softcap Points boosts C.<br>Effect: ' + format(ue("sc", this.id)) + 'x'
       },
       effect() {
         let eff = player.sc.points.max(1).pow(0.5)
@@ -187,7 +187,7 @@ addLayer('sc', {
     21: {
       title: 'ScU7',
       description: function () {
-        return 'Softcap Points boosts D.<br>Effect: ' + format(this.effect()) + 'x'
+        return 'Softcap Points boosts D.<br>Effect: ' + format(ue("sc", this.id)) + 'x'
       },
       effect() {
         let eff = player.sc.points.max(1).pow(0.33)
@@ -202,7 +202,7 @@ addLayer('sc', {
     22: {
       title: 'ScU8',
       description: function () {
-        return 'Softcap Points boosts D1<br>Effect: ^' + format(this.effect())
+        return 'Softcap Points boosts D1<br>Effect: ^' + format(ue("sc", this.id))
       },
       effect() {
         let eff = player.sc.points.max(1).pow(0.7).log(7).max(1)
@@ -216,7 +216,7 @@ addLayer('sc', {
     23: {
       title: 'ScU9',
       description: function () {
-        return 'Softcap Points boosts D11<br>Effect: ^' + format(this.effect())
+        return 'Softcap Points boosts D11<br>Effect: ^' + format(ue("sc", this.id))
       },
       effect() {
         let eff = player.sc.points.max(1).pow(0.6).log(6).max(1)
@@ -231,7 +231,7 @@ addLayer('sc', {
     24: {
       title: 'ScU10',
       description: function () {
-        return 'Softcap Points boosts D18<br>Effect: ^' + format(this.effect())
+        return 'Softcap Points boosts D18<br>Effect: ^' + format(ue("sc", this.id))
       },
       effect() {
         let eff = player.sc.points.max(1).pow(0.4).log(10).max(1)
@@ -246,7 +246,7 @@ addLayer('sc', {
     25: {
       title: 'ScU11',
       description: function () {
-        return 'Softcap Points boosts antimatter generation.<br>Effect: ^' + format(this.effect())
+        return 'Softcap Points boosts antimatter generation.<br>Effect: ^' + format(ue("sc", this.id))
       },
       effect() {
         let eff = player.sc.points.max(1).pow(0.1).log(2).max(1)
@@ -260,7 +260,7 @@ addLayer('sc', {
     26: {
       title: 'ScU12',
       description: function () {
-        return 'Softcap Points boosts Ab2 base<br>Effect: +' + format(this.effect())
+        return 'Softcap Points boosts Ab2 base<br>Effect: +' + format(ue("sc", this.id))
       },
       effect() {
         let eff = player.sc.points.max(1).pow(0.3).log(9).sub(1).max(0)
@@ -274,7 +274,7 @@ addLayer('sc', {
     31: {
       title: 'ScU13',
       description: function () {
-        return 'Softcap Points boosts A1.<br>Effect: ^' + format(this.effect())
+        return 'Softcap Points boosts A1.<br>Effect: ^' + format(ue("sc", this.id))
       },
       effect() {
         let eff = player.sc.points.max(10000).log(10).pow(0.2).add(1).max(1)
@@ -288,7 +288,7 @@ addLayer('sc', {
     32: {
       title: 'ScU14',
       description: function () {
-        return 'Softcap Points boosts E.<br>Effect: ' + format(this.effect()) + 'x'
+        return 'Softcap Points boosts E.<br>Effect: ' + format(ue("sc", this.id)) + 'x'
       },
       effect() {
         let eff = player.sc.points.max(10).log(10).pow(2)
@@ -304,7 +304,7 @@ addLayer('sc', {
     33: {
       title: 'ScU15',
       description: function () {
-        return 'Softcap Points boosts Tickspeed base.<br>Effect: ' + format(this.effect()) + 'x'
+        return 'Softcap Points boosts Tickspeed base.<br>Effect: ' + format(ue("sc", this.id)) + 'x'
       },
       effect() {
         let eff = player.sc.points.max(10).log(10).pow(0.2)
@@ -318,7 +318,7 @@ addLayer('sc', {
     34: {
       title: 'ScU16',
       description: function () {
-        return 'Softcap Points boosts Em.<br>Effect: ^' + format(this.effect()) 
+        return 'Softcap Points boosts Em.<br>Effect: ^' + format(ue("sc", this.id)) 
       },
       effect() {
         let eff = player.sc.points.max(10).log(10).pow(0.1).mul(1.25)

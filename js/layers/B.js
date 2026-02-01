@@ -253,7 +253,7 @@ addLayer('B', {
     11: {
       title: 'B1',
       description: function () {
-        return '5x points. 0.5x passive generate A.<br>layer B total:<br>' + format(this.effect()) + 'x'
+        return '5x points. 0.5x passive generate A.<br>layer B total:<br>' + format(ue("B", 11)) + 'x'
       },
       effect() {
         let eff = n(5)
@@ -288,7 +288,7 @@ addLayer('B', {
       canMaster: true,
       masterCost: n(1.5e124),
       masteredDesc() {
-        return '1e250x points, 0.5x passive generate A, B1 affect A and B.<br>layer B total:<br>' + format(this.effect()) + 'x'
+        return '1e250x points, 0.5x passive generate A, B1 affect A and B.<br>layer B total:<br>' + format(ue("B", 11)) + 'x'
       }
     },
     12: {
@@ -353,7 +353,7 @@ addLayer('B', {
         return eff.max(1)
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("B", 16)) + 'x'
       },
       canMaster: true,
       masterCost: n(5e192),
@@ -381,7 +381,7 @@ addLayer('B', {
         return eff.max(1)
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("B", 21)) + 'x'
       },
       canMaster: true,
       masterCost: n(1e214),
@@ -413,7 +413,7 @@ addLayer('B', {
       },
       canMaster: true,
       masterCost: n("1e307"),
-      masteredDesc() { return "4x A passive generation. Mastered B upgrades boost AD mult base.<br> Currenly: " + format(this.effect()) + "x" },
+      masteredDesc() { return "4x A passive generation. Mastered B upgrades boost AD mult base.<br> Currenly: " + format(ue("B", 11)) + "x" },
     },
     24: {
       title: 'B10',
@@ -457,7 +457,7 @@ addLayer('B', {
         return 'Current best points: ' + format(player.B.pointsAc1)
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("B", 26)) + 'x'
       },
       canMaster: true,
       masterCost: n("3.87e387"),
@@ -550,7 +550,7 @@ addLayer('B', {
         return hu(this.layer, 43)
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("B", 44)) + 'x'
       },
     },
     45: {
@@ -591,7 +591,7 @@ addLayer('B', {
         return hu(this.layer, 51)
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("B", 52)) + 'x'
       },
     },
     53: {
@@ -648,7 +648,7 @@ addLayer('B', {
         return hm('B', 2)
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("B", this.id)) + 'x'
       },
     },
     62: {
@@ -668,7 +668,7 @@ addLayer('B', {
         return eff
       },
       effectDisplay() {
-        return '^' + format(this.effect())
+        return '^' + format(ue("B", this.id))
       },
       unlocked() {
         return hu(this.layer, 62)
@@ -723,7 +723,7 @@ addLayer('B', {
         return eff.softcap(1.2, 0.25) //Sc102
       },
       effectDisplay() {
-        return '^' + format(this.effect(), 4)
+        return '^' + format(ue("B", this.id), 4)
       },
       cost: n('5e300'),
       unlocked() {
@@ -738,7 +738,7 @@ addLayer('B', {
         return eff
       },
       effectDisplay() {
-        return format(this.effect(), 4) + 'x'
+        return format(ue("B", this.id), 4) + 'x'
       },
       cost: n(2).pow(1024),
       unlocked() {
@@ -753,7 +753,7 @@ addLayer('B', {
         return eff
       },
       effectDisplay() {
-        return '^' + format(this.effect(), 4)
+        return '^' + format(ue("B", this.id), 4)
       },
       cost: n('1e315'),
       unlocked() {
@@ -818,7 +818,7 @@ addLayer('B', {
         )
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("B", this.id)) + 'x'
       },
       unlocked() {
         return hu('B', 83)
@@ -909,7 +909,7 @@ addLayer('B', {
           ' B<br>Amount: ' +
           a +
           '<br>  Effect: x' +
-          format(this.effect()) +
+          format(tmp.B.buyables[this.id].effect) +
           ' A'
         )
       },
@@ -979,7 +979,7 @@ addLayer('B', {
           ' B<br>Amount: ' +
           a +
           '<br> Effect: x' +
-          format(this.effect()) +
+          format(tmp.B.buyables[this.id].effect) +
           ' B'
         )
       },
@@ -1028,7 +1028,7 @@ addLayer('B', {
       display() {
         let a = format(gba(this.layer, this.id))
         if (gba('A', 12).gt(0)) a = a + '+' + format(buyableEffect('A', 12)) + '=' + format(gba(this.layer, this.id).add(buyableEffect('A', 12)))
-        return 'D7 effect base +' + format(this.effect()) + '<br>Cost: ' + format(this.cost()) + ' B<br>Amount: ' + a
+        return 'D7 effect base +' + format(tmp.B.buyables[this.id].effect) + '<br>Cost: ' + format(this.cost()) + ' B<br>Amount: ' + a
       },
       purchaseLimit() {
         return player.B.Bblim
@@ -1093,7 +1093,7 @@ addLayer('B', {
           ' B<br>Amount: ' +
           a +
           '<br> Effect: x' +
-          format(this.effect()) +
+          format(tmp.B.buyables[this.id].effect) +
           ' C'
         )
       },
@@ -1159,7 +1159,7 @@ addLayer('B', {
           ' B<br>Amount: ' +
           a +
           '<br> Effect: x' +
-          format(this.effect()) +
+          format(tmp.B.buyables[this.id].effect) +
           ' D'
         )
       },
@@ -1226,7 +1226,7 @@ addLayer('B', {
           ' B<br>Amount: ' +
           a +
           '<br> Effect: x' +
-          format(this.effect()) +
+          format(tmp.B.buyables[this.id].effect) +
           ' Points'
         )
       },

@@ -153,7 +153,7 @@ addLayer('C', {
     11: {
       title: 'C1',
       description: function () {
-        return '100x points, 1x B passive generation, 2x Antimatter generation. Adjust some challenge requirements.<br>layer C total: <br>' + format(this.effect()) + 'x'
+        return '100x points, 1x B passive generation, 2x Antimatter generation. Adjust some challenge requirements.<br>layer C total: <br>' + format(ue("C", this.id)) + 'x'
       },
       effect() {
         let eff = 100
@@ -175,7 +175,7 @@ addLayer('C', {
       canMaster: true,
       masterCost: n(1e93),
       masteredDesc: function () {
-        return '1e20x points and Antimatter Generation, 1x B passive generation. Adjust some challenge requirements.<br>layer C total: <br>' + format(this.effect()) + 'x'
+        return '1e20x points and Antimatter Generation, 1x B passive generation. Adjust some challenge requirements.<br>layer C total: <br>' + format(ue("C", this.id)) + 'x'
       },
     },
     12: {
@@ -211,7 +211,7 @@ addLayer('C', {
         return eff
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("C", this.id)) + 'x'
       },
       canMaster: true,
       masterCost: n(1e205),
@@ -267,7 +267,7 @@ addLayer('C', {
       canMaster: true,
       masterCost: n('1e464'),
       masteredDesc() {
-        return '10x C and 1x C passive generation. Mastered C upgrades boost A1.<br>Currenly: ^' + format(this.effect())
+        return '10x C and 1x C passive generation. Mastered C upgrades boost A1.<br>Currenly: ^' + format(ue("C", this.id))
       },
     },
     22: {

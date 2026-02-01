@@ -102,7 +102,7 @@ addLayer('E', {
   },
   EbpowCal() {
     let pow = n(100)
-    pow = n(2).add(n(98).div(tmp.E.ekf))
+    pow = n(100).div(tmp.E.ekf).max(2)
     return pow
   },
   update(diff) {
@@ -290,7 +290,7 @@ addLayer('E', {
       effectDescription: 'autobuy Eb8-9.',
       toggles: [['E', 'auto5']],
     },
-    21: {
+    20: {
       requirementDescription: 'Em21: 1.80e308 total E',
       done() {
         return player[this.layer].total.gte('1.80e308')
@@ -393,7 +393,7 @@ addLayer('E', {
     11: {
       title: 'E1',
       description: function () {
-        return '1e100000x points<br>' + 'layer E total: <br>' + format(this.effect()) + 'x'
+        return '1e100000x points<br>' + 'layer E total: <br>' + format(ue("E", this.id)) + 'x'
       },
       effect() {
         let eff = mu("E", 11) ? n("ee6") : n('1e100000')
@@ -406,7 +406,7 @@ addLayer('E', {
       cost: n(1500),
       canMaster: true,
       masterCost: n(1e13),
-      masteredDesc: function () { return "1e1000000x points<br>" + 'layer E total: <br>' + format(this.effect()) + 'x' },
+      masteredDesc: function () { return "1e1000000x points<br>" + 'layer E total: <br>' + format(ue("E", this.id)) + 'x' },
     },
     12: {
       title: 'E2',
@@ -422,7 +422,7 @@ addLayer('E', {
       },
       cost: n(10000),
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("E", this.id)) + 'x'
       },
       unlocked() {
         return hu(this.layer, 11)
@@ -450,7 +450,7 @@ addLayer('E', {
         return hu(this.layer, 12)
       },
       effectDisplay() {
-        return format(this.effect(), 3) + 'x'
+        return format(ue("E", this.id), 3) + 'x'
       },
       canMaster: true,
       masterCost: n(5e25),
@@ -472,7 +472,7 @@ addLayer('E', {
       },
       cost: n(40000),
       effectDisplay() {
-        return format(this.effect(), 3) + 'x'
+        return format(ue("E", this.id), 3) + 'x'
       },
       unlocked() {
         return hu(this.layer, 13)
@@ -493,7 +493,7 @@ addLayer('E', {
         return eff
       },
       effectDisplay() {
-        return '^' + format(this.effect(), 3)
+        return '^' + format(ue("E", this.id), 3)
       },
       unlocked() {
         return hu(this.layer, 14)
@@ -522,7 +522,7 @@ addLayer('E', {
         return [eff1, eff2]
       },
       effectDisplay() {
-        return format(this.effect()[0]) + 'x A and ' + format(this.effect()[1]) + 'x B.'
+        return format(ue("E", this.id)[0]) + 'x A and ' + format(ue("E", this.id)[1]) + 'x B.'
       },
       unlocked() {
         return hu(this.layer, 15)
@@ -565,7 +565,7 @@ addLayer('E', {
         return hu(this.layer, 21)
       },
       effectDisplay() {
-        return format(this.effect()[0]) + 'x C and ' + format(this.effect()[1]) + 'x D.'
+        return format(ue("E", this.id)[0]) + 'x C and ' + format(ue("E", this.id)[1]) + 'x D.'
       },
       canMaster: true,
       masterCost: n(5e58),
@@ -585,7 +585,7 @@ addLayer('E', {
         return hu(this.layer, 22)
       },
       effectDisplay() {
-        return format(this.effect(), 3) + 'x'
+        return format(ue("E", this.id), 3) + 'x'
       },
       canMaster: true,
       masterCost: n(2.5e63),
@@ -621,7 +621,7 @@ addLayer('E', {
         return eff
       },
       effectDisplay() {
-        return format(this.effect(), 3) + 'x'
+        return format(ue("E", this.id), 3) + 'x'
       },
       unlocked() {
         return hu(this.layer, 25)
@@ -638,7 +638,7 @@ addLayer('E', {
         return eff
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("E", this.id)) + 'x'
       },
       unlocked() {
         return hu(this.layer, 26)
@@ -655,7 +655,7 @@ addLayer('E', {
         return eff
       },
       effectDisplay() {
-        return format(this.effect(), 3) + 'x'
+        return format(ue("E", this.id), 3) + 'x'
       },
       unlocked() {
         return hu(this.layer, 31)
@@ -678,7 +678,7 @@ addLayer('E', {
         return eff
       },
       effectDisplay() {
-        return '^' + format(this.effect(), 3)
+        return '^' + format(ue("E", this.id), 3)
       },
       unlocked() {
         return hu(this.layer, 33)
@@ -696,7 +696,7 @@ addLayer('E', {
         return eff
       },
       effectDisplay() {
-        return format(this.effect(), 3) + 'x'
+        return format(ue("E", this.id), 3) + 'x'
       },
       unlocked() {
         return hu(this.layer, 34)
@@ -715,7 +715,7 @@ addLayer('E', {
         return eff
       },
       effectDisplay() {
-        return format(this.effect(), 3) + 'x'
+        return format(ue("E", this.id), 3) + 'x'
       },
       unlocked() {
         return hu(this.layer, 35)
@@ -784,7 +784,7 @@ addLayer('E', {
         return eff
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("E", this.id)) + 'x'
       },
       unlocked() {
         return hu(this.layer, 46)
@@ -795,12 +795,12 @@ addLayer('E', {
       description: 'Reduce Ac7 requirement based on E.',
       cost: n('2e24'),
       effect() {
-        let eff = n(1).div(player.E.points.max(10).log(10).max(10).log(10)).min(1)
+        let eff = n(1).div(player.E.points.max(10).log(10).max(10).log(10)).min(1).max(0.01)
         if (hu('E', 76)) eff = eff.pow(1.1)
         return eff
       },
       effectDisplay() {
-        return '^' + format(this.effect(), 4)
+        return '^' + format(ue("E", this.id), 4)
       },
       unlocked() {
         return hu(this.layer, 51)
@@ -817,7 +817,7 @@ addLayer('E', {
         return eff
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("E", this.id)) + 'x'
       },
       unlocked() {
         return hu(this.layer, 52)
@@ -837,7 +837,7 @@ addLayer('E', {
         return eff
       },
       effectDisplay() {
-        return '÷' + format(this.effect())
+        return '÷' + format(ue("E", this.id))
       },
       unlocked() {
         return hu(this.layer, 53)
@@ -853,7 +853,7 @@ addLayer('E', {
         return eff.max(0)
       },
       effectDisplay() {
-        return '+' + format(this.effect())
+        return '+' + format(ue("E", this.id))
       },
       unlocked() {
         return hu(this.layer, 54)
@@ -870,7 +870,7 @@ addLayer('E', {
         return eff.max(1)
       },
       effectDisplay() {
-        return '^' + format(this.effect(), 3)
+        return '^' + format(ue("E", this.id), 3)
       },
       unlocked() {
         return hu(this.layer, 55)
@@ -892,7 +892,7 @@ addLayer('E', {
         return eff.max(1)
       },
       effectDisplay() {
-        return format(this.effect(), 3) + 'x'
+        return format(ue("E", this.id), 3) + 'x'
       },
       unlocked() {
         return hu(this.layer, 56)
@@ -918,7 +918,7 @@ addLayer('E', {
         return eff.max(1)
       },
       effectDisplay() {
-        return format(this.effect(), 3) + 'x'
+        return format(ue("E", this.id), 3) + 'x'
       },
       unlocked() {
         return hu(this.layer, 62)
@@ -945,7 +945,7 @@ addLayer('E', {
         return eff.max(1)
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("E", this.id)) + 'x'
       },
       unlocked() {
         return hu('E', 64)
@@ -962,7 +962,7 @@ addLayer('E', {
         return eff.max(1)
       },
       effectDisplay() {
-        return '÷' + format(this.effect())
+        return '÷' + format(ue("E", this.id))
       },
       unlocked() {
         return hu('E', 65)
@@ -986,7 +986,7 @@ addLayer('E', {
         return eff
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("E", this.id)) + 'x'
       },
     },
     72: {
@@ -1012,7 +1012,7 @@ addLayer('E', {
         return eff
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("E", this.id)) + 'x'
       },
       cost: n('5e54'),
       unlocked() {
@@ -1070,7 +1070,7 @@ addLayer('E', {
       },
       cost: n('1e65'),
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("E", this.id)) + 'x'
       },
       unlocked() {
         return hu(this.layer, 81)
@@ -1084,9 +1084,9 @@ addLayer('E', {
         return eff.softcap(2, 0.5) //Sc165
       },
       effectDisplay() {
-        return '^' + format(this.effect(), 4)
+        return '^' + format(ue("E", this.id), 4)
       },
-      cost: n('1e68'),
+      cost: n('2e67'),
       unlocked() {
         return hu(this.layer, 82)
       },
@@ -1118,7 +1118,7 @@ addLayer('E', {
         return eff
       },
       effectDisplay() {
-        return '+' + format(this.effect())
+        return '+' + format(ue("E", this.id))
       },
     },
     86: {
@@ -1141,7 +1141,7 @@ addLayer('E', {
         return eff
       },
       effectDisplay() {
-        return '+' + format(this.effect())
+        return '+' + format(ue("E", this.id))
       },
     },
     91: {
@@ -1172,7 +1172,7 @@ addLayer('E', {
         return eff
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("E", this.id)) + 'x'
       },
     },
     93: {
@@ -1187,7 +1187,7 @@ addLayer('E', {
         return eff
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("E", this.id)) + 'x'
       },
     },
     94: {
@@ -1205,7 +1205,7 @@ addLayer('E', {
         return eff
       },
       effectDisplay() {
-        return '+' + format(this.effect())
+        return '+' + format(ue("E", this.id))
       },
       unlocked() {
         return hu(this.layer, 93)
@@ -1225,7 +1225,7 @@ addLayer('E', {
         return eff
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("E", this.id)) + 'x'
       },
     },
     96: {
@@ -1246,7 +1246,7 @@ addLayer('E', {
         return eff
       },
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("E", this.id)) + 'x'
       },
       unlocked() {
         return hm('E', 16)
@@ -1262,7 +1262,7 @@ addLayer('E', {
       },
       cost: n('1e200'),
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("E", this.id)) + 'x'
       },
       unlocked() {
         return hu(this.layer, 101)
@@ -1286,7 +1286,7 @@ addLayer('E', {
       },
       cost: n('1e270'),
       effectDisplay() {
-        return format(this.effect()) + 'x'
+        return format(ue("E", this.id)) + 'x'
       },
       unlocked() {
         return hu(this.layer, 103)
@@ -1380,7 +1380,7 @@ addLayer('E', {
           player[this.layer].buyables[this.id] +
           ' \n\
    Effect: x' +
-          format(this.effect()) +
+          format(tmp.E.buyables[this.id].effect) +
           ' A'
         )
       },
@@ -1443,7 +1443,7 @@ addLayer('E', {
           player[this.layer].buyables[this.id] +
           ' \n\
    Effect: x' +
-          format(this.effect()) +
+          format(tmp.E.buyables[this.id].effect) +
           ' B'
         )
       },
@@ -1506,7 +1506,7 @@ addLayer('E', {
           player[this.layer].buyables[this.id] +
           ' \n\
    Effect: x' +
-          format(this.effect()) +
+          format(tmp.E.buyables[this.id].effect) +
           ' C/D'
         )
       },
@@ -1565,7 +1565,7 @@ addLayer('E', {
           player[this.layer].buyables[this.id] +
           ' \n\
    Effect: +' +
-          format(this.effect(), 4) +
+          format(tmp.E.buyables[this.id].effect, 4) +
           ' E exponent \n\ (hardcapped at 0.092)'
         )
       },
@@ -1626,7 +1626,7 @@ addLayer('E', {
           player[this.layer].buyables[this.id] +
           ' \n\
    Effect: x' +
-          format(this.effect()) +
+          format(tmp.E.buyables[this.id].effect) +
           ' E'
         )
       },
@@ -1687,7 +1687,7 @@ addLayer('E', {
           player[this.layer].buyables[this.id] +
           ' \n\
    Effect: +' +
-          format(this.effect())
+          format(tmp.E.buyables[this.id].effect)
         )
       },
       purchaseLimit() {
@@ -1743,7 +1743,7 @@ addLayer('E', {
           player[this.layer].buyables[this.id] +
           ' \n\
    Effect: +' +
-          format(this.effect(), 5)
+          format(tmp.E.buyables[this.id].effect, 5)
         )
       },
       purchaseLimit() {
@@ -1806,7 +1806,7 @@ addLayer('E', {
           player[this.layer].buyables[this.id] +
           ' \n\
    Effect: ÷' +
-          format(this.effect())
+          format(tmp.E.buyables[this.id].effect)
         )
       },
       purchaseLimit() {
@@ -1866,7 +1866,7 @@ addLayer('E', {
           player[this.layer].buyables[this.id] +
           ' \n\
    Effect: x' +
-          format(this.effect())
+          format(tmp.E.buyables[this.id].effect)
         )
       },
       unlocked() {
@@ -1920,7 +1920,7 @@ addLayer('E', {
           player[this.layer].buyables[this.id] +
           ' \n\
    Effect: x' +
-          format(this.effect())
+          format(tmp.E.buyables[this.id].effect)
         )
       },
       unlocked() {
@@ -1974,7 +1974,7 @@ addLayer('E', {
           player[this.layer].buyables[this.id] +
           ' \n\
    Effect: x' +
-          format(this.effect())
+          format(tmp.E.buyables[this.id].effect)
         )
       },
       unlocked() {
@@ -2020,7 +2020,7 @@ addLayer('E', {
           player[this.layer].buyables[this.id] +
           ' \n\
    Effect: x' +
-          format(this.effect())
+          format(tmp.E.buyables[this.id].effect)
         )
       },
       unlocked() {
@@ -2066,7 +2066,7 @@ addLayer('E', {
           player[this.layer].buyables[this.id] +
           ' \n\
    Effect: x' +
-          format(this.effect())
+          format(tmp.E.buyables[this.id].effect)
         )
       },
       unlocked() {
@@ -2112,7 +2112,7 @@ addLayer('E', {
         return eff
       },
       rewardDisplay() {
-        return format(this.rewardEffect()) + 'x'
+        return format(tmp.E.challenges[this.id].rewardEffect) + 'x'
       },
     },
     12: {
@@ -2141,10 +2141,10 @@ addLayer('E', {
       canComplete() {
         return player.B.points.gte(this.goal())
       },
-      rewardDescription: 'boosts to E based on Raw Points.',
+      rewardDescription: 'boosts to E based on Mastered upgrades.',
       rewardEffect() {
         let bas = Decimal.pow(challengeCompletions('E', 12), 1.35).mul(2)
-        let eff = getRawPointsGen().max(1e10).log10().log10().pow(bas)
+        let eff = player.ma.points.pow(bas)
         if (hu('B', 85)) eff = eff.pow(1.2)
         if (eff.gte(2)) eff = eff.div(2).pow(0.5).mul(2) //Sc110
         if (eff.gte(1000)) eff = eff.div(1000).pow(0.25).mul(1000) //Sc117
@@ -2152,7 +2152,7 @@ addLayer('E', {
         else return n(1)
       },
       rewardDisplay() {
-        return format(this.rewardEffect(), 3) + 'x'
+        return format(tmp.E.challenges[this.id].rewardEffect, 3) + 'x'
       },
     },
     21: {
@@ -2208,7 +2208,7 @@ addLayer('E', {
         else return [n(1), n(1)]
       },
       rewardDisplay() {
-        return format(this.rewardEffect()[0]) + 'x A and ' + format(this.rewardEffect()[1]) + 'x B'
+        return format(tmp.E.challenges[this.id].rewardEffect[0]) + 'x A and ' + format(tmp.E.challenges[this.id].rewardEffect[1]) + 'x B'
       },
     },
     22: {
@@ -2264,7 +2264,7 @@ addLayer('E', {
         else return [n(1), n(1)]
       },
       rewardDisplay() {
-        return format(this.rewardEffect()[0]) + 'x C and ' + format(this.rewardEffect()[1]) + 'x D'
+        return format(tmp.E.challenges[this.id].rewardEffect[0]) + 'x C and ' + format(tmp.E.challenges[this.id].rewardEffect[1]) + 'x D'
       },
     },
     31: {
@@ -2283,23 +2283,22 @@ addLayer('E', {
         return hm('E', 14)
       },
       goal() {
-        let goal = [n('1'), n('1e12345'), n('1e88888'), n('1e2000'), n('1e20250')]
-        return goal[challengeCompletions('E', 31)]
+        return n(66686)
       },
       goalDescription: function () {
-        return format(this.goal()) + ' Raw Points'
+        return format(this.goal()) + ' Points'
       },
       onEnter() {
         player.points = n(10)
         updateTemp()
       },
       nerf() {
-        let nerf = [n('e1.8e30'), n('e2e30'), n('e2.2e30'), n('e2.4e30'), n('e2.6e30'), n(1)]
+        let nerf = [n('e1.8e30'), n('e2e30'), n('e2.2e30'), n('e2.4e30'), n('e2.6e30'), n('e3e30')]
         return nerf[challengeCompletions('E', 31)]
       },
       canComplete() {
         let comp = false
-        if (inChallenge("E", 31) && !comp && getRawPointsGen().gte(this.goal())) comp = true
+        if (inChallenge("E", 31) && !comp && player.points.gte(this.goal())) comp = true
         return comp
       },
       rewardDescription: 'Boost E Gainmult based on completions.',
@@ -2310,7 +2309,7 @@ addLayer('E', {
         else return n(1)
       },
       rewardDisplay() {
-        return '^' + format(this.rewardEffect(), 4)
+        return '^' + format(tmp.E.challenges[this.id].rewardEffect, 4)
       },
     },
     32: {
@@ -2351,7 +2350,7 @@ addLayer('E', {
         return eff
       },
       rewardDisplay() {
-        return '+' + format(this.rewardEffect())
+        return '+' + format(tmp.E.challenges[this.id].rewardEffect)
       },
     },
     41: {
@@ -2397,7 +2396,7 @@ addLayer('E', {
         return eff
       },
       rewardDisplay() {
-        return '^' + format(this.rewardEffect(), 3)
+        return '^' + format(tmp.E.challenges[this.id].rewardEffect, 3)
       },
     },
     42: {
@@ -2435,7 +2434,7 @@ addLayer('E', {
         return eff
       },
       rewardDisplay() {
-        return 'Em/Ek exp +' + format(this.rewardEffect())
+        return 'Em/Ek exp +' + format(tmp.E.challenges[this.id].rewardEffect)
       },
     },
     51: {
@@ -2473,7 +2472,7 @@ addLayer('E', {
         player.points = n(10)
       },
       rewardDisplay() {
-        return format(this.rewardEffect()) + 'x'
+        return format(tmp.E.challenges[this.id].rewardEffect) + 'x'
       },
     },
     52: {
@@ -2511,7 +2510,7 @@ addLayer('E', {
         player.points = n(10)
       },
       rewardDisplay() {
-        return format(this.rewardEffect()) + 'x'
+        return format(tmp.E.challenges[this.id].rewardEffect) + 'x'
       },
     },
   },

@@ -110,3 +110,21 @@ function toPlaces(x, precision, maxAccepted) {
   }
   return result
 }
+
+function formatMass(x) {
+  if (x.lt(1e3)) return format(x) + "g"
+  if (x.lt(1e6)) return format(x.div(1e3)) + "kg"
+  if (x.lt(1.5e56)) return format(x.div(1e6)) + "t"
+  if (x.lt("ee9")) return format(x.div(1.5e56)) + "uni"
+  if (x.lt("ee24")) return format(x.log10().div(1e9)) + "mlt"
+  if (x.lt("ee39")) return format(x.log10().div(1e24)) + "mgv"
+  if (x.lt("ee54")) return format(x.log10().div(1e39)) + "giv"
+  if (x.lt("ee69")) return format(x.log10().div(1e54)) + "tev"
+  if (x.lt("ee84")) return format(x.log10().div(1e69)) + "pev"
+  if (x.lt("ee99")) return format(x.log10().div(1e84)) + "exv"
+  if (x.lt("ee114")) return format(x.log10().div(1e99)) + "zev"
+  if (x.lt("ee129")) return format(x.log10().div(1e114)) + "yov"
+  let arv = x.log10().div(1e9).log10().div(15).floor()
+  if (arv.add(2).lt(1000)) return format(x.log10().div(1e9).div(n(10).pow(arv.mul(15)))) + "arv^" + format(arv.add(2), 0)
+  return format(x.log10().div(1e9).log10().div(15)) + "arvs"
+}
