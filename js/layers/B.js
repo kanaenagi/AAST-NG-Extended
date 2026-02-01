@@ -413,7 +413,7 @@ addLayer('B', {
       },
       canMaster: true,
       masterCost: n("1e307"),
-      masteredDesc() { return "4x A passive generation. Mastered B upgrades boost AD mult base.<br> Currenly: " + format(ue("B", 11)) + "x" },
+      masteredDesc() { return "4x A passive generation. Mastered B upgrades boost AD mult base.<br> Currenly: " + format(ue("B", 23)) + "x" },
     },
     24: {
       title: 'B10',

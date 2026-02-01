@@ -49,7 +49,8 @@ function format(decimal, precision = 3) {
   if (decimal.gte('eeee1000')) {
     var slog = decimal.slog()
     if (slog.gte(1e6)) return 'F' + format(slog.floor())
-    else return Decimal.pow(10, slog.sub(slog.floor())).toStringWithDecimalPlaces(3) + 'F' + commaFormat(slog.floor(), 0)
+    else if (slog.gte(100)) return Decimal.tetrate(10, slog.sub(slog.floor())).toStringWithDecimalPlaces(3) + 'F' + commaFormat(slog.floor(), 0)
+    else return Decimal.tetrate(10, slog.sub(slog.floor())).toStringWithDecimalPlaces(4) + 'F' + commaFormat(slog.floor(), 0)
   } else if (decimal.gte(1e9)) return exponentialFormat(decimal, precision)
   else if (decimal.gte(1e3)) return commaFormat(decimal, 0)
   else if (decimal.gte(0.001)) return regularFormat(decimal, precision)
@@ -68,7 +69,6 @@ function format(decimal, precision = 3) {
 function formatWhole(decimal) {
   decimal = new Decimal(decimal)
   if (decimal.gte(1e9)) return format(decimal, 3)
-  if (decimal.lte(0.99) && !decimal.eq(0)) return format(decimal, 3)
   return format(decimal, 0)
 }
 

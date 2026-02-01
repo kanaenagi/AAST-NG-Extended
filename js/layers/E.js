@@ -1101,7 +1101,7 @@ addLayer('E', {
     },
     85: {
       title: 'E47',
-      cost: n('5e119'),
+      cost: n('1e79'),
       description() {
         return "Eb5-7 total amount boosts Ab's limit.<br>(+" + format(tmp.E.upgrades[85].base) + ' each).'
       },
@@ -1109,7 +1109,7 @@ addLayer('E', {
         return hu(this.layer, 84)
       },
       base() {
-        let base = 1
+        let base = 2
         return base
       },
       effect() {
@@ -1958,7 +1958,7 @@ addLayer('E', {
       },
       effect(x) {
         let eff = Decimal.pow(this.base(), x)
-        if (eff.gte(1e10)) eff = eff.div(1e10).pow(0.5).mul(1e10) //Sc165
+        if (eff.gte(1e10)) eff = eff.div(1e10).pow(0.5).mul(1e10) //Sc170
         if (eff.gte(1e15)) eff = eff.div(1e15).pow(0.5).mul(1e15) //Sc173
         return eff
       },
@@ -2293,7 +2293,7 @@ addLayer('E', {
         updateTemp()
       },
       nerf() {
-        let nerf = [n('e1.8e30'), n('e2e30'), n('e2.2e30'), n('e2.4e30'), n('e2.6e30'), n('e3e30')]
+        let nerf = [n('e1.8e30'), n('e2e30'), n('e2.2e30'), n('e2.4e30'), n('e2.6e30'), n('1.1981F7')]
         return nerf[challengeCompletions('E', 31)]
       },
       canComplete() {

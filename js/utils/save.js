@@ -294,6 +294,7 @@ function importSave(imported = undefined, forced = false) {
     if (tempPlr.versionType != modInfo.id && !forced && !confirm('This save appears to be for a different mod! Are you sure you want to import?'))
       // Wrong save (use "Forced" to force it to accept.)
       return
+    if (formatsave.decode(imported) === undefined ) return
     player = tempPlr
     player.versionType = modInfo.id
     fixSave()

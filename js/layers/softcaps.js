@@ -1012,6 +1012,10 @@ function softcapCal() {
     sc += "Sc169: Reduce E44's Effect<br>"
     scf += 'Sc169: 1e7,0.5<br>'
   }
+  if (buyableEffect('E', 33).gte(1e10)) {
+    sc += "Sc170: Reduce Eb7's Effect<br>"
+    scf += 'Sc170: 1e10,0.5<br>'
+  }
   if (uesc('E', 53, n(10))) {
     sc += "Sc161: Reduce E27's Effect<br>"
     scf += 'Sc161: 10,0.5<br>'
@@ -1019,10 +1023,6 @@ function softcapCal() {
   if (uesc('E', 54, n(1e60))) {
     sc += "Sc162: Reduce E28's Effect<br>"
     scf += 'Sc162: 1e60,0.5<br>'
-  }
-  if (buyableEffect('E', 33).gte(1e10)) {
-    sc += "Sc165: Reduce Eb7's Effect<br>"
-    scf += 'Sc165: 1e10,0.5<br>'
   }
   if (uesc('E', 94, n(2085))) {
     sc += "Sc171: Reduce E52's Effect<br>"
