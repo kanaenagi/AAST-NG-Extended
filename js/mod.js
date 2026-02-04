@@ -29,12 +29,17 @@ var qqq //used for testing effects, finding limits, etc.
 
 // Set your version in num and name
 let VERSION = {
-  num: '0.16.1',
+  num: '0.2',
   name: '',
 }
 
 let changelog = `
 <h1>Changelog:</h1><br>
+<h2>v0.2 2026/2/1 10:00-2026/2/4 11:00 </h2><br>
+<h3>- Rebalanced Pre-F.</h3><br>
+<h3>- Added Black Hole.</h3><br>
+<h3>Endgame: 1e150 E (183 + <span style="color: rgb(255, 197, 215)">32</span> softcaps)</h3><br>
+
 <h2>v0.16.1 2026/1/28 15:00-2026/1/30 19:00 </h2><br>
 <h3>- Rebalanced Pre-Bm11.</h3><br>
 <h3>- Recounted softcap.</h3><br>
@@ -181,7 +186,6 @@ function getPointGen() {
   if (gain.max(1).log10().gte(500)) gain = n(10).pow(gain.log10().sub(499).pow(0.5).add(499)) //Sc87
     .overflow("1e500", 0.75, 2) // Ssc14
     .overflow("1e600", 0.25) // Ssc17
-    .tetraflow("1e1000", 0.5)
   if (inChallenge('D', 11)) gain = n(10).pow(gain.max(1).log10().pow(0.1)) //Sc58boosted
 
   return gain
@@ -199,12 +203,12 @@ var shitDown = false
 // Display extra things at the top of the page
 var displayThings = [
   function () {
-    let a = 'Current endgame: 1e572 B'
+    let a = 'Current endgame: 1e150 E'
     let tick = 0
     for (i = 0; i<lastTenTicks.length; i++){
 			tick += lastTenTicks[i] / lastTenTicks.length
 		}
-    if (isEndgame()) a = a + '<br>You are past endgame! B is capped at 1e572.'
+    if (isEndgame()) a = a + '<br>You are past endgame! E is capped at 1e150.'
     if (gcs('te', 12)) a = a + '<br>You have played the game for ' + formatTime(player.timePlayed) + '.'
     if (gcs('te', 13)) a = a + `<br>Current FPS:  ${tick === 0 ? "0" : Number((tick/1000) ** -1).toFixed(2)}` 
     // + `<br>Current TPS : ${Number(tick/1000).toFixed(4)}s/tick.`
@@ -217,7 +221,7 @@ var displayThings = [
 ]
 // Determines when the game "ends"
 function isEndgame() {
-  return false
+  return ha("ac", 111)
 }
 
 // Less important things beyond this point!
@@ -233,6 +237,7 @@ function maxTickLength() {
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,
 // you can cap their current resources with this.
 function fixOldSave(oldVersion) {
+  if (oldVersion == "0.3" || oldVersion == "0.16" || oldVersion == "0.16.1") { setClickableState('te', 25, 1) }
 }
 
 function gba(a, b) {
@@ -411,6 +416,15 @@ function mulTP(num, mul) {
 
 Decimal.prototype.mulTP = function (power) {
   return mulTP(this, power)
+}
+
+function powTP(num, mul) {
+  if (isNaN(num.mag)) return new Decimal(0)
+  return Decimal.tetrate(10, num.slog(10).pow(mul))
+}
+
+Decimal.prototype.powTP = function (power) {
+  return powTP(this, power)
 }
 
 function listItems(arr) {

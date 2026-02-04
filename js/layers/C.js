@@ -51,8 +51,6 @@ addLayer('C', {
     mult = mult.mul(hu('A', 61) ? ue('A', 61) : 1)
     mult = mult.mul(hu('sc', 16) ? ue('sc', 16) : 1)
     mult = mult.mul(hu('D', 26) ? ue('D', 26) : 1)
-    mult = mult.mul(hu('E', 95) ? ue('E', 95) : 1)
-    mult = mult.mul(hu('E', 93) ? ue('E', 93) : 1)
     mult = mult.mul(buyableEffect('B', 21))
     mult = mult.mul(hu('a', 15) ? ue('a', 15) : 1)
     if (mu("B", 16)) mult = mult.mul(ue("B", 16))
@@ -78,6 +76,7 @@ addLayer('C', {
     if (hu('sc', 16) && hm('E', 6)) mult = mult.mul(ue('sc', 16))
     if (hc('E', 22)) mult = mult.mul(challengeEffect('E', 22)[0])
     mult = mult.mul(hu('E', 82) ? ue('E', 82) : 1)
+    mult = mult.mul(tmp.B.bheff[0])
     return mult
   },
   branches: ['A', 'B'],
@@ -114,14 +113,14 @@ addLayer('C', {
     2: {
       requirementDescription: 'Cm3: 1e6 total C',
       done() {
-        return player[this.layer].total.gte('1e6')
+        return player[this.layer].total.gte(1e6)
       },
       effectDescription: '10x A passive,2x B passive.',
     },
     3: {
       requirementDescription: 'Cm4: 5e11 total C',
       done() {
-        return player[this.layer].total.gte('5e11')
+        return player[this.layer].total.gte(5e11)
       },
       effectDescription: '1000x points, 1000x B passive,unlock D.',
     },
@@ -163,6 +162,7 @@ addLayer('C', {
         if (hu('C', 25)) eff = eff * 1e30
         if (hm('C', 3)) eff = eff * 1000
         if (inChallenge('C', 11)) eff = 1
+        // hyw
         eff = n(eff)
         if (mu("C", 11)) eff = eff.mul(5e19)
         eff = eff.overflow(2000, 0.75) //Ssc8
@@ -277,11 +277,9 @@ addLayer('C', {
       unlocked() {
         return hu(this.layer, 21)
       },
-      /*
       canMaster: true,
-      masterCost: n("4.71e471"),
-      masteredDesc: `B7 ^10 `,
-      */
+      masterCost: n("1e612"),
+      masteredDesc: `B7 ^50 `,
     },
     23: {
       title: 'C9',
@@ -318,7 +316,7 @@ addLayer('C', {
     31: {
       title: 'C13',
       description: 'E6 and E8 ^2.',
-      cost: n('1e236'),
+      cost: n(1e236),
       unlocked() {
         return hu('E', 31)
       },
@@ -326,7 +324,7 @@ addLayer('C', {
     32: {
       title: 'C14',
       description: 'Boost E based on C upgrade amount.',
-      cost: n('1e240'),
+      cost: n(1e240),
       effect() {
         let bas = 1.12
         let a = n(player.C.upgrades.length)
@@ -344,7 +342,7 @@ addLayer('C', {
     33: {
       title: 'C15',
       description: 'E3 and E4 boosts each other.<br>(before exponents)',
-      cost: n('1e246'),
+      cost: n(1e246),
       effect() {
         let eff0 = ue('E', 14).pow(0.6).max(1)
         let eff1 = ue('E', 13).pow(0.6).max(1)
@@ -362,7 +360,7 @@ addLayer('C', {
     34: {
       title: 'C16',
       description: 'Unlock Eb4.',
-      cost: n('1e247'),
+      cost: n(1e247),
       unlocked() {
         return hu(this.layer, 33)
       },
@@ -370,7 +368,7 @@ addLayer('C', {
     35: {
       title: 'C17',
       description: 'E3 and E4 ^1.2. Eb3 and Eb4 base +0.5.',
-      cost: n('1e248'),
+      cost: n(1e248),
       unlocked() {
         return hu(this.layer, 34)
       },
@@ -378,7 +376,7 @@ addLayer('C', {
     36: {
       title: 'C18',
       description: 'E6, E8 and E13 ^1.5',
-      cost: n('1e250'),
+      cost: n(1e250),
       unlocked() {
         return hu(this.layer, 35)
       },

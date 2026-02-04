@@ -47,8 +47,8 @@ addLayer('A', {
   row: 0,
   AblimCal() {
     let lim = n(1500)
-    if (hu('E', 94)) lim = lim.add(ue('E', 94))
-    return lim
+    if (hu('E', 85)) lim = lim.add(ue('E', 85))
+    return lim.floor()
   },
   update(diff) {
     player.A.Ablim = tmp.A.AblimCal
@@ -60,8 +60,8 @@ addLayer('A', {
       }
     }
     if (hu('E', 26) && inChallenge('A', 41))
-      player.A.challenges[41] = getPointGen().div('8e11').max(1).log(tmp.A.Ac7Req).root(2).softcap(2, 100, 3).add(10).max(player.A.challenges[41]).min(1e308).toNumber() //Ssc28
-    if (hu('E', 74)) player.A.challenges[41] = player.points.max(1).div('8e11').max(1).log(tmp.A.Ac7Req).root(2).softcap(2, 100, 3).add(10).max(player.A.challenges[41]).min(1e308).toNumber()
+      player.A.challenges[41] = getPointGen().div(8e11).max(1).log(tmp.A.Ac7Req).root(2).softcap(2, 100, 3).add(10).max(player.A.challenges[41]).min(1e308).toNumber() //Ssc28
+    if (hu('E', 74)) player.A.challenges[41] = player.points.max(1).div(8e11).max(1).log(tmp.A.Ac7Req).root(2).softcap(2, 100, 3).add(10).max(player.A.challenges[41]).min(1e308).toNumber()
     if (inChallenge('E', 51)) player.A.points = player.A.points.min(player.a.points)
     if (inChallenge('C', 22)) player.A.points = player.A.points.min(player.E.points)
   },
@@ -90,7 +90,6 @@ addLayer('A', {
     mult = mult.mul(hu('D', 31) ? ue('D', 31) : 1)
     mult = mult.mul(hu('D', 33) ? 1e10 : 1)
     mult = mult.mul(hu('B', 52) ? ue('B', 52) : 1)
-    mult = mult.mul(hu('E', 93) ? ue('E', 93) : 1)
     mult = mult.mul(hu('a', 12) ? 3 : 1)
     mult = mult.mul(mu('A', 22) ? 1e10 / 3 : 1)
     mult = mult.mul(mu('A', 24) ? ue('A', 24) : 1)
@@ -125,6 +124,7 @@ addLayer('A', {
     if (hu('sc', 12) && hm('E', 6)) mult = mult.mul(ue('sc', 12))
     if (hc('E', 21)) mult = mult.mul(challengeEffect('E', 21)[0])
     mult = mult.mul(hu('E', 82) ? ue('E', 82) : 1)
+    mult = mult.mul(tmp.B.bheff[0])
     return mult
   },
   microtabs: {
@@ -422,9 +422,9 @@ addLayer('A', {
         if (hu('A', 33)) eff = eff.pow(mu("A", 33) ? 2 : 1.3)
         if (hu('A', 34)) eff = eff.pow(mu("A", 34) ? 1.5 : 1.25)
         if (mu('A', 24)) eff = eff.pow(5)
-        if (hu('B', 33) && !inChallenge('A', 12)) eff = eff.pow(1.5)
+        if (hu('B', 33) && !inChallenge('A', 12)) eff = eff.pow(mu("B", 33) ? 4 : 1.5)
         if (hu('B', 34) && !inChallenge('A', 12)) eff = eff.pow(5)
-        if (hu('A', 52)) eff = eff.pow(1.25)
+        if (hu('A', 52)) eff = eff.pow(mu("A", 52) ? 5 : 1.25)
         if (hu('sc', 13) && !inChallenge('A', 12)) eff = eff.pow(ue('sc', 13))
 
         if (inChallenge('A', 12)) eff = eff.pow(-1)
@@ -544,7 +544,7 @@ addLayer('A', {
     36: {
       title: 'A18',
       description: 'A17 ^1.5',
-      cost: n('5e3'),
+      cost: n(5e3),
       unlocked() {
         return hu(this.layer, 35)
       },
@@ -555,7 +555,7 @@ addLayer('A', {
     41: {
       title: 'A19',
       description: '1e10x points.',
-      cost: n('1e16'),
+      cost: n(1e16),
       unlocked() {
         return hc(this.layer, 31)
       },
@@ -566,7 +566,7 @@ addLayer('A', {
     42: {
       title: 'A20',
       description: 'A17 ^15.',
-      cost: n('1e17'),
+      cost: n(1e17),
       unlocked() {
         return hu(this.layer, 41)
       },
@@ -577,50 +577,68 @@ addLayer('A', {
     43: {
       title: 'A21',
       description: '5e20x points.',
-      cost: n('2e18'),
+      cost: n(2e18),
       unlocked() {
         return hu(this.layer, 42)
       },
+      canMaster: true,
+      masterCost: n("5e862"),
+      masteredDesc: `5e20x points. E47^1.5.`
     },
     44: {
       title: 'A22',
       description: 'B6 and B12 ^15',
-      cost: n('1e19'),
+      cost: n(1e19),
       unlocked() {
         return hu(this.layer, 43)
       },
+      canMaster: true,
+      masterCost: n("5e866"),
+      masteredDesc: `B6 and B12 ^15, Remove Ab3 base price.`
     },
     45: {
       title: 'A23',
       description: '1e100x points, C ^1.5.',
-      cost: n('2e22'),
+      cost: n(2e22),
       unlocked() {
         return hu(this.layer, 44)
       },
+      canMaster: true,
+      masterCost: n("1e895"),
+      masteredDesc: `1e100x points, C ^1.5 and Eb7 base x8.`
     },
     46: {
       title: 'A24',
       description: '1e1000x points, C ^1.5.',
-      cost: n('5e23'),
+      cost: n(5e23),
       unlocked() {
         return hu(this.layer, 45)
       },
+      canMaster: true,
+      masterCost: n("5e895"),
+      masteredDesc: `1e1000x points, C ^1.5 and B ^1.1.`
     },
     51: {
       title: 'A25',
       description: 'A ^1.1.',
-      cost: n('5e33'),
+      cost: n(5e33),
       unlocked() {
         return hc('C', 11)
       },
+      canMaster: true,
+      masterCost: n("1e900"),
+      masteredDesc: `A ^1.1, unlock Bb8.`
     },
     52: {
       title: 'A26',
       description: 'D ^1.5, A10 ^1.25 and A17 ^1.5.<br>unlock a C challenge.',
-      cost: n('5e34'),
+      cost: n(5e34),
       unlocked() {
         return hu(this.layer, 51)
       },
+      canMaster: true,
+      masterCost: n("1e906"),
+      masteredDesc: `D ^1.5, A10 ^5 and A17 ^1.5.<br>unlock a C challenge.`
     },
     53: {
       title: 'A27',
@@ -629,13 +647,16 @@ addLayer('A', {
       unlocked() {
         return hu('B', 62)
       },
+      canMaster: true,
+      masterCost: n("5e929"),
+      masteredDesc: `B31 ^100.`
     },
     54: {
       title: 'A28',
       description: 'log2(slog(points)) boosts Bb1-2 base.',
-      cost: n('1e207'),
+      cost: n(1e207),
       effect() {
-        let eff = player.points.max(1).slog().max(2).log(2)
+        let eff = mu("A", 54) ? player.points.max(10).log10().add(100).log(100).add(0.1) : player.points.max(1).slog().max(2).log(2)
         return eff
       },
       effectDisplay() {
@@ -644,13 +665,16 @@ addLayer('A', {
       unlocked() {
         return hu(this.layer, 53)
       },
+      canMaster: true,
+      masterCost: n("5e959"),
+      masteredDesc: `log100(lg(points)) +0.1 boosts Bb1-2 base.`
     },
     55: {
       title: 'A29',
       description: 'A28^0.5 boosts Bb4 base.',
       cost: n(5e211),
       effect() {
-        let eff = ue('A', 54).pow(0.5).max(1)
+        let eff = mu("A", 55) ? ue("A", 54).max(1) : ue('A', 54).pow(0.5).max(1)
         return eff
       },
       effectDisplay() {
@@ -659,6 +683,9 @@ addLayer('A', {
       unlocked() {
         return hu(this.layer, 54)
       },
+      canMaster: true,
+      masterCost: n("1e976"),
+      masteredDesc: `A28 boosts Bb4 and Bb7 base.`
     },
     56: {
       title: 'A30',
@@ -674,6 +701,9 @@ addLayer('A', {
       unlocked() {
         return hu(this.layer, 55)
       },
+      canMaster: true,
+      masterCost: n("2e994"),
+      masteredDesc: `D18 affects Bb and A29^0.5 boosts Bb6 and Bb7 base.`,
     },
     61: {
       title: 'A31',
@@ -695,7 +725,7 @@ addLayer('A', {
     62: {
       title: 'A32',
       description: 'mult to A31 based on Bb2 eff.',
-      cost: n('1e403'),
+      cost: n('1e503'),
       effect() {
         let eff = buyableEffect('B', 12).add(2).log(2).pow(40)
         return eff
@@ -1028,6 +1058,7 @@ addLayer('A', {
       title: 'Ab3',
       baseCost() {
         let cost = n('1e585')
+        if (mu('A', 44)) cost = n(1)
         if (hu('B', 83)) cost = cost.div(buyableEffect('E', 24))
         if (hu('E', 66)) cost = cost.div(ue('E', 66))
         return cost
@@ -1174,8 +1205,14 @@ addLayer('A', {
         return base
       },
       effect(x = player[this.layer].buyables[this.id]) {
+        x = x.add(this.bonus())
         let eff = this.base().mul(x).add(1)
         return eff.softcap(1.2, 0.5) //Ssc16
+      },
+      bonus() {
+        let x = n(0)
+        x = x.add(tmp.B.bheff[1])
+        return x
       },
       display() {
         return (
@@ -1183,7 +1220,7 @@ addLayer('A', {
           format(this.cost())
         )
       },
-      tooltip: () => formatWhole(player.A.buyables[111]) + " Purchased Upgrades",
+      tooltip () { return formatWhole(player.A.buyables[111]) + ` Purchased ${this.bonus().gte(1) ? '+ ' + formatWhole(this.bonus()) + " free" : ""}`},
       style: { width: '120px', "height": '60px' },
       unlocked() {
         return mu("A", 26)

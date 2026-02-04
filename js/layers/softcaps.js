@@ -91,7 +91,7 @@ addLayer('sc', {
     if (sp.gte(1000)) sp = sp.div(1e3).pow(0.04).mul(1e3) //Sc38
     if (sp.gte(1e4)) sp = sp.div(1e4).pow(0.1).mul(1e4) //Sc95
     if (sp.gte(5e4)) sp = sp.div(5e4).pow(0.1).mul(5e4) //Sc221
-    return sp.overflow(100000, 0.1)
+    return sp.softcap(100000, 1.00001, 3)
   },
   upgrades: {
     11: {
@@ -326,11 +326,27 @@ addLayer('sc', {
       },
       cost: n(19915),
       unlocked() {
-        return hu('sc', 32)
+        return hu('sc', 33)
+      },
+    },
+    35: {
+      title: 'ScU17',
+      description: function () {
+        return 'Softcap Points boosts Mass of black hole.<br>Effect: ' + format(ue("sc", this.id)) + 'x' 
+      },
+      effect() {
+        let eff = player.sc.points.max(10).pow(0.3).mul(1.25)
+        return eff
+      },
+      cost: n(21250),
+      unlocked() {
+        return hu('sc', 33)
       },
     },
   },
 }) //S
+
+//🐧。。。。。。。
 
 function softcapCal() {
   //The most important function???
@@ -964,114 +980,115 @@ function softcapCal() {
     sc += "Sc157: Reduce E37's Effect<br>"
     scf += 'Sc157: 10,0.5<br>'
   }
+   if (uesc('E', 53, n(2))) {
+    sc += "Sc158: Reduce E27's Effect<br>"
+    scf += 'Sc158: 2,0.5<br>'
+  }
   if (uesc('E', 73, n(6))) {
-    sc += "Sc158: Reduce E39's Effect<br>"
-    scf += 'Sc158: 6,0.5<br>'
+    sc += "Sc159: Reduce E39's Effect<br>"
+    scf += 'Sc159: 6,0.5<br>'
   }
   if (uesc('E', 61, n(20))) {
-    sc += "Sc159: Reduce E31's Effect<br>"
-    scf += 'Sc159: 20,0.2<br>'
+    sc += "Sc160: Reduce E31's Effect<br>"
+    scf += 'Sc160: 20,0.2<br>'
   }
   if (uesc('E', 71, n(1000))) {
-    sc += "Sc160: Reduce E37's Effect<br>"
-    scf += 'Sc160: 1000,0.25<br>'
+    sc += "Sc161: Reduce E37's Effect<br>"
+    scf += 'Sc161: 1000,0.25<br>'
   }
   if (uesc('E', 73, n(10))) {
-    sc += "Sc161: Reduce E39's Effect<br>"
-    scf += 'Sc161: 10,0.5<br>'
+    sc += "Sc162: Reduce E39's Effect<br>"
+    scf += 'Sc162: 10,0.5<br>'
   }
   if (buyableEffect('E', 32).gte(1e5)) {
-    sc += "Sc162: Reduce Eb6's Effect<br>"
-    scf += 'Sc162: 1e5,0.25<br>'
+    sc += "Sc163: Reduce Eb6's Effect<br>"
+    scf += 'Sc163: 1e5,0.25<br>'
   }
   if (uesc('E', 71, n(1e5))) {
-    sc += "Sc163: Reduce E37's Effect<br>"
-    scf += 'Sc163: 1e5,0.5<br>'
+    sc += "Sc164: Reduce E37's Effect<br>"
+    scf += 'Sc164: 1e5,0.5<br>'
   }
   if (uesc('E', 71, n(1e6))) {
-    sc += "Sc164: Reduce E37's Effect<br>"
-    scf += 'Sc164: 1e6,0.5<br>'
+    sc += "Sc165: Reduce E37's Effect<br>"
+    scf += 'Sc165: 1e6,0.5<br>'
   }
   if (uesc('E', 83, n(2))) {
-    sc += "Sc165: Reduce E45's Effect<br>"
-    scf += 'Sc165: 2,0.5<br>'
+    sc += "Sc166: Reduce E45's Effect<br>"
+    scf += 'Sc166: 2,0.5<br>'
   }
   if (buyableEffect('E', 32).gte(1e12)) {
-    sc += "Sc166: Reduce Eb6's Effect<br>"
-    scf += 'Sc166: 1e12,0.5<br>'
+    sc += "Sc167: Reduce Eb6's Effect<br>"
+    scf += 'Sc167: 1e12,0.5<br>'
   }
   if (uesc('E', 36, n(1e3))) {
-    sc += "Sc167: Reduce E18's Effect<br>"
-    scf += 'Sc167: 1e3,0.6<br>'
+    sc += "Sc168: Reduce E18's Effect<br>"
+    scf += 'Sc168: 1e3,0.6<br>'
   }
   if (uesc('E', 36, n(1e5))) {
-    sc += "Sc168: Reduce E18's Effect<br>"
-    scf += 'Sc168: 1e5,0.7<br>'
+    sc += "Sc169: Reduce E18's Effect<br>"
+    scf += 'Sc169: 1e5,0.7<br>'
   }
   if (uesc('E', 82, n(1e7))) {
-    sc += "Sc169: Reduce E44's Effect<br>"
-    scf += 'Sc169: 1e7,0.5<br>'
+    sc += "Sc170: Reduce E44's Effect<br>"
+    scf += 'Sc170: 1e7,0.5<br>'
   }
   if (buyableEffect('E', 33).gte(1e10)) {
-    sc += "Sc170: Reduce Eb7's Effect<br>"
-    scf += 'Sc170: 1e10,0.5<br>'
+    sc += "Sc171: Reduce Eb7's Effect<br>"
+    scf += 'Sc171: 1e10,0.5<br>'
   }
-  if (uesc('E', 53, n(10))) {
-    sc += "Sc161: Reduce E27's Effect<br>"
-    scf += 'Sc161: 10,0.5<br>'
-  }
-  if (uesc('E', 54, n(1e60))) {
-    sc += "Sc162: Reduce E28's Effect<br>"
-    scf += 'Sc162: 1e60,0.5<br>'
-  }
-  if (uesc('E', 94, n(2085))) {
-    sc += "Sc171: Reduce E52's Effect<br>"
-    scf += 'Sc171: 2085,0.5<br>'
-  }
-  if (buyableEffect('E', 31).gte(1e30)) {
-    sc += "Sc172: Reduce Eb5's Effect<br>"
-    scf += 'Sc172: 1e30,0.25<br>'
+  if (tmp.E.upgrades[82].eff.gte(0.1)) {
+    sc += "Sc172: Reduce E44's Power<br>"
+    scf += 'Sc172: 0.1,0.5<br>'
   }
   if (buyableEffect('E', 33).gte(1e15)) {
     sc += "Sc173: Reduce Eb7's Effect<br>"
-    scf += 'Sc173: 1e15,0.25<br>'
+    scf += 'Sc173: 1e15,0.5<br>'
+  }
+  if (buyableEffect('E', 31).gte(1e30)) {
+    sc += "Sc174: Reduce Eb5's Effect<br>"
+    scf += 'Sc174: 1e30,0.25<br>'
+  }
+  if (uesc('E', 85, n(2085))) {
+    sc += "Sc175: Reduce E47's Effect<br>"
+    scf += 'Sc175: 2085,0.5<br>'
+  }
+  if (tmp.E.emgain.gte(1e70)) {
+    sc += 'Sc176: Reduce Em Gain<br>'
+    scf += 'Sc176: 1e70,0.5<br>'
+  }
+  if (uesc('E', 54, n(1e60))) {
+    sc += "Sc177: Reduce E28's Effect<br>"
+    scf += 'Sc177: 1e60,0.5<br>'
   }
   if (uesc('E', 101, n(200))) {
-    sc += "Sc175: Reduce E55's Effect<br>"
-    scf += 'Sc175: 200,0.5<br>'
+    sc += "Sc178: Reduce E55's Effect<br>"
+    scf += 'Sc178: 200,0.5<br>'
   }
   if (uesc('E', 102, n(200))) {
-    sc += "Sc176: Reduce E56's Effect<br>"
-    scf += 'Sc176: 100,0.5<br>'
-  }
-  if (tmp.E.upgrades[82].eff.gte(0.1)) {
-    sc += "Sc177: Reduce E44's Power<br>"
-    scf += 'Sc177: 0.1,/5<br>'
+    sc += "Sc179: Reduce E56's Effect<br>"
+    scf += 'Sc179: 100,0.5<br>'
   }
   if (challengeEffect('E', 41).gte(1.15)) {
-    sc += "Sc178: Reduce Ec7's Effect<br>"
-    scf += 'Sc178: 1.15,0.5<br>'
+    sc += "Sc180: Reduce Ec7's Effect<br>"
+    scf += 'Sc180: 1.15,0.2<br>'
+  }
+  if (challengeEffect('E', 42).gt(0.03)) {
+    sc += "Sc181: Reduce Ec8's Effect<br>"
+    scf += 'Sc181: 0.03,/25<br>'
   }
   if (tmp.E.ekgain.gte(1e20)) {
-    sc += 'Sc179: Reduce Ek Gain<br>'
-    scf += 'Sc179: 1e20,0.8<br>'
-  }
-  if (tmp.E.emgain.gte(1e100)) {
-    sc += 'Sc180: Reduce Em Gain<br>'
-    scf += 'Sc180: 1e100,0.6<br>'
+    sc += 'Sc182: Reduce Ek Gain<br>'
+    scf += 'Sc182: 1e20,0.8<br>'
   }
   if (uesc('E', 104, n(10))) {
-    sc += "Sc181: Reduce E58's Effect<br>"
-    scf += 'Sc181: 10,0.5<br>'
+    sc += "Sc183: Reduce E58's Effect<br>"
+    scf += 'Sc183: 10,0.5<br>'
   }
   if (tmp.E.ekgain.gte(1e40)) {
     sc += 'Sc182: Reduce Ek Gain<br>'
     scf += 'Sc182: 1e40,0.8<br>'
   }
-  if (challengeEffect('E', 42).gt(0.03)) {
-    sc += "Sc183: Reduce Ec8's Effect<br>"
-    scf += 'Sc183: 0.03,/25<br>'
-  }
+  
   if (tmp.F.effect.gt(10)) {
     sc += "Sc184: Reduce F's Effect<br>"
     scf += 'Sc184: 10,0.5<br>'

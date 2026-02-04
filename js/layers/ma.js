@@ -18,7 +18,7 @@ addLayer("ma", {
     return {
       unlocked: false,
       points: n(0),
-      mastered: {
+      mastered: { 
         "A": [],
         "B": [],
         "C": [],

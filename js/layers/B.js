@@ -8,6 +8,8 @@ addLayer('B', {
       points: n(0),
       pointsAc1: n(0),
       Bblim: n(1000),
+      bhmass: n(0),
+      antibhmass: n(0),
     }
   },
   passiveGeneration() {
@@ -39,12 +41,44 @@ addLayer('B', {
   row: 0,
   BblimCal() {
     let lim = n(1000)
-    if (hu('E', 85)) lim = lim.add(ue('E', 85))
+    if (hu('E', 94)) lim = lim.add(ue('E', 85))
     return lim
+  },
+  bhgain() {
+    let gain = player.B.bhmass.add(1).pow(0.3)
+    gain = gain.mul(buyableEffect("B", 31))
+    gain = gain.mul(buyableEffect("B", 32))
+    if (mu("B", 31)) gain = gain.mul(20)
+    if (mu("B", 35)) gain = gain.mul(player.A.buyables[12])
+    if (hu("E", 93)) gain = gain.mul(ue("E", 93))
+    if (hu("sc", 35)) gain = gain.mul(ue("sc", 35)) 
+
+    gain = gain.pow(tmp.B.antbheff[0])
+    return gain.overflow(1.5e56, 0.5) //Ssc32
+  },
+  bheff() {
+    let eff1 = player.B.bhmass.add(1).pow(0.3)
+    let eff2 = player.B.bhmass.add(1).log(10).pow(0.3).floor()
+    return [eff1, eff2]
+  },
+  antbhgain() {
+    let gain = expPow(player.B.bhmass.div(1.5e81).pow(0.3), 0.5).sub(1).max(0)
+    return gain.sub(player.B.antibhmass).max(0)
+  },
+  antbheff() {
+    let eff1 = player.B.antibhmass.add(1).max(1).log(10).mul(0.65).add(1).pow(0.3)
+    return [eff1]
   },
   update(diff) {
     if (inChallenge('A', 11) || hu("E", 74)) player.B.pointsAc1 = player.B.pointsAc1.max(player.points).min(mu("B", 26) ? 1 / 0 : 1e8)
     player.B.Bblim = tmp.B.BblimCal
+    if (hm("B", 10)) {
+      player.B.bhmass = player.B.bhmass.add(tmp.B.bhgain.mul(Math.min(diff, 1)))
+      player.B.bhmass = player.B.bhmass.div(1.01 ** Math.min(diff, 1))
+    }
+    if (hm("B", 11)) {
+      player.B.antibhmass = player.B.antibhmass.add(tmp.B.antbhgain.mul(Math.min(diff, 1)))
+    }
     if (inChallenge('E', 52)) player.B.points = player.B.points.min(player.b.points)
     if (inChallenge('C', 22)) player.B.points = player.B.points.min(player.E.points)
   },
@@ -80,7 +114,6 @@ addLayer('B', {
     mult = mult.mul(hu('B', 41) ? 1500 : 1)
     mult = mult.mul(hu('B', 45) ? 2e4 : 1)
     mult = mult.mul(hu('B', 53) ? 30 : 1)
-    mult = mult.mul(hu('E', 93) ? ue('E', 93) : 1)
     mult = mult.mul(hu('B', 61) ? ue('B', 61) : 1)
     mult = mult.mul(buyableEffect('E', 12))
     mult = mult.mul(hu('D', 31) ? ue('D', 31) : 1)
@@ -96,10 +129,13 @@ addLayer('B', {
     mult = mult.mul(mu('A', 24) ? ue('A', 24) : 1)
     if (mu("A", 35)) mult = mult.mul(ue("A", 35))
 
+    if (mu("A", 46)) mult = mult.pow(1.1)
     if (mu("B", 14)) mult = mult.pow(1.25)
     if (mu("B", 22)) mult = mult.pow(3)
     if (mu("A", 21)) mult = mult.pow(ue("A", 21))
-    mult = mult.pow(hu('B', 36) ? 1.1 : 1)
+    if (mu("B", 33)) mult = mult.pow(1.5)
+    if (mu("B", 34)) mult = mult.pow(1.5)
+    mult = mult.pow(hu('B', 36) ? mu('B', 36)? 1.2 : 1.1 : 1)
     mult = mult.pow(hu('D', 22) ? 1.2 : 1)
     mult = mult.pow(hc('D', 12) ? 1.35 : 1)
     mult = mult.pow(hm('B', 3) ? 1.15 : 1)
@@ -122,6 +158,7 @@ addLayer('B', {
     if (hu('sc', 12) && hm('E', 6)) mult = mult.mul(ue('sc', 12))
     if (hc('E', 21)) mult = mult.mul(challengeEffect('E', 21)[1])
     mult = mult.mul(hu('E', 82) ? ue('E', 82) : 1)
+    mult = mult.mul(tmp.B.bheff[0])
     return mult
   },
   microtabs: {
@@ -136,7 +173,10 @@ addLayer('B', {
         unlocked() {
           return hm('D', 2)
         },
-        content: [['raw-html', () => `<h4 style="opacity:.5">The purchase limit of B buyables is ` + format(player.B.Bblim)], 'buyables'],
+        content: [
+          ['raw-html', () => `<h4 style="opacity:.5">The purchase limit of B buyables is ` + format(player.B.Bblim) + '</h4>'],
+          ['buyables', [1,2]]
+        ],
       },
       Milestones: {
         unlocked() {
@@ -147,7 +187,13 @@ addLayer('B', {
       "black hole": {
         unlocked() {
           return hm('B', 10)
-        }
+        },
+        content: [
+          ['display-text', () => `You have <h2 style='color: #f2f450; text-shadow: 0 0 10px #f2f450'> ${formatMass(player.B.bhmass)}</h2> of Black hole (+${formatMass(tmp.B.bhgain)}/s).<br> which is boost A-E <h2 style='color: #f2f450; text-shadow: 0 0 10px #f2f450'> ${format(tmp.B.bheff[0])}x</h2> directly and provides <h2 style='color: #f2f450; text-shadow: 0 0 10px #f2f450'> ${formatWhole(tmp.B.bheff[1])}</h2> free Tickspeeds.`],
+          ['display-text', () => "Hawking Radiation divides the mass of Black hole by 1.01 per second."],
+          ['display-text', () => hm("B", 11) ?`You have <h2 style='color: #1858ef; text-shadow: 0 0 10px #1858ef'> ${formatMass(player.B.antibhmass)}</h2> of Anti-Black hole (+${formatMass(tmp.B.antbhgain)}/s) start at 1e25 uni of Black hole.<br> which is Raise Mass of Black hole <h2 style='color: #1858ef; text-shadow: 0 0 10px #1858ef'>${format(tmp.B.antbheff[0])}</h2>.` : ''],
+          ['buyables', [3]],
+        ],
       },
     },
   },
@@ -186,7 +232,7 @@ addLayer('B', {
       done() {
         return player[this.layer].total.gte('1e111')
       },
-      effectDescription: 'Automatically buy max B buyables.',
+      effectDescription: 'Automatically buy max Bb1-6.',
       toggles: [['B', 'auto']],
     },
     3: {
@@ -247,6 +293,13 @@ addLayer('B', {
         return player[this.layer].total.gte('1e572')
       },
       effectDescription: 'Unlock Black hole.',
+    },
+    11: {
+      requirementDescription: 'Bm12: 1e734 total B',
+      done() {
+        return player[this.layer].total.gte('1e734')
+      },
+      effectDescription: 'Unlock Anti-Black hole, Bb7 cost Scaling is reduced (2 → 1.5).',
     },
   },
   upgrades: {
@@ -371,7 +424,7 @@ addLayer('B', {
         if (hu('B', 32)) effb6 = effb6 * 1.5
         if (hu('C', 14)) effb6 = effb6 * 15
         if (mu("C", 14)) effb6 = effb6 * 20
-        if (hu('C', 22)) effb6 = effb6 * 10
+        if (hu('C', 22)) effb6 = mu("C", 22) ? effb6 * 50 : effb6 * 10
         if (mu('B', 21)) effb6 = effb6 * 1000
 
         let eff = player[this.layer].points.pow(effb6)
@@ -412,7 +465,7 @@ addLayer('B', {
         return eff
       },
       canMaster: true,
-      masterCost: n("1e307"),
+      masterCost: n(1e307),
       masteredDesc() { return "4x A passive generation. Mastered B upgrades boost AD mult base.<br> Currenly: " + format(ue("B", 23)) + "x" },
     },
     24: {
@@ -470,6 +523,9 @@ addLayer('B', {
       unlocked() {
         return hu(this.layer, 25)
       },
+      canMaster: true,
+      masterCost: n("1e577"),
+      masteredDesc: "20x points and mass of Black hole.",
     },
     32: {
       title: 'B14',
@@ -478,6 +534,9 @@ addLayer('B', {
       unlocked() {
         return hu(this.layer, 31)
       },
+      canMaster: true,
+      masterCost: n("1e597"),
+      masteredDesc: "A5 and Bb3 base exp+0.5, unlock a challenge.",
     },
     33: {
       title: 'B15',
@@ -486,6 +545,9 @@ addLayer('B', {
       unlocked() {
         return hu(this.layer, 32)
       },
+      canMaster: true,
+      masterCost: n("5e625"),
+      masteredDesc: "A10^4 and B^1.5.",
     },
     34: {
       title: 'B16',
@@ -494,6 +556,9 @@ addLayer('B', {
       unlocked() {
         return hu(this.layer, 33)
       },
+      canMaster: true,
+      masterCost: n("2e695"),
+      masteredDesc: "A10^5 , B x50 and ^1.5.",
     },
     35: {
       title: 'B17',
@@ -502,6 +567,9 @@ addLayer('B', {
       unlocked() {
         return hu(this.layer, 34)
       },
+      canMaster: true,
+      masterCost: n("1e744"),
+      masteredDesc: "A5 exp+1, unlock a challenge and Ab2 amount boost Mass of Black hole.",
     },
     36: {
       title: 'B18',
@@ -510,11 +578,14 @@ addLayer('B', {
       unlocked() {
         return hu(this.layer, 35)
       },
+      canMaster: true,
+      masterCost: n("1e745"),
+      masteredDesc: "B ^1.2, 1000x points.",
     },
     41: {
       title: 'B19',
       description: 'x1500 B,unlock 2nd buyable.',
-      cost: n('1e34'),
+      cost: n(1e34),
       unlocked() {
         return hu('D', 35)
       },
@@ -522,7 +593,7 @@ addLayer('B', {
     42: {
       title: 'B20',
       description: 'x1e10 points.<br>D18 is boosted and it affects Bb4.<br>unlock 2 buyables.',
-      cost: n('1e44'),
+      cost: n(1e44),
       unlocked() {
         return hu(this.layer, 41)
       },
@@ -556,7 +627,7 @@ addLayer('B', {
     45: {
       title: 'B23',
       description: '2e4x B,unlock a buyable.',
-      cost: n('1e60'),
+      cost: n(1e60),
       unlocked() {
         return hu(this.layer, 44)
       },
@@ -564,7 +635,7 @@ addLayer('B', {
     46: {
       title: 'B24',
       description: 'D18 is boosted and it affects Bb5.<br>Unlock B Milestones.',
-      cost: n('1e63'),
+      cost: n(1e63),
       unlocked() {
         return hu(this.layer, 45)
       },
@@ -632,7 +703,7 @@ addLayer('B', {
       cost: n(1e118),
       effect() {
         let eff = player.points.add(10).log(1.0001)
-        if (hu('A', 53)) eff = eff.pow(5)
+        if (hu('A', 53)) eff = eff.pow(mu("A", 53) ? 100 : 5)
         if (hu('B', 63)) eff = Decimal.pow(eff, ue('B', 63))
         if (hu('B', 64)) eff = Decimal.pow(eff, 10)
         if (hu('E', 31)) eff = Decimal.pow(eff, 1.1)
@@ -654,7 +725,7 @@ addLayer('B', {
     62: {
       title: 'B32',
       description: 'unlock new A upgrades.',
-      cost: n('1e119'),
+      cost: n(1e119),
       unlocked() {
         return hu(this.layer, 61)
       },
@@ -662,7 +733,7 @@ addLayer('B', {
     63: {
       title: 'B33',
       description: 'B31 ^(total B upgrades^0.5).',
-      cost: n('1e138'),
+      cost: n(1e138),
       effect() {
         let eff = n(player.B.upgrades.length).pow(0.5)
         return eff
@@ -677,7 +748,7 @@ addLayer('B', {
     64: {
       title: 'B34',
       description: 'B31 ^10 and 5e4x points.',
-      cost: n('1e158'),
+      cost: n(1e158),
       unlocked() {
         return hm(this.layer, 3)
       },
@@ -685,7 +756,7 @@ addLayer('B', {
     65: {
       title: 'B35',
       description: 'Bb4-5 base x2',
-      cost: n('1e161'),
+      cost: n(1e161),
       unlocked() {
         return hu(this.layer, 64)
       },
@@ -693,7 +764,7 @@ addLayer('B', {
     66: {
       title: 'B36',
       description: 'Unlock two D challenges.<br> Unlock A buyables.',
-      cost: n('1e162'),
+      cost: n(1e162),
       unlocked() {
         return hu(this.layer, 65)
       },
@@ -701,7 +772,7 @@ addLayer('B', {
     71: {
       title: 'B37',
       description: 'Ab1 base x5.',
-      cost: n('1e177'),
+      cost: n(1e177),
       unlocked() {
         return hu(this.layer, 66)
       },
@@ -709,7 +780,7 @@ addLayer('B', {
     72: {
       title: 'B38',
       description: '1e240x points.',
-      cost: n('1e191'),
+      cost: n(1e191),
       unlocked() {
         return hu(this.layer, 71)
       },
@@ -725,7 +796,7 @@ addLayer('B', {
       effectDisplay() {
         return '^' + format(ue("B", this.id), 4)
       },
-      cost: n('5e300'),
+      cost: n(5e300),
       unlocked() {
         return hu(this.layer, 72)
       },
@@ -740,7 +811,7 @@ addLayer('B', {
       effectDisplay() {
         return format(ue("B", this.id), 4) + 'x'
       },
-      cost: n(2).pow(1024),
+      cost: n(Number.MAX_VALUE),
       unlocked() {
         return hu(this.layer, 73)
       },
@@ -894,7 +965,7 @@ addLayer('B', {
         let eff = Decimal.pow(this.base(), x)
         eff = eff.mul(buyableEffect('A', 11))
         if (hm('B', 1)) eff = eff.pow(1.2)
-        if (inChallenge('D', 12)) eff = n('1e-4')
+        if (inChallenge('D', 12)) eff = n(1e-4)
         if (inChallenge('E', 31)) eff = n(1)
         return eff
       },
@@ -964,7 +1035,7 @@ addLayer('B', {
         let eff = Decimal.pow(this.base(), x)
         eff = eff.mul(buyableEffect('A', 11))
         if (hm('B', 1)) eff = eff.pow(1.2)
-        if (inChallenge('D', 12)) eff = n('1e-4')
+        if (inChallenge('D', 12)) eff = n(1e-4)
         if (inChallenge('E', 31)) eff = n(1)
         return eff
       },
@@ -1019,6 +1090,7 @@ addLayer('B', {
       effect(x = player[this.layer].buyables[this.id]) {
         if (gba('A', 12)) x = x.add(buyableEffect('A', 12))
         if (hc('D', 11)) x = x.mul(2)
+        if (mu("B", 32)) x = x.pow(1.5)
         if (hu('B', 43)) x = x.pow(1.25)
         if (hm('B', 1)) x = x.pow(2)
         if (inChallenge('D', 12)) x = n(0)
@@ -1078,7 +1150,7 @@ addLayer('B', {
         let eff = Decimal.pow(this.base(), x)
         eff = eff.mul(buyableEffect('A', 11))
         if (hm('B', 1)) eff = eff.pow(1.2)
-        if (inChallenge('D', 12)) eff = n('1e-4')
+        if (inChallenge('D', 12)) eff = n(1e-4)
         if (inChallenge('E', 31)) eff = n(1)
         return eff
       },
@@ -1144,7 +1216,7 @@ addLayer('B', {
         if (gba('A', 12)) x = x.add(buyableEffect('A', 12))
         let eff = Decimal.pow(this.base(), x)
         eff = eff.mul(buyableEffect('A', 11))
-        if (inChallenge('D', 12)) eff = n('1e-4')
+        if (inChallenge('D', 12)) eff = n(1e-4)
         if (inChallenge('E', 31)) eff = n(1)
         return eff
       },
@@ -1210,7 +1282,7 @@ addLayer('B', {
         if (gba('A', 12)) x = x.add(buyableEffect('A', 12))
         let eff = Decimal.pow(this.base(), x)
         if (hm('B', 1)) eff = eff.pow(1.2)
-        if (inChallenge('D', 12)) eff = n('1e-4')
+        if (inChallenge('D', 12)) eff = n(1e-4)
         if (inChallenge('E', 31)) eff = n(1)
         if (eff.gte('1e1024')) eff = eff.div('1e1024').pow(0.1).mul('1e1024') //Sc90
         return eff
@@ -1235,6 +1307,117 @@ addLayer('B', {
       },
       unlocked() {
         return hu('B', 51)
+      },
+    },
+    31: {
+      title: 'Bb7',
+      baseCost() {
+        let cost = n('1e572')
+        return cost
+      },
+      costbase() {
+        let base = 2
+        if (hm("B", 11)) base = 1.5
+        return base 
+      },
+      cost(x = player[this.layer].buyables[this.id]) {
+        let cost = n(this.baseCost()).mul(n(this.costbase()).pow(x.pow(1.5)))
+        return cost
+      },
+      canAfford() {
+        return player[this.layer].points.gte(this.cost())
+      },
+      buy() {
+        if (hm('B', 0)) player[this.layer].points = player[this.layer].points.sub(0)
+        else player[this.layer].points = player[this.layer].points.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, gba(this.layer, this.id).add(1))
+      },
+      buyMax() {
+        if (!this.canAfford()) return
+        let tempBuy = player.B.points.div(this.baseCost()).max(0).max(1).log(this.costbase()).root(1.5)
+        let target = tempBuy.plus(1).floor()
+        player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].max(target)
+      },
+      base() {
+        let base = n(2)
+        if (mu("A", 55)) base = base.pow(ue("A", 55))
+        if (mu("A", 56)) base = base.pow(ue("A", 56))
+        return base
+      },
+      effect(x = player[this.layer].buyables[this.id]) {
+        let eff = Decimal.pow(this.base(), x)
+        return eff
+      },
+      display() {
+        let a = format(gba(this.layer, this.id))
+        return (
+          'give Mass of black hole a x' +
+          format(this.base()) +
+          ' mult <br>Cost: ' +
+          format(this.cost()) +
+          ' B<br>Amount: ' +
+          a +
+          '<br> Effect: x' +
+          format(tmp.B.buyables[this.id].effect) 
+        )
+      },
+      purchaseLimit() {
+        return player.B.Bblim
+      },
+      unlocked() {
+        return hu('B', 51)
+      },
+    },
+    32: {
+      title: 'Bb8',
+      baseCost() {
+        let cost = n('1e88')
+        return cost
+      },
+      cost(x = player[this.layer].buyables[this.id]) {
+        let cost = n(this.baseCost()).mul(n(1.5).pow(x.pow(1.5)))
+        return cost
+      },
+      canAfford() {
+        return player['E'].points.gte(this.cost())
+      },
+      buy() {
+        if (!hm('B', 0)) player["E"].points = player['E'].points.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, gba(this.layer, this.id).add(1))
+      },
+      buyMax() {
+        if (!this.canAfford()) return
+        let tempBuy = player.E.points.div(this.baseCost()).max(0).max(1).log(1.5).root(1.5)
+        let target = tempBuy.plus(1).floor()
+        player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].max(target)
+      },
+      base() {
+        let base = n(2)
+        if (mu("E", 25)) base = base.pow(2)
+        return base
+      },
+      effect(x = player[this.layer].buyables[this.id]) {
+        let eff = Decimal.pow(this.base(), x)
+        return eff
+      },
+      display() {
+        let a = format(gba(this.layer, this.id))
+        return (
+          'give Mass of black hole a x' +
+          format(this.base()) +
+          ' mult <br>Cost: ' +
+          format(this.cost()) +
+          ' E<br>Amount: ' +
+          a +
+          '<br> Effect: x' +
+          format(tmp.B.buyables[this.id].effect) 
+        )
+      },
+      purchaseLimit() {
+        return player.B.Bblim
+      },
+      unlocked() {
+        return mu('A', 51)
       },
     },
   },

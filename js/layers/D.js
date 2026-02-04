@@ -48,7 +48,6 @@ addLayer('D', {
     mult = mult.mul(hu('A', 61) ? ue('A', 61) : 1)
     mult = mult.mul(hu('D', 32) ? ue('D', 32) : 1)
     mult = mult.mul(buyableEffect('B', 22))
-    mult = mult.mul(hu('E', 93) ? ue('E', 93) : 1)
     mult = mult.mul(hu('a', 16) ? ue('a', 16) : 1)
     if (mu("B", 16)) mult = mult.mul(ue("B", 16))
     if (mu("A", 11) && mu("A", 25)) mult = mult.mul(ue("A", 11))
@@ -70,6 +69,7 @@ addLayer('D', {
     if (hu('sc', 21) && hm('E', 6)) mult = mult.mul(ue('sc', 21))
     if (hc('E', 22)) mult = mult.mul(challengeEffect('E', 22)[1])
     mult = mult.mul(hu('E', 82) ? ue('E', 82) : 1)
+    mult = mult.mul(tmp.B.bheff[0])
     return mult
   },
   branches: ['C'],
@@ -109,14 +109,14 @@ addLayer('D', {
     2: {
       requirementDescription: 'Dm3: 1e6 total D',
       done() {
-        return player[this.layer].total.gte('1e6')
+        return player[this.layer].total.gte(1e6)
       },
       effectDescription: '1e4x A, 1000x B and 10x C passive,unlock B buyable.',
     },
     3: {
       requirementDescription: 'Dm4: 1e10 total D',
       done() {
-        return player[this.layer].total.gte('1e10')
+        return player[this.layer].total.gte(1e10)
       },
       effectDescription: '1e5x A,unlock a chal.',
     },
@@ -159,7 +159,6 @@ addLayer('D', {
       },
       effect() {
         let eff = 1000
-        let exp = 0.4
         if (hu('D', 14)) eff = eff * 10000
         if (hu('D', 25)) eff = eff * 10000
         if (hu('D', 41)) eff = eff * 1e7
@@ -380,7 +379,7 @@ addLayer('D', {
     33: {
       title: 'D15',
       description: '1e10x A.',
-      cost: n('3e9'),
+      cost: n(3e9),
       unlocked() {
         return hu(this.layer, 32)
       },
@@ -388,7 +387,7 @@ addLayer('D', {
     34: {
       title: 'D16',
       description: 'D10 ^2.',
-      cost: n('1e11'),
+      cost: n(1e11),
       unlocked() {
         return hu(this.layer, 33)
       },
@@ -396,7 +395,7 @@ addLayer('D', {
     35: {
       title: 'D17',
       description: 'D14 ^2 and unlock more B upgrades.',
-      cost: n('2e11'),
+      cost: n(2e11),
       unlocked() {
         return hu(this.layer, 34)
       },
@@ -404,7 +403,7 @@ addLayer('D', {
     36: {
       title: 'D18',
       description: "D boosts Bb1-2's base.",
-      cost: n('1e14'),
+      cost: n(1e14),
       effect() {
         let eff = player.D.points.max(1).log(5).pow(0.5)
         if (hu('B', 42)) eff = eff.pow(2)

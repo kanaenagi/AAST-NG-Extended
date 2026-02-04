@@ -212,9 +212,19 @@ const superSoftcapDatas = [
     effects: 'Em generation is overflowed to 0.8',
   },
   {
+    unlocked: () => tmp.E.upgrades[31].effect.gte(1e20),
+    requirement: '1e20x E13 effect',
+    effects: 'E13 effect is overflow to 0.5',
+  },
+  {
+    unlocked: () => tmp.B.bhgain.gte(1.5e56),
+    requirement: '1 uni Mass of Black hole generation',
+    effects: 'Mass of Black hole is overflow to 0.5',
+  },
+  {
     unlocked: () => player.sc.points.gte(100000),
     requirement: '100000 Softcap points',
-    effects: 'Softcap points is overflowed to 0.2',
+    effects: 'Softcap points is log-softcapped to 1.00001',
   },
 ].map((item, index) => ({
   ...item,

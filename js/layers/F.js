@@ -59,7 +59,7 @@ addLayer('F', {
     return mult
   },
   layerShown() {
-    return (hm('E', 20) || hm('F', 0)) && gcs('te', 25) >= 1
+    return (hm('E', 21) || hm('F', 0)) && gcs('te', 25) >= 1
   },
   update(diff) {},
   microtabs: {

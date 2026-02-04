@@ -32,7 +32,6 @@ addLayer('te', {
   },
   update(diff) {
     player.softcap = n(softcapCal()[0])
-    if (gcs('te', 25) !== 1) setClickableState('te', 25, 1)
   },
   clickables: {
     11: {

@@ -188,7 +188,7 @@ function loadVue() {
 			</span>
 			<tooltip v-if="tmp[layer].upgrades[data].tooltip" :text="tmp[layer].upgrades[data].tooltip"></tooltip>
 		</button>
-		<button v-else-if="player.ma.clickables[11] || masteredUpgrade(layer, data)"
+		<button v-else-if="player.ma.clickables[11] || masteredUpgrade(layer, data) "
 		  v-bind:class="{ [layer]: true, tooltipBox: true, upg: true, mastered: masteredUpgrade(layer, data), locked: (!(canMasterUpgrade(layer, data))&&!masteredUpgrade(layer, data)), can: (canMasterUpgrade(layer, data)&&!masteredUpgrade(layer, data))}"
 		  v-bind:style="[((!masteredUpgrade(layer, data) && canMasterUpgrade(layer, data)) ? {'background-color': tmp[layer].color} : {}), tmp[layer].upgrades[data].style]" v-on:click="masterUpgrade(layer, data)">
 		  <span v-if="tmp[layer].upgrades[data].canMaster">

@@ -400,170 +400,177 @@ addLayer('ac', {
       tooltip: 'unlock Em',
     },
     87: {
-      name: '56. Em Boosted',
+      name: '56. Less or Equal than 0.0001',
+      done() {
+        return tmp.E.buyables[11].cost.lte(0.0001)
+      },
+      tooltip: 'Make the cost of Eb1 less or equal than 0.0001.',
+    },
+    91: {
+      name: '57. Em Boosted',
       done() {
         return player.E.Em.gte('1e10')
       },
       tooltip: 'get 1e10 Em',
     },
-    91: {
-      name: '57. Vigintillion E',
+    92: {
+      name: '58. Vigintillion E',
       done() {
         return player.E.points.gte('1e63')
       },
       tooltip: 'get 1e63 E',
     },
-    92: {
-      name: '58. Struggling again',
+    93: {
+      name: '59. Struggling again',
       done() {
         return challengeCompletions('E', 32) >= 1
       },
       tooltip: 'complete Ec6x1',
     },
-    93: {
-      name: '59. Maelstrom Silenced',
+    94: {
+      name: '60. Maelstrom Silenced',
       done() {
         return gba('E', 23).gte(40)
       },
       tooltip: 'Reach the cap of All E buyables.',
     },
-    94: {
-      name: '60. The Big Black',
+    95: {
+      name: '61. The Big Black',
       done() {
         return hm("B", 10)
       },
       tooltip: 'unlock Black hole.',
     },
-    /*
-    94: {
-      name: '60. Massively',
-      done() {
-        return player.A.points.gte('1e1000')
-      },
-      tooltip: 'get 1e1000 A!!',
-    },
-    */
-    95: {
-      name: '61. Ek ruby',
+    96: {
+      name: '62. Ek ruby',
       done() {
         return hm('E', 16)
       },
       tooltip: 'unlock Ek',
     },
-    96: {
-      name: '62. 10 Rows of Upgrades',
+    97: {
+      name: '63. 10 Rows of Upgrades',
       done() {
         return hu('E', 101)
       },
       tooltip: 'get E55',
     },
-    97: {
-      name: '63. The Answer to Everything',
-      done() {
-        return gba('E', 11).gte(42)
-      },
-      tooltip: 'get 42 Eb1',
-    },
     101: {
-      name: '64. GOODRAGE',
-      done() {
-        return player.E.points.gte('2e222')
-      },
-      tooltip: 'get 2e222 E',
-    },
-    102: {
-      name: '65. Getting slower again',
-      done() {
-        return hu('E', 104)
-      },
-      tooltip: 'get E58',
-    },
-    103: {
-      name: '66. Raising exp',
+      name: '64. Raising exp',
       done() {
         return challengeCompletions('E', 42) >= 2
       },
       tooltip: 'complete Ec8x2',
     },
-    104: {
-      name: '67. Experienced',
+    102: {
+      name: '65. The Answer to Everything',
       done() {
-        return challengeCompletions('E', 41) >= 5
+        return gba('E', 11).gte(42)
       },
-      tooltip: 'complete Ec7x5',
+      tooltip: 'get 42 Eb1',
     },
-    105: {
-      name: '68. Reasonable Upgrades',
-      done() {
-        return hu('E', 106)
-      },
-      tooltip: 'get E60',
-    },
-    106: {
-      name: '69. Constructed Realm',
+    103: {
+      name: '66. Constructed Realm',
       done() {
         return challengeCompletions('E', 42) >= 5
       },
       tooltip: 'complete Ec8x5',
     },
-    107: {
-      name: '70. Infinite Energy -Overdoze-',
+    104: {
+      name: '67. Massively',
       done() {
-        return player.E.points.gte('1.80e308')
+        return player.A.points.gte('1e1000')
       },
-      tooltip: 'get 1.80e308 E.',
+      tooltip: 'get 1e1000 A!!',
+    },
+    /*
+    103: {
+      name: '66. GOODRAGE',
+      done() {
+        return player.E.points.gte('2e222')
+      },
+      tooltip: 'get 2e222 E',
+    },
+    */
+   105: {
+      name: '68. Experienced',
+      done() {
+        return challengeCompletions('E', 41) >= 5
+      },
+      tooltip: 'complete Ec7x5',
+    },
+    106: {
+      name: '69. Getting slower again',
+      done() {
+        return hu('E', 104)
+      },
+      tooltip: 'get E58',
+    },
+    107: {
+      name: '70. Reasonable Upgrades',
+      done() {
+        return hu('E', 106)
+      },
+      tooltip: 'get E60',
     },
     111: {
-      name: '71. Another World',
+      name: '71. Electric Angel',
+      done() {
+        return player.E.points.gte('1e150')
+      },
+      tooltip: 'get 1e150 E.',
+    },
+    112: {
+      name: '72. Another World',
       done() {
         return player.F.points.gte(1)
       },
       tooltip: 'get 1 F.',
     },
-    112: {
-      name: '72. Sparkle New Life',
+    113: {
+      name: '73. Sparkle New Life',
       done() {
         return player.a.points.gte(1)
       },
       tooltip: 'get 1 Alpha.',
     },
-    113: {
-      name: '73. Capped Thoroughly',
+    114: {
+      name: '74. Capped Thoroughly',
       done() {
         return player.softcap.gte(200)
       },
       tooltip: 'get 200 Softcaps.',
     },
-    114: {
-      name: '74. Useful Bonuses',
+    115: {
+      name: '75. Useful Bonuses',
       done() {
         return hu('a', 26)
       },
       tooltip: 'get α12.',
     },
-    115: {
-      name: '75. Auto Level++',
+    116: {
+      name: '76. Auto Level++',
       done() {
         return hm('F', 2)
       },
       tooltip: 'auto buy A~E upgrades.',
     },
-    116: {
-      name: '76. Lucky D',
+    117: {
+      name: '77. Lucky D',
       done() {
         return player.D.points.gte('7.77e777')
       },
       tooltip: 'get 7.77e777 D.',
     },
-    117: {
-      name: '76. Beta Error',
+    121: {
+      name: '78. Beta Error',
       done() {
         return player.b.points.gte(1)
       },
       tooltip: 'get 1 Beta.',
     },
-    121: {
-      name: '77. Rich in E',
+    122: {
+      name: '79. Rich in E',
       done() {
         return player.E.points.gte('1e400')
       },
@@ -576,7 +583,7 @@ addLayer('ac', {
     [
       'display-text',
       function () {
-        return "<h3 style='color: yellow;'>Achievements: " + player.ac.achievements.length + '/78 </h3>'
+        return "<h3 style='color: yellow;'>Achievements: " + player.ac.achievements.length + '/79 </h3>'
       },
     ],
     'blank',
