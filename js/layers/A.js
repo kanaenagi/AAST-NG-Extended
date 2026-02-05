@@ -38,6 +38,7 @@ addLayer('A', {
     return player.points
   },
   type: 'normal',
+  layerShown:() => gcs('te', 25) >= 1 ,
   exponent: 0.5,
   gainExp() {
     let exp = n(1)
@@ -74,9 +75,6 @@ addLayer('A', {
       },
     },
   ],
-  layerShown() {
-    return true
-  },
   gainMult() {
     mult = n(1)
     mult = mult.mul(hu(this.layer, 22) ? 3 : 1)

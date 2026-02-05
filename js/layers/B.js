@@ -92,7 +92,7 @@ addLayer('B', {
     },
   ],
   layerShown() {
-    return player.B.unlocked || hu('A', 35)
+    return ( player.B.unlocked || hu('A', 35) ) && gcs('te', 25) >= 1
   },
   gainMult() {
     mult = n(1)

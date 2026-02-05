@@ -13,7 +13,7 @@ addLayer('F', {
   },
   color: '#d998ff',
   requires() {
-    return n(2).pow(1024)
+    return n(1e150)
   },
   resource: 'F',
   baseResource: 'E',
@@ -22,7 +22,7 @@ addLayer('F', {
   },
   type: 'normal',
   exponent() {
-    return n(0.005)
+    return n(0.008)
   },
   gainMult() {
     mult = n(1)

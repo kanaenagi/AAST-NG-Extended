@@ -38,7 +38,7 @@ addLayer('D', {
     },
   ],
   layerShown() {
-    return player.D.unlocked || hm('C', 3)
+    return (player.D.unlocked || hm('C', 3)) && gcs('te', 25) >= 1
   },
   gainMult() {
     mult = n(1)

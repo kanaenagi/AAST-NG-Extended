@@ -52,7 +52,7 @@ addLayer('E', {
     },
   ],
   layerShown() {
-    return hm('B', 7)
+    return hm('B', 7) && gcs('te', 25) >= 1
   },
   gainMult() {
     mult = n(1)

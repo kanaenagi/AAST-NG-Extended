@@ -40,7 +40,7 @@ addLayer('C', {
     },
   ],
   layerShown() {
-    return player.C.unlocked || hc('A', 22)
+    return ( player.C.unlocked || hc('A', 22) ) && gcs('te', 25) >= 1
   },
   gainMult() {
     mult = n(1)
