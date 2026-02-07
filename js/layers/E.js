@@ -52,7 +52,7 @@ addLayer('E', {
     },
   ],
   layerShown() {
-    return hm('B', 7) && gcs('te', 25) >= 1
+    return (hm('B', 7) || player.E.unlocked) && gcs('te', 25) <= 1
   },
   gainMult() {
     mult = n(1)
@@ -653,6 +653,9 @@ addLayer('E', {
       unlocked() {
         return hu(this.layer, 26)
       },
+      canMaster: true,
+      masterCost: n(1e222),
+      masteredDesc: 'E boosts A-C directly and unlock more C upgrades.',
     },
     32: {
       title: 'E14',

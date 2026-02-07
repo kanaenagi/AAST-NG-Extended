@@ -38,7 +38,7 @@ addLayer('A', {
     return player.points
   },
   type: 'normal',
-  layerShown:() => gcs('te', 25) >= 1 ,
+  layerShown:() => gcs('te', 25) <= 1 ,
   exponent: 0.5,
   gainExp() {
     let exp = n(1)
@@ -123,6 +123,7 @@ addLayer('A', {
     if (hc('E', 21)) mult = mult.mul(challengeEffect('E', 21)[0])
     mult = mult.mul(hu('E', 82) ? ue('E', 82) : 1)
     mult = mult.mul(tmp.B.bheff[0])
+    if (mu('E', 31)) mult = mult.mul(ue('E', 31))
     return mult
   },
   microtabs: {
@@ -196,6 +197,7 @@ addLayer('A', {
     let gain = player.A.ad[0].add(gba("A", 100)).mul(buyableEffect("A", 100)).clampMin(0.01)
     if (hu("C", 11)) gain = gain.mul(2)
     if (hu("C", 12)) gain = gain.mul(2)
+    if (hu("a", 12)) gain = gain.mul(3)
     if (mu("A", 11)) gain = gain.mul(ue("A", 11))
     if (mu("A", 15)) mult = mult.mul(ue("A", 15))
     if (mu("C", 11)) gain = gain.mul(ue("C", 11))

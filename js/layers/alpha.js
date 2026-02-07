@@ -65,7 +65,7 @@ addLayer('a', {
     return a
   },
   layerShown() {
-    return hm('F', 0) && gcs('te', 25) <= 1
+    return hm('F', 0) && gcs('te', 25) % 2 == 0
   },
   doReset(resettingLayer) {
     if (layers[resettingLayer].row > layers[this.layer].row) {
@@ -122,7 +122,7 @@ addLayer('a', {
     12: {
       title: 'α2',
       description: function () {
-        return '3x A and B.'
+        return '3x A, B and Antimatter.'
       },
       cost: n(100),
       unlocked() {

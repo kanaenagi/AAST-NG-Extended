@@ -92,7 +92,7 @@ addLayer('B', {
     },
   ],
   layerShown() {
-    return ( player.B.unlocked || hu('A', 35) ) && gcs('te', 25) >= 1
+    return ( player.B.unlocked || hu('A', 35) ) && gcs('te', 25) <= 1
   },
   gainMult() {
     mult = n(1)
@@ -159,6 +159,7 @@ addLayer('B', {
     if (hc('E', 21)) mult = mult.mul(challengeEffect('E', 21)[1])
     mult = mult.mul(hu('E', 82) ? ue('E', 82) : 1)
     mult = mult.mul(tmp.B.bheff[0])
+    if (mu('E', 31)) mult = mult.mul(ue('E', 31))
     return mult
   },
   microtabs: {

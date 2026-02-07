@@ -108,8 +108,7 @@ addLayer('sc', {
       canMaster: true,
       masterCost: n(16960),
       masteredDesc: function () {
-        layers.E.buyables[24].unlocked()
-        return `Softcap Points boosts points and ${layers.E.buyables[24].unlocked() || player.F.layerShown ? 'Eb12' : randomString(4)} base.<br>Effect: ` + format(ue("sc", this.id)) + 'x'
+        return `Softcap Points boosts points and Eb12 base.<br>Effect: ` + format(ue("sc", this.id)) + 'x'
       },
     },
     12: {
@@ -277,7 +276,7 @@ addLayer('sc', {
         return 'Softcap Points boosts A1.<br>Effect: ^' + format(ue("sc", this.id))
       },
       effect() {
-        let eff = player.sc.points.max(10000).log(10).pow(0.2).add(1).max(1)
+        let eff = player.sc.points.max(10).log(10).pow(0.2).add(1).max(1)
         return eff
       },
       cost: n(10000),
@@ -1084,15 +1083,15 @@ function softcapCal() {
     sc += "Sc183: Reduce E58's Effect<br>"
     scf += 'Sc183: 10,0.5<br>'
   }
+  if (tmp.F.effect.gt(10)) {
+    sc += "Sc184: Reduce F's Effect<br>"
+    scf += 'Sc184: 10,0.5<br>'
+  }
   if (tmp.E.ekgain.gte(1e40)) {
     sc += 'Sc182: Reduce Ek Gain<br>'
     scf += 'Sc182: 1e40,0.8<br>'
   }
   
-  if (tmp.F.effect.gt(10)) {
-    sc += "Sc184: Reduce F's Effect<br>"
-    scf += 'Sc184: 10,0.5<br>'
-  }
   if (uesc('a', 11, n(10))) {
     sc += "Sc185: Reduce α1's Effect<br>"
     scf += 'Sc185: 10,0.6<br>'

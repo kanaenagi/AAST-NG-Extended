@@ -22,7 +22,7 @@ addLayer('F', {
   },
   type: 'normal',
   exponent() {
-    return n(0.008)
+    return n(0.0125)
   },
   gainMult() {
     mult = n(1)
@@ -43,6 +43,13 @@ addLayer('F', {
     let a = " boosting E by x<h2 style='color:#d998ff; text-shadow: 0 0 10px #c2b280'>" + format(tmp.F.effect) + '</h2>'
     return a
   },
+  doReset(resettingLayer) {
+    if (layers[resettingLayer].row > layers[this.layer].row) {
+      let kept = ['unlocked', 'auto']
+      player.ma.mastered.F = []
+      layerDataReset(this.layer, kept)
+    }
+  },
   branches: ['C', 'D', 'E'],
   row: 2,
   hotkeys: [
@@ -59,7 +66,7 @@ addLayer('F', {
     return mult
   },
   layerShown() {
-    return (hm('E', 21) || hm('F', 0)) && gcs('te', 25) >= 1
+    return (hm('E', 21) || hm('F', 0)) && gcs('te', 25) <= 1
   },
   update(diff) {},
   microtabs: {
@@ -159,7 +166,7 @@ addLayer('F', {
         return player[this.layer].total.gte(64)
       },
       effectDescription() {
-        let a = randomString(3)
+        let a = '???'
         if (false) a = 'F challenges.'
         return 'Keep Best Points in Ac1. (you might have forgotten this, see B12)<br>Keep E challenges, except in ' + a
       },

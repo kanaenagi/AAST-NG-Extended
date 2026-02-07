@@ -46,7 +46,7 @@ addLayer('b', {
     return a
   },
   layerShown() {
-    return hm('F', 4) && gcs('te', 25) <= 1
+    return hm('F', 4) && gcs('te', 25) % 2 == 0
   },
   branches: ['a'],
   doReset(resettingLayer) {

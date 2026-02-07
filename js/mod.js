@@ -186,6 +186,8 @@ function getPointGen() {
   if (gain.max(1).log10().gte(500)) gain = n(10).pow(gain.log10().sub(499).pow(0.5).add(499)) //Sc87
     .overflow("1e500", 0.75, 2) // Ssc14
     .overflow("1e600", 0.25) // Ssc17
+  if (gain.max(1).log10().gte(700)) gain = n(10).pow(gain.log10().sub(699).pow(0.25).add(699))
+    .overflow('1e700', 0.5, 2)
   if (inChallenge('D', 11)) gain = n(10).pow(gain.max(1).log10().pow(0.1)) //Sc58boosted
 
   return gain
@@ -221,7 +223,7 @@ var displayThings = [
 ]
 // Determines when the game "ends"
 function isEndgame() {
-  return ha("ac", 111)
+  return false //ha("ac", 111)
 }
 
 // Less important things beyond this point!
@@ -237,7 +239,7 @@ function maxTickLength() {
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,
 // you can cap their current resources with this.
 function fixOldSave(oldVersion) {
-  if (oldVersion == "0.3" || oldVersion == "0.16" || oldVersion == "0.16.1") { setClickableState('te', 25, 1) }
+  if (oldVersion == "0.3" || oldVersion == "0.16" || oldVersion == "0.16.1") { setClickableState('te', 25, 0) }
 }
 
 function gba(a, b) {

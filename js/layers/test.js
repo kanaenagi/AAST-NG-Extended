@@ -32,6 +32,7 @@ addLayer('te', {
   },
   update(diff) {
     player.softcap = n(softcapCal()[0])
+    if (ha("ac", 111)) setClickableState('te', 25, 0)
   },
   clickables: {
     11: {
@@ -214,8 +215,8 @@ addLayer('te', {
         return 'Layer Display Mode'
       },
       display() {
-        if (gcs('te', 25) == 2) return 'Currently: Only English Letter Layers'
-        if (gcs('te', 25) == 0) return 'Currently: Only Greek Letter Layers'
+        if (gcs('te', 25) == 2) return 'Currently: Only Greek Letter Layers'
+        if (gcs('te', 25) == 1) return 'Currently: Only English Letter Layers'
         return 'Currently: All Layers'
       },
       onClick() {

@@ -38,7 +38,7 @@ addLayer('D', {
     },
   ],
   layerShown() {
-    return (player.D.unlocked || hm('C', 3)) && gcs('te', 25) >= 1
+    return (player.D.unlocked || hm('C', 3)) && gcs('te', 25) <= 1
   },
   gainMult() {
     mult = n(1)
@@ -212,7 +212,7 @@ addLayer('D', {
       },
       canMaster: true,
       masterCost: n(1e187),
-      masteredDesc:() => `10000x points and ${player.E.unlocked ? "E" : randomString(1)}.`,
+      masteredDesc:() => `10000x points and E.`,
     },
     15: {
       title: 'D5',
