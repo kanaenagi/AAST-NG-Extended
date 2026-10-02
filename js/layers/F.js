@@ -69,7 +69,9 @@ addLayer('F', {
   layerShown() {
     return (hm('E', 20) || hm('F', 0)) && gcs('te', 25) <= 1
   },
-  update(diff) {},
+  update(diff) {
+    if (player.F.points.gt(512)) player.F.points= n(512)
+  },
   microtabs: {
     stuff: {
       Milestones: {

@@ -210,12 +210,12 @@ var shitDown = false
 // Display extra things at the top of the page
 var displayThings = [
   function () {
-    let a = 'Current endgame: 1e150 E'
+    let a = 'Current endgame: 512 F'
     let tick = 0
     for (i = 0; i<lastTenTicks.length; i++){
 			tick += lastTenTicks[i] / lastTenTicks.length
 		}
-    if (isEndgame()) a = a + '<br>You are past endgame! E is capped at 1e150.'
+    if (isEndgame()) a = a + '<br>You are past endgame! F is capped at 512.'
     if (gcs('te', 12)) a = a + '<br>You have played the game for ' + formatTime(player.timePlayed) + '.'
     if (gcs('te', 13)) a = a + `<br>Current FPS:  ${tick === 0 ? "0" : Number((tick/1000) ** -1).toFixed(2)}` 
     // + `<br>Current TPS : ${Number(tick/1000).toFixed(4)}s/tick.`
