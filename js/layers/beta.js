@@ -108,9 +108,9 @@ addLayer('b', {
       },
       effect() {
         let eff = player.b.points.pow(2).max(1)
-        eff = sc(eff, n(10), 0.5) //Sc228
-        eff = sc(eff, n(100), 0.5) //Sc229
-        eff = sc(eff, n(1000), 0.5) //Sc231
+        eff = sc(eff, n(10), 0.5) //Sc225
+        eff = sc(eff, n(100), 0.5) //Sc226
+        eff = sc(eff, n(1000), 0.5) //Sc228
         return eff
       },
       effectDisplay() {
@@ -128,7 +128,7 @@ addLayer('b', {
       },
       effect() {
         let eff = player.b.points.pow(0.2).max(1)
-        eff = sc(eff, n(4), 0.5) //Sc230
+        eff = sc(eff, n(4), 0.5) //Sc227
         return eff
       },
       effectDisplay() {

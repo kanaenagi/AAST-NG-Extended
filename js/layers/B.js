@@ -52,6 +52,7 @@ addLayer('B', {
     if (mu("B", 35)) gain = gain.mul(player.A.buyables[12])
     if (hu("E", 93)) gain = gain.mul(ue("E", 93))
     if (hu("sc", 35)) gain = gain.mul(ue("sc", 35)) 
+    if (mu('a', 16)) gain = gain.mul(ue('a', 16))
 
     gain = gain.pow(tmp.B.antbheff[0])
     return gain.overflow(1.5e56, 0.5) //Ssc32
@@ -63,6 +64,7 @@ addLayer('B', {
   },
   antbhgain() {
     let gain = expPow(player.B.bhmass.div(1.5e81).pow(0.3), 0.5).sub(1).max(0)
+    if (hu('sc', 36)) gain = gain.mul(ue('sc', 36))
     return gain.sub(player.B.antibhmass).max(0)
   },
   antbheff() {
@@ -130,6 +132,7 @@ addLayer('B', {
     if (mu("A", 35)) mult = mult.mul(ue("A", 35))
 
     if (mu("A", 46)) mult = mult.pow(1.1)
+    if (mu("C", 24)) mult = mult.pow(1.5)
     if (mu("B", 14)) mult = mult.pow(1.25)
     if (mu("B", 22)) mult = mult.pow(3)
     if (mu("A", 21)) mult = mult.pow(ue("A", 21))
@@ -202,6 +205,9 @@ addLayer('B', {
   branches: ['A'],
   autoUpgrade() {
     return hm('F', 2) && player.F.auto
+  },
+  automasterUpgrades() {
+    return hm('F', 4) && player.F.auto2
   },
   doReset(resettingLayer) {
     if (layers[resettingLayer].row > layers[this.layer].row) {
@@ -302,6 +308,14 @@ addLayer('B', {
       },
       effectDescription: 'Unlock Anti-Black hole, Bb7 cost Scaling is reduced (2 → 1.5).',
     },
+    12: {
+      requirementDescription: 'Bm13: 1e840 total B',
+      done() {
+        return player[this.layer].total.gte('1e840')
+      },
+      effectDescription: 'auto buy Bb7-8.',
+      toggles: [['B', 'auto5']],
+    },
   },
   upgrades: {
     11: {
@@ -387,7 +401,7 @@ addLayer('B', {
       },
       canMaster: true,
       masterCost: n(2.5e182),
-      masteredDesc: "1e300x points. Antimatter boosts antimatter gain."
+      masteredDesc: "1.5x B, 1e300x points,^2 Antimatter."
     },
     16: {
       title: 'B6',
@@ -411,7 +425,7 @@ addLayer('B', {
       },
       canMaster: true,
       masterCost: n(5e192),
-      masteredDesc: "B^2 boosts Antimatter, A, B, C, D. Antimatter Dimension cost scaling is reduced. (4^n → 1.3^n)"
+      masteredDesc: "B^2 boosts A, B, C, D. Antimatter Dimension cost scaling is reduced. (4^n → 1.3^n)"
     },
     21: {
       title: 'B7',
@@ -922,6 +936,10 @@ addLayer('B', {
       layers.B.buyables[22].buyMax()
       layers.B.buyables[23].buyMax()
     }
+    if (player.B.auto5 && hm('B', 12)) {
+      layers.B.buyables[31].buyMax()
+      layers.B.buyables[32].buyMax()
+    }
   },
   buyables: {
     11: {
@@ -954,7 +972,8 @@ addLayer('B', {
         if (hu('D', 36)) bas = bas.add(ue('D', 36))
         if (hc('D', 11)) bas = bas.mul(2)
         if (mu("B", 13)) bas = bas.mul(50)
-
+        
+        if (mu("E", 33)) bas = bas.pow(challengeEffect('A', 41))
         if (hu('A', 54)) bas = bas.pow(ue('A', 54))
         if (inChallenge('E', 12)) bas = n(1)
         bas = n(bas)
@@ -1024,6 +1043,7 @@ addLayer('B', {
         if (hu('B', 43)) bas = bas.mul(2)
         if (hc('D', 11)) bas = bas.mul(2)
         if (mu("B", 13)) bas = bas.mul(50)
+          if (mu("E", 33)) bas = bas.pow(challengeEffect('A', 41))
         if (hu('A', 54)) bas = bas.pow(ue('A', 54))
 
         if (inChallenge('E', 12)) bas = n(1)
@@ -1375,8 +1395,13 @@ addLayer('B', {
         let cost = n('1e88')
         return cost
       },
+      costbase() {
+        let base = 1.5
+        if (mu('C', 24)) base = 1.2
+        return base 
+      },
       cost(x = player[this.layer].buyables[this.id]) {
-        let cost = n(this.baseCost()).mul(n(1.5).pow(x.pow(1.5)))
+        let cost = n(this.baseCost()).mul(n(this.costbase()).pow(x.pow(1.5)))
         return cost
       },
       canAfford() {
@@ -1388,7 +1413,7 @@ addLayer('B', {
       },
       buyMax() {
         if (!this.canAfford()) return
-        let tempBuy = player.E.points.div(this.baseCost()).max(0).max(1).log(1.5).root(1.5)
+        let tempBuy = player.E.points.div(this.baseCost()).max(0).max(1).log(this.costbase()).root(1.5)
         let target = tempBuy.plus(1).floor()
         player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].max(target)
       },

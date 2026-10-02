@@ -67,7 +67,7 @@ const superSoftcapDatas = [
     effects: 'A1 mult is overflowed to 0.5',
   },
   {
-    unlocked: () => player.points.gte(100),
+    unlocked: () => n(tmp.pointGen).gte(100),
     requirement: '100 points/s',
     effects: 'points generation is overflowed to 0.5',
   },
@@ -122,12 +122,12 @@ const superSoftcapDatas = [
     effects: 'Antimatter generation is overflowed to 0.5',
   },
   {
-    unlocked: () => player.points.gte(Number.MAX_VALUE),
+    unlocked: () => n(tmp.pointGen).gte(Number.MAX_VALUE),
     requirement: '1.7976e308 points/s',
     effects: 'points generation is overflowed to 0.5',
   },
   {
-    unlocked: () => player.points.gte("1e500"),
+    unlocked: () => n(tmp.pointGen).gte("1e500"),
     requirement: '1e500 points/s',
     effects: 'points generation is double-overflowed to 0.75',
   },
@@ -142,7 +142,7 @@ const superSoftcapDatas = [
     effects: 'Tickspeed effect is power-softcapped to 0.5',
   },
   {
-    unlocked: () => player.points.gte("1e600"),
+    unlocked: () => n(tmp.pointGen).gte("1e600"),
     requirement: '1e600 points/s',
     effects: 'points generation is overflowed to 0.25',
   },
@@ -220,6 +220,16 @@ const superSoftcapDatas = [
     unlocked: () => tmp.B.bhgain.gte(1.5e56),
     requirement: '1 uni Mass of Black hole generation',
     effects: 'Mass of Black hole is overflow to 0.5',
+  },
+  {
+    unlocked: () => n(tmp.pointGen).gte('1e700'),
+    requirement: '1e700 points/s',
+    effects: 'points generation is double-overflowed to 0.5',
+  },
+  {
+    unlocked: () => tmp.C.gainMult.gte('1e450'),
+    requirement: '1e450 C GainMult',
+    effects: 'C GainMult is overflowed to 0.5',
   },
   {
     unlocked: () => player.sc.points.gte(100000),

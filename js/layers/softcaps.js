@@ -81,9 +81,10 @@ addLayer('sc', {
     },
   },
   spCal() {
-    let sp = player.softcap
+    let sp = n(softcapCal()[0])
     if (hu('D', 16)) sp = sp.mul(ue('D', 16))
     if (hu('D', 24)) sp = sp.mul(ue('D', 24))
+    if (mu('a', 15)) sp = sp.mul(ue('a', 15))
     if (hu('C', 16)) sp = sp.pow(2)
     if (hu('C', 26)) sp = sp.pow(3)
     if (hc('C', 11)) sp = sp.pow(1.1)
@@ -100,7 +101,7 @@ addLayer('sc', {
         return 'Softcap Points boosts points.<br>Effect: ' + format(ue("sc", this.id)) + 'x'
       },
       effect() {
-        let eff = mu("sc", 11) ? player.sc.points.max(1).pow(3) : player.sc.points.max(1)
+        let eff = mu("sc", 11) ? tmp.sc.spCal.max(1).pow(3) : tmp.sc.spCal.max(1)
         if (eff.gte(10)) eff = eff.div(10).pow(0.6).mul(10) //Sc11
         return eff
       },
@@ -339,7 +340,21 @@ addLayer('sc', {
       },
       cost: n(21250),
       unlocked() {
-        return hu('sc', 33)
+        return hu('sc', 34)
+      },
+    },
+    36: {
+      title: 'ScU18',
+      description: function () {
+        return 'Softcap Points boosts Ant-black hole.<br>Effect: ' + format(ue("sc", this.id)) + 'x' 
+      },
+      effect() {
+        let eff = player.sc.points.max(1).pow(0.1)
+        return eff
+      },
+      cost: n(28100),
+      unlocked() {
+        return hu('sc', 35)
       },
     },
   },
@@ -379,7 +394,7 @@ function softcapCal() {
     sc += "Sc7: Reduce A10's Effect<br>"
     scf += 'Sc7: 10,0.7<br>'
   }
-  if (player.points.gte(1e4)) {
+  if (n(tmp.pointGen).gte(1e4)) {
     sc += 'Sc8: Reduce Points Gain<br>'
     scf += 'Sc8: 1e4,0.5<br>'
   }
@@ -387,7 +402,7 @@ function softcapCal() {
     sc += "Sc9: Reduce A17's Effect<br>"
     scf += 'Sc9: 5,0.5<br>'
   }
-  if (player.points.gte(1e6)) {
+  if (n(tmp.pointGen).gte(1e6)) {
     sc += 'Sc10: Reduce Points Gain<br>'
     scf += 'Sc10: 1e6,0.6<br>'
   }
@@ -427,7 +442,7 @@ function softcapCal() {
     sc += "Sc19: Reduce A5's Effect<br>"
     scf += 'Sc19: 100,0.5<br>'
   }
-  if (player.points.gte(1e8)) {
+  if (n(tmp.pointGen).gte(1e8)) {
     sc += 'Sc20: Reduce Points Gain<br>'
     scf += 'Sc20: 1e8,0.7<br>'
   }
@@ -439,7 +454,7 @@ function softcapCal() {
     sc += "Sc22: Reduce B12's Effect<br>"
     scf += 'Sc22: 5,0.5<br>'
   }
-  if (player.points.gte(1e10)) {
+  if (n(tmp.pointGen).gte(1e10)) {
     sc += 'Sc23: Reduce Points Gain<br>'
     scf += 'Sc23: 1e10,0.8<br>'
   }
@@ -487,7 +502,7 @@ function softcapCal() {
     sc += "Sc34: Reduce C1's Effect<br>"
     scf += 'Sc34: 1e5,0.4<br>'
   }
-  if (player.points.gte(1e35)) {
+  if (n(tmp.pointGen).gte(1e35)) {
     sc += 'Sc35: Reduce Points Gain<br>'
     scf += 'Sc35: 35,0.9<br>'
   }
@@ -579,7 +594,7 @@ function softcapCal() {
     sc += "Sc57: Reduce D14's Effect<br>"
     scf += 'Sc57: 1e4,0.5<br>'
   }
-  if (player.points.gte(1e100)) {
+  if (n(tmp.pointGen).gte(1e100)) {
     sc += 'Sc58: Decrease Points Gain<br>'
     scf += 'Sc58: 1e100,exp0.8<br>'
   }
@@ -631,7 +646,7 @@ function softcapCal() {
     sc += "Sc70: Reduce B22's Effect<br>"
     scf += 'Sc70: 1e30,0.25<br>'
   }
-  if (player.points.gte(1e300)) {
+  if (n(tmp.pointGen).gte(1e300)) {
     sc += 'Sc71: Decrease Points Gain<br>'
     scf += 'Sc71: 1e300,exp0.75<br>'
   }
@@ -695,7 +710,7 @@ function softcapCal() {
     sc += "Sc86: Reduce A's Gainmult<br>"
     scf += 'Sc86: 1e100,0.8<br>'
   }
-  if (player.points.gte('1e500')) {
+  if (n(tmp.pointGen).gte('1e500')) {
     sc += 'Sc87: Decrease Points Gain<br>'
     scf += 'Sc87: 1e500,exp0.5<br>'
   }
@@ -1087,11 +1102,6 @@ function softcapCal() {
     sc += "Sc184: Reduce F's Effect<br>"
     scf += 'Sc184: 10,0.5<br>'
   }
-  if (tmp.E.ekgain.gte(1e40)) {
-    sc += 'Sc182: Reduce Ek Gain<br>'
-    scf += 'Sc182: 1e40,0.8<br>'
-  }
-  
   if (uesc('a', 11, n(10))) {
     sc += "Sc185: Reduce α1's Effect<br>"
     scf += 'Sc185: 10,0.6<br>'
@@ -1192,54 +1202,57 @@ function softcapCal() {
     sc += "Sc209: Reduce α7's Effect<br>"
     scf += 'Sc209: 1e4,0.1<br>'
   }
-  if (uesc('a', 22, n(1e10))) {
-    sc += "Sc210: Reduce α8's Effect<br>"
-    scf += 'Sc210: 1e10,0.5<br>'
-  }
   if (uesc('a', 23, n(10))) {
-    sc += "Sc211: Reduce α9's Effect<br>"
-    scf += 'Sc211: 10,0.5<br>'
+    sc += "Sc210: Reduce α9's Effect<br>"
+    scf += 'Sc210: 10,0.5<br>'
   }
   if (uesc('a', 21, n(1e5))) {
-    sc += "Sc212: Reduce α7's Effect<br>"
-    scf += 'Sc212: 1e5,0.5<br>'
+    sc += "Sc211: Reduce α7's Effect<br>"
+    scf += 'Sc211: 1e5,0.5<br>'
   }
   if (uesc('a', 23, n(1e6))) {
-    sc += "Sc213: Reduce α9's Effect<br>"
-    scf += 'Sc213: 1e6,0.5<br>'
+    sc += "Sc212: Reduce α9's Effect<br>"
+    scf += 'Sc212: 1e6,0.5<br>'
   }
   if (uesc('a', 24, n(1000))) {
-    sc += "Sc214: Reduce α10's Effect<br>"
-    scf += 'Sc214: 1000,0.5<br>'
-  }
-  if (uesc('a', 25, n(1000))) {
-    sc += "Sc215: Reduce α11's Effect<br>"
-    scf += 'Sc215: 1000,0.5<br>'
+    sc += "Sc213: Reduce α10's Effect<br>"
+    scf += 'Sc213: 1000,0.5<br>'
   }
   if (uesc('a', 24, n(1e4))) {
-    sc += "Sc216: Reduce α10's Effect<br>"
-    scf += 'Sc216: 1e4,0.5<br>'
+    sc += "Sc214: Reduce α10's Effect<br>"
+    scf += 'Sc214: 1e4,0.5<br>'
   }
   if (uesc('a', 26, n(10))) {
-    sc += "Sc217: Reduce α12's Effect<br>"
-    scf += 'Sc217: 10,0.5<br>'
+    sc += "Sc215: Reduce α12's Effect<br>"
+    scf += 'Sc215: 10,0.5<br>'
   }
-  if (player.sc.points.gte(5e4)) {
-    sc += 'Sc218: Reduce Softcap Points Gain<br>'
-    scf += 'Sc218: 5e4,0.1<br>'
+  if (uesc('a', 25, n(1000))) {
+    sc += "Sc216: Reduce α11's Effect<br>"
+    scf += 'Sc216: 1000,0.5<br>'
+  }
+  if (uesc('a', 26, n(100))) {
+    sc += "Sc217: Reduce α12's Effect<br>"
+    scf += 'Sc217: 100,0.5<br>'
+  }
+  if (tmp.E.ekgain.gte(1e40)) {
+    sc += 'Sc218: Reduce Ek Gain<br>'
+    scf += 'Sc218: 1e40,0.8<br>'
   }
   if (tmp.D.gainMult.gte(1e256)) {
     sc += "Sc219: Reduce D's Gainmult<br>"
     scf += 'Sc219: 1e256,0.3<br>'
   }
-  if (tmp.E.gainMult.gte(1e54)) {
-    sc += "Sc220: Reduce E's Gainmult<br>"
-    scf += 'Sc220: 1e54,0.5<br>'
+  if (uesc('a', 22, n(1e10))) {
+    sc += "Sc220: Reduce α8's Effect<br>"
+    scf += 'Sc220: 1e10,0.25<br>'
   }
-  if (uesc('a', 26, n(100))) {
-    sc += "Sc221: Reduce α12's Effect<br>"
-    scf += 'Sc221: 100,0.5<br>'
+  if (player.sc.points.gte(5e4)) {
+    sc += 'Sc218: Reduce Softcap Points Gain<br>'
+    scf += 'Sc218: 5e4,0.1<br>'
   }
+  
+  
+  
   if (uesc('a', 24, n(1e6))) {
     sc += "Sc221: Reduce α10's Effect<br>"
     scf += 'Sc221: 1e6,0.1<br>'
@@ -1252,21 +1265,25 @@ function softcapCal() {
     sc += "Sc223: Reduce Fm2's Effect<br>"
     scf += 'Sc223: 1.3,0.5<br>'
   }
+  if (tmp.E.gainMult.gte(1e54)) {
+    sc += "Sc224: Reduce E's Gainmult<br>"
+    scf += 'Sc224: 1e54,0.5<br>'
+  }
   if (uesc('b', 12, n(10))) {
-    sc += "Sc224: Reduce β2's Effect<br>"
-    scf += 'Sc224: 10,0.5<br>'
+    sc += "Sc225: Reduce β2's Effect<br>"
+    scf += 'Sc225: 10,0.5<br>'
   }
   if (uesc('b', 12, n(100))) {
-    sc += "Sc225: Reduce β2's Effect<br>"
-    scf += 'Sc225: 100,0.5<br>'
+    sc += "Sc226: Reduce β2's Effect<br>"
+    scf += 'Sc226: 100,0.5<br>'
   }
   if (uesc('b', 13, n(4))) {
-    sc += "Sc226: Reduce β3's Effect<br>"
-    scf += 'Sc226: 4,0.5<br>'
+    sc += "Sc227: Reduce β3's Effect<br>"
+    scf += 'Sc227: 4,0.5<br>'
   }
   if (uesc('b', 12, n(1000))) {
-    sc += "Sc227: Reduce β2's Effect<br>"
-    scf += 'Sc227: 1000,0.5<br>'
+    sc += "Sc228: Reduce β2's Effect<br>"
+    scf += 'Sc228: 1000,0.5<br>'
   }
   if (uesc('D', 43, n(1e6))) {
     sc += "Sc228: Reduce D21's Effect<br>"
@@ -1276,13 +1293,13 @@ function softcapCal() {
     sc += "Sc229: Reduce D22's Effect<br>"
     scf += 'Sc229: 4,0.5<br>'
   }
-  if (uesc('D', 43, n(1e8))) {
-    sc += "Sc230: Reduce D21's Effect<br>"
-    scf += 'Sc230: 1e8,0.5<br>'
-  }
   if (uesc('D', 44, n(10))) {
-    sc += "Sc231: Reduce D22's Effect<br>"
-    scf += 'Sc231: 10,0.5<br>'
+    sc += "Sc230: Reduce D22's Effect<br>"
+    scf += 'Sc230: 10,0.5<br>'
+  }
+  if (uesc('D', 43, n(1e8))) {
+    sc += "Sc231: Reduce D21's Effect<br>"
+    scf += 'Sc231: 1e8,0.5<br>'
   }
   return [sc.split('br').length - 1, sc, scf]
 }

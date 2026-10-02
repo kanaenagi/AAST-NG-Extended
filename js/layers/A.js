@@ -61,7 +61,7 @@ addLayer('A', {
       }
     }
     if (hu('E', 26) && inChallenge('A', 41))
-      player.A.challenges[41] = getPointGen().div(8e11).max(1).log(tmp.A.Ac7Req).root(2).softcap(2, 100, 3).add(10).max(player.A.challenges[41]).min(1e308).toNumber() //Ssc28
+      player.A.challenges[41] = n(tmp.pointGen).div(8e11).max(1).log(tmp.A.Ac7Req).root(2).softcap(2, 100, 3).add(10).max(player.A.challenges[41]).min(1e308).toNumber() //Ssc28
     if (hu('E', 74)) player.A.challenges[41] = player.points.max(1).div(8e11).max(1).log(tmp.A.Ac7Req).root(2).softcap(2, 100, 3).add(10).max(player.A.challenges[41]).min(1e308).toNumber()
     if (inChallenge('E', 51)) player.A.points = player.A.points.min(player.a.points)
     if (inChallenge('C', 22)) player.A.points = player.A.points.min(player.E.points)
@@ -199,10 +199,11 @@ addLayer('A', {
     if (hu("C", 12)) gain = gain.mul(2)
     if (hu("a", 12)) gain = gain.mul(3)
     if (mu("A", 11)) gain = gain.mul(ue("A", 11))
-    if (mu("A", 15)) mult = mult.mul(ue("A", 15))
     if (mu("C", 11)) gain = gain.mul(ue("C", 11))
-    if (mu("B", 16)) mult = mult.mul(ue("B", 16))
-
+    if (mu("a", 14)) gain = gain.mul(ue("a", 14))
+    
+    if (gain.gte(1)) {
+    if (mu('a', 12)) gain = gain.pow(1.1)
     if (hc("A", 32)) gain = gain.pow(2)
     if (mu("B", 15)) gain = gain.pow(2)
     if (mu("C", 12)) gain = gain.pow(3)
@@ -211,6 +212,7 @@ addLayer('A', {
     if (hu('sc', 25)) gain = gain.pow(ue('sc', 25))
     gain = gain.pow(buyableEffect('A', 13))
     gain = gain.pow(buyableEffect('A', 111))
+    }
     return gain
       .overflow(10, 0.5) //Ssc9
       .overflow(1e10, 0.5) //Ssc12
@@ -225,6 +227,9 @@ addLayer('A', {
   },
   autoUpgrade() {
     return hm('F', 2) && player.F.auto
+  },
+  automasterUpgrades() {
+    return hm('F', 4) && player.F.auto2
   },
   doReset(resettingLayer) {
     if (layers[resettingLayer].row > layers[this.layer].row) {
@@ -358,7 +363,7 @@ addLayer('A', {
       },
       canMaster: true,
       masterCost: n(5e234),
-      masteredDesc: "points boosts points, A, B, antimatter"
+      masteredDesc: "points boosts points, A, B."
     },
     16: {
       title: 'A6',
@@ -821,10 +826,13 @@ addLayer('A', {
       },
       goalDescription: () => hu("C", 11) ? "7.5e7 points /sec" : '1e8 points /sec',
       canComplete() {
-        if (hu("C", 11)) return getPointGen().gte(7.5e7)
-        return getPointGen().gte(1e8)
+        if (hu("C", 11)) return n(tmp.pointGen).gte(7.5e7)
+        return n(tmp.pointGen).gte(1e8)
       },
       rewardDescription: '50x points(ignore most challenge effects) and 10x B.',
+      onEnter() {
+        updateTemp()
+      },
     },
     22: {
       name: 'Ac4',
@@ -840,6 +848,9 @@ addLayer('A', {
         return player.points.gte(6.365)
       },
       rewardDescription: '100x points(ignore most challenge effects), 20x A, 10x B.<br>unlock C.',
+      onEnter() {
+        updateTemp()
+      },
     },
     31: {
       name: 'Ac5',
@@ -852,9 +863,12 @@ addLayer('A', {
       },
       goalDescription: '1.5e8 points /sec',
       canComplete() {
-        return getPointGen().gte(1.5e8)
+        return n(tmp.pointGen).gte(1.5e8)
       },
       rewardDescription: '2e5x points(ignore most challenge effects),20x A,2x C, Unlock <i>Antimatter Dimensions</i>.',
+      onEnter() {
+        updateTemp()
+      },
     },
     32: {
       name: 'Ac6',
@@ -869,7 +883,7 @@ addLayer('A', {
         return '1451 points /sec'
       },
       canComplete() {
-        return getPointGen().gte(1451)
+        return n(tmp.pointGen).gte(1451)
       },
       rewardDescription: '^1.5 D, ^2 Antimatter',
     },
@@ -898,7 +912,7 @@ addLayer('A', {
         else return challengeCompletions('A', 41) >= 2 ? format(this.goal()) + ' points/s' : format(this.goal()) + ' points'
       },
       canComplete() {
-        return challengeCompletions('A', 41) >= 2 && challengeCompletions('A', 41) < 10 ? getPointGen().gte(this.goal()) : player.points.gte(this.goal()) && challengeCompletions('A', 41) < 10
+        return challengeCompletions('A', 41) >= 2 && challengeCompletions('A', 41) < 10 ? n(tmp.pointGen).gte(this.goal()) : player.points.gte(this.goal()) && challengeCompletions('A', 41) < 10
       },
       rewardDescription: 'Boost Ab2 Effect.',
       rewardEffect() {
@@ -908,6 +922,9 @@ addLayer('A', {
       },
       rewardDisplay() {
         return '^' + format(tmp.A.challenges[this.id].rewardEffect)
+      },
+      onEnter() {
+        updateTemp()
       },
     },
     42: {
@@ -1029,6 +1046,7 @@ addLayer('A', {
         if (hu('B', 82)) eff = eff.mul(1.35)
         if (mu("B", 21)) eff = eff.mul(2)
         if (mu("A", 32)) eff = eff.mul(1.1)
+        if (mu('C', 23)) eff = eff.mul(1.2)
         if (inChallenge('E', 31)) eff = n(1)
         if (eff.gte(10)) eff = eff.div(10).pow(0.5).mul(10) //Sc88
         if (eff.gte(100)) eff = eff.div(100).pow(0.5).mul(100) //Sc91
@@ -1123,6 +1141,7 @@ addLayer('A', {
         b[i + 100] = {
           effect() {
             let mult = n(2);
+            
             if (mu("B", 23)) mult = mult.mul(ue("B", 23))
             if (hc("D", 11)) mult = mult.mul(layers.D.challenges[11].effect())
             let eff = mult.pow(player[this.layer].buyables[this.id])

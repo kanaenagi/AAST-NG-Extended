@@ -82,6 +82,9 @@ addLayer('D', {
   autoUpgrade() {
     return hm('F', 2) && player.F.auto
   },
+  automasterUpgrades() {
+    return hm('F', 4) && player.F.auto2
+  },
   doReset(resettingLayer) {
     if (layers[resettingLayer].row > layers[this.layer].row) {
       let kept = ['unlocked', 'auto']
@@ -121,9 +124,9 @@ addLayer('D', {
       effectDescription: '1e5x A,unlock a chal.',
     },
     4: {
-      requirementDescription: 'Dm5: 1e720 total D',
+      requirementDescription: 'Dm5: 1e510 total D',
       done() {
-        return player[this.layer].total.gte('1e720')
+        return player[this.layer].total.gte('1e510')
       },
       effectDescription: 'Unlock more D upgrades.',
     },
@@ -422,19 +425,18 @@ addLayer('D', {
     },
     41: {
       title: 'D19',
-      description: "Re-count the Softcaps which weren't counted normally. (because i forgot to count. qwq)",
-      cost: n('1e720'),
+      description: "Eb11 effect x3.",
+      cost: n('1e510'),
       unlocked() {
         return hm('D', 4)
       },
     },
     42: {
       title: 'D20',
-      description: 'Boost Alpha based on C beyond 1e1000.',
-      tooltip: 'You may need to reset for F for the second time.',
-      cost: n('1e750'),
+      description: 'Boost Alpha based on C beyond 1e666.',
+      cost: n('1e520'),
       effect() {
-        let eff = player.C.points.max('1e1000').log(10).sub(999).pow(2)
+        let eff = player.C.points.max('1e666').log(10).sub(665).pow(2)
         return eff
       },
       unlocked() {
@@ -447,7 +449,7 @@ addLayer('D', {
     43: {
       title: 'D21',
       description: 'F boosts Alpha gain.',
-      cost: n('1e770'),
+      cost: n('1e530'),
       effect() {
         let eff = player.F.points.div(10).pow(10).add(1)
         eff = sc(eff, n(1e6), 0.5) //Sc232
@@ -464,7 +466,7 @@ addLayer('D', {
     44: {
       title: 'D22',
       description: 'Beta boosts F gain.',
-      cost: n('1e785'),
+      cost: n('1e550'),
       effect() {
         let eff = player.b.points.div(10).pow(0.2).add(1)
         eff = sc(eff, n(4), 0.5) //Sc233
@@ -476,14 +478,6 @@ addLayer('D', {
       },
       effectDisplay() {
         return format(ue(this.layer, this.id)) + 'x'
-      },
-    },
-    45: {
-      title: 'D23',
-      description: 'E14/E17 ^1.2.',
-      cost: n('1e6784'),
-      unlocked() {
-        return hu('D', 44)
       },
     },
   },
@@ -503,7 +497,7 @@ addLayer('D', {
       tooltip: 'Reset your points when entering.',
       goalDescription: '45.45 points /sec',
       canComplete() {
-        return getPointGen().gte(45.45)
+        return n(tmp.pointGen).gte(45.45)
       },
       rewardDescription() {
         return "All Bbs' base x2, D^1.25 boosts AD mult base<br>" +
@@ -523,7 +517,7 @@ addLayer('D', {
       unlocked() {
         return hu('B', 56)
       },
-      goalDescription: '1.75e16 points. /sec',
+      goalDescription: '1.75e16 points /sec',
       onEnter() {
         player.points = n(0)
         updateTemp()
@@ -531,7 +525,7 @@ addLayer('D', {
       },
       tooltip: 'Reset your points when entering.',
       canComplete() {
-        return getPointGen().gte(1.75e16)
+        return n(tmp.pointGen).gte(1.75e16)
       },
       rewardDescription: 'B Gainmult ^1.25.',
     },

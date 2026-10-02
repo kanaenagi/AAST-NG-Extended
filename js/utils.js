@@ -53,6 +53,7 @@ function buyUpgrade(layer, id) {
 
 function buyUpg(layer, id) {
   if (!tmp[layer].upgrades || !tmp[layer].upgrades[id]) return
+  id = Number(id)
   let upg = tmp[layer].upgrades[id]
   if (!player[layer].unlocked || player[layer].deactivated) return
   if (!tmp[layer].upgrades[id].unlocked) return

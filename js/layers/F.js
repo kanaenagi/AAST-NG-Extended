@@ -26,6 +26,7 @@ addLayer('F', {
   },
   gainMult() {
     mult = n(1)
+    if (mu('E', 32)) mult = mult.mul(ue('E', 32))
     mult = mult.mul(hu('D', 44) ? ue('D', 44) : 1)
     return mult
   },
@@ -66,7 +67,7 @@ addLayer('F', {
     return mult
   },
   layerShown() {
-    return (hm('E', 21) || hm('F', 0)) && gcs('te', 25) <= 1
+    return (hm('E', 20) || hm('F', 0)) && gcs('te', 25) <= 1
   },
   update(diff) {},
   microtabs: {
@@ -147,8 +148,9 @@ addLayer('F', {
       done() {
         return player[this.layer].total.gte(16)
       },
+      toggles: [['F', 'auto2']],
       effectDescription() {
-        return 'Keep A~D milestones.<br>Unlock β (Beta).'
+        return 'Keep A~D milestones. Auto Master A~E upgrades.<br>Unlock β (Beta).'
       },
     },
     5: {
@@ -161,9 +163,9 @@ addLayer('F', {
       },
     },
     6: {
-      requirementDescription: 'Fm7: 64 total F',
+      requirementDescription: 'Fm7: 128 total F',
       done() {
-        return player[this.layer].total.gte(64)
+        return player[this.layer].total.gte(128)
       },
       effectDescription() {
         let a = '???'
@@ -172,12 +174,12 @@ addLayer('F', {
       },
     },
     7: {
-      requirementDescription: 'Fm8: 128 total F',
+      requirementDescription: 'Fm8: 512 total F',
       done() {
-        return player[this.layer].total.gte(128)
+        return player[this.layer].total.gte(512)
       },
       effectDescription() {
-        return 'Unlock two more E challenges.'
+        return 'Unlock two more E challenges (coming soon).'
       },
     },
   },

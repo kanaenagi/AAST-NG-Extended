@@ -118,6 +118,11 @@ addLayer('a', {
         return eff
       },
       cost: n(10),
+      canMaster: true,
+      masterCost: n(1e56),
+      masteredDesc: function () {
+        return '10x and ^1.25 points. <br>layer α total:<br>' + format(this.effect()) + 'x'
+      },
     },
     12: {
       title: 'α2',
@@ -127,6 +132,11 @@ addLayer('a', {
       cost: n(100),
       unlocked() {
         return hu('a', 11)
+      },
+      canMaster: true,
+      masterCost: n(1e59),
+      masteredDesc: function () {
+        return '3x A, B. ^1.1 Antimatter.'
       },
     },
     13: {
@@ -140,11 +150,17 @@ addLayer('a', {
       },
       effect() {
         let eff = n(player.a.upgrades.length)
+        if (mu('a', 13)) eff = eff.mul(player.ma.mastered.a.length ** 0.5)
         eff = sc(eff, n(2), 0.5) //Sc186
         return eff
       },
       effectDisplay() {
         return '^' + format(ue(this.layer, this.id))
+      },
+      canMaster: true,
+      masterCost: n(1e85),
+      masteredDesc: function () {
+        return 'Boost A1 and B1 based on (total Alpha upgrades * total mastered Alpha upgrades ^ 0.5).'
       },
     },
     14: {
@@ -152,12 +168,13 @@ addLayer('a', {
       description: function () {
         return 'Boost A and B based on total Alpha.'
       },
-      cost: n(15000),
+      cost: n(1500),
       unlocked() {
         return hu('a', 13)
       },
       effect() {
-        let eff = player.a.total.div(1.5e4).pow(10).add(1)
+        let eff = player.a.total.div(1.5e3).pow(10).add(1)
+        if (mu(this.layer, this.id)) eff = eff.pow(2)
         eff = sc(eff, n(10), 0.5) //Sc187
         eff = sc(eff, n(100), 0.5) //Sc188
         eff = sc(eff, n(1000), 0.5) //Sc189
@@ -169,18 +186,24 @@ addLayer('a', {
       effectDisplay() {
         return format(ue(this.layer, this.id)) + 'x'
       },
+      canMaster: true,
+      masterCost: n(1e103),
+      masteredDesc: function () {
+        return 'Boost A, B and Antimatter based on total Alpha .'
+      },
     },
     15: {
       title: 'α5',
       description: function () {
         return 'Boost C based on total Alpha.'
       },
-      cost: n(1e5),
+      cost: n(1e4),
       unlocked() {
         return hu('a', 14)
       },
       effect() {
-        let eff = player.a.total.div(1.5e5).pow(5).add(1)
+        let eff = player.a.total.div(1.5e4).pow(5).add(1)
+        if (mu(this.layer, this.id)) eff = eff.pow(2)
         eff = sc(eff, n(10), 0.5) //Sc190
         eff = sc(eff, n(100), 0.5) //Sc192
         eff = sc(eff, n(1000), 0.5) //Sc196
@@ -191,18 +214,24 @@ addLayer('a', {
       effectDisplay() {
         return format(ue(this.layer, this.id)) + 'x'
       },
+      canMaster: true,
+      masterCost: n(1e130),
+      masteredDesc: function () {
+        return 'Boost C and softcap points based on total Alpha.'
+      },
     },
     16: {
       title: 'α6',
       description: function () {
         return 'Boost D based on total Alpha.'
       },
-      cost: n(1e6),
+      cost: n(1e5),
       unlocked() {
         return hu('a', 15)
       },
       effect() {
-        let eff = player.a.total.div(1.2e6).pow(4).add(1)
+        let eff = player.a.total.div(1.2e5).pow(4).add(1)
+        if (mu(this.layer, this.id)) eff = eff.pow(1.25)
         eff = sc(eff, n(10), 0.5) //Sc193
         eff = sc(eff, n(100), 0.5) //Sc194
         eff = sc(eff, n(1000), 0.5) //Sc197
@@ -211,6 +240,11 @@ addLayer('a', {
       },
       effectDisplay() {
         return format(ue(this.layer, this.id)) + 'x'
+      },
+      canMaster: true,
+      masterCost: n(1e165),
+      masteredDesc: function () {
+        return 'Boost D and Mass from Black hole based on total Alpha.'
       },
     },
     21: {
@@ -228,7 +262,7 @@ addLayer('a', {
         eff = sc(eff, n(100), 0.5) //Sc205
         eff = sc(eff, n(1000), 0.5) //Sc207
         eff = sc(eff, n(1e4), 0.1) //Sc209
-        eff = sc(eff, n(1e5), 0.5) //Sc212
+        eff = sc(eff, n(1e5), 0.5) //Sc211
         return eff
       },
       effectDisplay() {
@@ -245,8 +279,8 @@ addLayer('a', {
         return hu('a', 21)
       },
       effect() {
-        let eff = player.A.total.max(10).log(10).div(1e5).pow(10).add(1)
-        eff = sc(eff, n(1e10), 0.5) //Sc210
+        let eff = player.A.total.max(10).log(10).div(225).softcap(2, 2).pow(10).add(1)
+        eff = sc(eff, n(1e10), 0.25) //Sc218
         return eff
       },
       effectDisplay() {
@@ -263,9 +297,9 @@ addLayer('a', {
         return hu('a', 22)
       },
       effect() {
-        let eff = player.a.total.div(6.66e66).pow(1.5).add(1)
-        eff = sc(eff, n(10), 0.5) //Sc211
-        eff = sc(eff, n(1e6), 0.5) //Sc213
+        let eff = player.a.total.div(6.66e65).pow(1.5).add(1)
+        eff = sc(eff, n(10), 0.5) //Sc210
+        eff = sc(eff, n(1e6), 0.5) //Sc212
         return eff
       },
       effectDisplay() {
@@ -277,14 +311,14 @@ addLayer('a', {
       description: function () {
         return 'Boost Em based on total Alpha.'
       },
-      cost: n(7.5e75),
+      cost: n(7.4e74),
       unlocked() {
         return hu('a', 23)
       },
       effect() {
-        let eff = player.a.total.div(7.5e75).pow(1.2).add(1)
-        eff = sc(eff, n(1000), 0.5) //Sc214
-        eff = sc(eff, n(1e4), 0.5) //Sc216
+        let eff = player.a.total.div(7.4e74).pow(1.2).add(1)
+        eff = sc(eff, n(1000), 0.5) //Sc213
+        eff = sc(eff, n(1e4), 0.5) //Sc214
         eff = sc(eff, n(1e6), 0.1) //Sc225
         return eff
       },
@@ -302,8 +336,8 @@ addLayer('a', {
         return hu('a', 24)
       },
       effect() {
-        let eff = player.E.points.max(10).log(10).div(100).pow(10).add(1)
-        eff = sc(eff, n(1000), 0.5) //Sc215
+        let eff = player.E.points.max(10).log(10).div(50).pow(10).add(1)
+        eff = sc(eff, n(1000), 0.5) //Sc221
         return eff
       },
       effectDisplay() {
@@ -321,8 +355,8 @@ addLayer('a', {
       },
       effect() {
         let eff = player.a.total.div(1e80).pow(1.1).add(1)
-        eff = sc(eff, n(10), 0.5) //Sc217
-        eff = sc(eff, n(100), 0.5) //Sc224
+        eff = sc(eff, n(10), 0.5) //Sc215
+        eff = sc(eff, n(100), 0.5) //Sc217
         eff = sc(eff, n(1e4), 0.5) //Sc226
         return eff
       },
@@ -335,7 +369,7 @@ addLayer('a', {
       description: function () {
         return 'Cut down Ec6 requirement by /10.'
       },
-      cost: n(1e130),
+      cost: n(1e110),
       unlocked() {
         return hu('a', 26)
       },

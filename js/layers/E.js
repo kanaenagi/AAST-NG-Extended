@@ -84,7 +84,7 @@ addLayer('E', {
     if (hc('E', 31)) mult = mult.pow(challengeEffect('E', 31))
     if (mult.gte(1e5)) mult = mult.div(1e5).pow(0.5).mul(1e5) //Sc109
     if (mult.gte(1e10)) mult = mult.div(1e10).pow(0.75).mul(1e10) //Sc124
-    if (mult.gte(1e54)) mult = mult.div(1e54).pow(0.5).mul(1e54) //Sc223
+    if (mult.gte(1e54)) mult = mult.div(1e54).pow(0.5).mul(1e54) //Sc224
     return mult
   },
   directMult() {
@@ -114,6 +114,9 @@ addLayer('E', {
   },
   autoUpgrade() {
     return hm('F', 2) && player.F.auto
+  },
+  automasterUpgrades() {
+    return hm('F', 4) && player.F.auto2
   },
   doReset(resettingLayer) {
     if (layers[resettingLayer].row > layers[this.layer].row) {
@@ -296,7 +299,7 @@ addLayer('E', {
       done() {
         return player[this.layer].total.gte(1e150)
       },
-      effectDescription: 'Unlock the next layer, F (coming soon).',
+      effectDescription: 'Unlock the next layer, F.',
     },
   },
   canReset() {
@@ -654,7 +657,7 @@ addLayer('E', {
         return hu(this.layer, 26)
       },
       canMaster: true,
-      masterCost: n(1e222),
+      masterCost: n(1e170),
       masteredDesc: 'E boosts A-C directly and unlock more C upgrades.',
     },
     32: {
@@ -673,6 +676,9 @@ addLayer('E', {
       unlocked() {
         return hu(this.layer, 31)
       },
+      canMaster: true,
+      masterCost: n(1e175),
+      masteredDesc: 'boosts to E and F based on points.',
     },
     33: {
       title: 'E15',
@@ -681,6 +687,9 @@ addLayer('E', {
       unlocked() {
         return hu(this.layer, 32)
       },
+      canMaster: true,
+      masterCost: n(2.5e181),
+      masteredDesc: 'Reduce Ac7 requirement beyond 10. Ac7 boost Bb1 and Bb2 base.',
     },
     34: {
       title: 'E16',
@@ -1718,6 +1727,7 @@ addLayer('E', {
       base() {
         let base = n(0.0001)
         if (hu('E', 53)) base = base.mul(ue('E', 53))
+        if (hu('D', 41)) base = base.mul(3)
         return base
       },
       effect(x) {
@@ -1944,7 +1954,7 @@ addLayer('E', {
         player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].max(target)
       },
       base() {
-        let base = 10
+        let base = n(10)
         if (hc('E', 32)) base = Decimal.add(base, challengeEffect('E', 32))
         if (hu('E', 104)) base = base.mul(2)
         if (mu('A', 45)) base = base.mul(8)
@@ -2439,12 +2449,12 @@ addLayer('E', {
         return (
           'Your A is limited at your Alpha <br> Completion: ' +
           challengeCompletions('E', 51) +
-          '/4 <br> Currently: Capped at' +
+          '/4 <br> Currently: Capped at ' +
           format(player.a.points)
         )
       },
       unlocked() {
-        return hm('F', 6)
+        return hm('F', 8)
       },
       goal() {
         let goal = [n(1e1000), n(3e90), n(9.1e91), n(9.2e92), n(0)]
@@ -2477,12 +2487,12 @@ addLayer('E', {
         return (
           'Your B is limited at your Beta <br> Completion: ' +
           challengeCompletions('E', 52) +
-          '/4 <br> Currently: Capped at' +
+          '/4 <br> Currently: Capped at ' +
           format(player.b.points)
         )
       },
       unlocked() {
-        return hm('F', 6)
+        return hm('F', 8)
       },
       goal() {
         let goal = [n(1e1000), n(3e90), n(9.1e91), n(9.2e92), n(0)]
@@ -2543,7 +2553,7 @@ addLayer('E', {
     eff = eff.mul(hu('a', 26) ? ue('a', 26) : 1)
     if (hc('E', 41)) eff = eff.pow(challengeEffect('E', 41))
     eff = sc(eff, n(1e20), 0.8) //Sc182
-    eff = sc(eff, n(1e40), 0.8) //Sc182
+    eff = sc(eff, n(1e40), 0.8) //Sc218
     return eff
   },
   ekexp() {

@@ -29,12 +29,16 @@ var qqq //used for testing effects, finding limits, etc.
 
 // Set your version in num and name
 let VERSION = {
-  num: '0.2',
+  num: '0.21',
   name: '',
 }
 
 let changelog = `
 <h1>Changelog:</h1><br>
+<h2>v0.21 2026/10/1 6:00-2026/10/3 0:00 </h2><br>
+<h3>- Rebalanced Pre-Fm8.</h3><br>
+<h3>Endgame: 512 F (232 + <span style="color: rgb(255, 197, 215)">34</span> softcaps)</h3><br>
+
 <h2>v0.2 2026/2/1 10:00-2026/2/4 11:00 </h2><br>
 <h3>- Rebalanced Pre-F.</h3><br>
 <h3>- Added Black Hole.</h3><br>
@@ -154,6 +158,7 @@ function getRawPointsGen() {
   if (hc('C', 12)) gain = gain.mul(8000)
 
   if (hu('C', 13) && hu('A', 12) && gain.gte(1)) gain = gain.pow(layers.A.antimatterEffect())
+  if (mu('a', 11)) gain = gain.pow(1.25)
   if (mu("C", 12)) gain = gain.pow(3)
   if (mu("C", 15)) gain = gain.pow(2)
   if (hu("E", 55)) gain = gain.pow(3)
@@ -187,7 +192,7 @@ function getPointGen() {
     .overflow("1e500", 0.75, 2) // Ssc14
     .overflow("1e600", 0.25) // Ssc17
   if (gain.max(1).log10().gte(700)) gain = n(10).pow(gain.log10().sub(699).pow(0.25).add(699))
-    .overflow('1e700', 0.5, 2)
+    .overflow('1e700', 0.5, 2) // Ssc33
   if (inChallenge('D', 11)) gain = n(10).pow(gain.max(1).log10().pow(0.1)) //Sc58boosted
 
   return gain
@@ -223,7 +228,7 @@ var displayThings = [
 ]
 // Determines when the game "ends"
 function isEndgame() {
-  return ha("ac", 111)
+  return player.F.points.gte(512)
 }
 
 // Less important things beyond this point!

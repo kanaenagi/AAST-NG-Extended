@@ -518,6 +518,9 @@ addLayer('ac', {
       done() {
         return player.E.points.gte('1e150')
       },
+      onComplete(){
+        setClickableState('te', 25, 0)
+      },
       tooltip: 'get 1e150 E.',
     },
     112: {
@@ -556,11 +559,11 @@ addLayer('ac', {
       tooltip: 'auto buy A~E upgrades.',
     },
     117: {
-      name: '77. Lucky D',
+      name: '77. Lucky B',
       done() {
-        return player.D.points.gte('7.77e777')
+        return player.B.points.gte('7.77e777')
       },
-      tooltip: 'get 7.77e777 D.',
+      tooltip: 'get 7.77e777 B.',
     },
     121: {
       name: '78. Beta Error',
@@ -572,9 +575,9 @@ addLayer('ac', {
     122: {
       name: '79. Rich in E',
       done() {
-        return player.E.points.gte('1e400')
+        return player.E.points.gte('1e200')
       },
-      tooltip: 'get 1e400 E.',
+      tooltip: 'get 1e200 E.',
     },
     
   },

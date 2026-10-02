@@ -352,6 +352,7 @@ function gameLoop(diff) {
       if (tmp[layer].autoPrestige && tmp[layer].canReset) doReset(layer)
       if (layers[layer].automate) layers[layer].automate()
       if (tmp[layer].autoUpgrade) autobuyUpgrades(layer)
+      if (tmp[layer].automasterUpgrades) automasterUpgrades(layer)
     }
   }
 
@@ -362,6 +363,7 @@ function gameLoop(diff) {
       if (layers[layer].automate) layers[layer].automate()
       player[layer].best = player[layer].best.max(player[layer].points)
       if (tmp[layer].autoUpgrade) autobuyUpgrades(layer)
+      if (tmp[layer].automasterUpgrades) automasterUpgrades(layer)
     }
   }
 

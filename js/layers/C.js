@@ -59,6 +59,7 @@ addLayer('C', {
     mult = mult.pow(hu('A', 45) ? 1.5 : 1)
     mult = mult.pow(hu('A', 46) ? 1.5 : 1)
     mult = mult.pow(hu('C', 24) ? 1.5 : 1)
+    if (mu("C", 24)) mult = mult.pow(1.1)
 
     if (mult.gte(10)) mult = mult.div(10).pow(0.5).mul(10) //Sc28
     if (mult.gte(1e5)) mult = mult.div(1e5).pow(0.2).mul(1e5) //Sc37
@@ -66,6 +67,7 @@ addLayer('C', {
     if (mult.gte(1e20)) mult = mult.div(1e20).pow(0.3).mul(1e20) //Sc65
     if (mult.gte(1e60)) mult = mult.div(1e60).pow(0.6).mul(1e60) //Sc85
     if (mult.gte(1e100)) mult = mult.div(1e100).pow(0.8).mul(1e100) //Sc92
+    mult = mult.overflow('1e450', 0.5)
     return mult
   },
   directMult() {
@@ -85,6 +87,9 @@ addLayer('C', {
   },
   autoUpgrade() {
     return hm('F', 2) && player.F.auto
+  },
+  automasterUpgrades() {
+    return hm('F', 4) && player.F.auto2
   },
   doReset(resettingLayer) {
     if (layers[resettingLayer].row > layers[this.layer].row) {
@@ -201,6 +206,7 @@ addLayer('C', {
       effect() {
         let effp = 5
         if (hu('C', 23)) effp = effp * 5
+        if (mu('C', 23)) effp = effp * 10
         if (mu('C', 13)) effp = effp * 1000
         if (inChallenge('C', 11)) effp = 0
         eff = player[this.layer].points.max(1).pow(effp)
@@ -288,6 +294,9 @@ addLayer('C', {
       unlocked() {
         return hu(this.layer, 22)
       },
+      canMaster: true,
+      masterCost: n('e650'),
+      masteredDesc:'C3 ^50. Ab2 effect *1.2.',
     },
     24: {
       title: 'C10',
@@ -296,6 +305,9 @@ addLayer('C', {
       unlocked() {
         return hu(this.layer, 23)
       },
+      canMaster: true,
+      masterCost: n('5e681'),
+      masteredDesc:'1e20x points and C^1.5. Bb8 cost Scaling is reduced (1.5 → 1.2)',
     },
     25: {
       title: 'C11',
@@ -304,6 +316,9 @@ addLayer('C', {
       unlocked() {
         return hu(this.layer, 24)
       },
+      canMaster: true,
+      masterCost: n('5e691'),
+      masteredDesc:'1e30x point, ^1.5 B , ^1.1 C.',
     },
     26: {
       title: 'C12',

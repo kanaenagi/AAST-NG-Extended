@@ -32,7 +32,6 @@ addLayer('te', {
   },
   update(diff) {
     player.softcap = n(softcapCal()[0])
-    if (ha("ac", 111)) setClickableState('te', 25, 0)
   },
   clickables: {
     11: {
@@ -263,7 +262,7 @@ addLayer('te', {
       'display-text',
       function () {
         let a = ''
-        let layers = ['A', 'B', 'a', 'b', 'C', 'D', 'E', 'F']
+        let layers = ['A', 'B', 'C', 'D', 'E', 'F', 'a', 'b']
         if (gcs('te', 22))
           for (i = 0; i < layers.length; i++) {
             if (tmp[layers[i]].layerShown) a = a + '<br>' + layers[i] + "'s GainMult: " + format(tmp[layers[i]].gainMult)
